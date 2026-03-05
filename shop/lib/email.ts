@@ -28,15 +28,32 @@ interface OrderData {
   total: number;
 }
 
-function itemRowsHtml(items: OrderItem[], siteUrl: string): string {
+/** Build CID inline attachments — Resend fetches each image via `path` */
+function buildImageAttachments(items: OrderItem[], siteUrl: string) {
+  const seen = new Set<string>();
   return items
     .map((item) => {
       const imgCode = item.base_code || item.code.replace(/\/.*$/, "");
-      const imgSrc = `${siteUrl}/images/products/${imgCode}.png`;
+      if (seen.has(imgCode)) return null;
+      seen.add(imgCode);
+      return {
+        path: `${siteUrl}/images/products/${imgCode}.png`,
+        filename: `${imgCode}.png`,
+        content_type: "image/png",
+        contentId: imgCode,
+      };
+    })
+    .filter((a): a is NonNullable<typeof a> => a !== null);
+}
+
+function itemRowsHtml(items: OrderItem[]): string {
+  return items
+    .map((item) => {
+      const imgCode = item.base_code || item.code.replace(/\/.*$/, "");
       return `
     <tr>
       <td style="padding:8px 4px 8px 12px;border-bottom:1px solid #eee;vertical-align:middle;width:48px">
-        <img src="${imgSrc}" alt="${item.code}" width="40" height="40" style="display:block;border-radius:4px;object-fit:contain;background:#f8f8f8" />
+        <img src="cid:${imgCode}" alt="${item.code}" width="40" height="40" style="display:block;border-radius:4px;object-fit:contain;background:#f8f8f8" />
       </td>
       <td style="padding:8px 8px;border-bottom:1px solid #eee;font-size:14px;vertical-align:middle">
         <strong style="color:#333">${item.code}</strong><br/>
@@ -68,11 +85,13 @@ function totalsHtml(subtotal: number, vat: number, total: number): string {
 export async function sendOrderConfirmation(order: OrderData): Promise<void> {
   const fromEmail = process.env.FROM_EMAIL || "onboarding@resend.dev";
   const siteUrl = process.env.SITE_URL || "http://localhost:3000";
+  const attachments = buildImageAttachments(order.items, siteUrl);
 
   const { error } = await resend.emails.send({
     from: `Persimmon Signage <${fromEmail}>`,
     to: order.email,
     subject: `Order Confirmed - ${order.orderNumber}`,
+    attachments,
     html: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
         <div style="background:#00474a;padding:24px 32px;border-radius:12px 12px 0 0">
@@ -102,7 +121,7 @@ export async function sendOrderConfirmation(order: OrderData): Promise<void> {
               </tr>
             </thead>
             <tbody>
-              ${itemRowsHtml(order.items, siteUrl)}
+              ${itemRowsHtml(order.items)}
             </tbody>
             <tfoot>
               ${totalsHtml(order.subtotal, order.vat, order.total)}
@@ -115,7 +134,6 @@ export async function sendOrderConfirmation(order: OrderData): Promise<void> {
   });
 
   if (error) {
-    // Log but don't throw — customer emails may fail without verified domain
     console.warn(`Customer confirmation skipped (${order.email}):`, error.message);
     return;
   }
@@ -128,19 +146,14 @@ export async function sendTeamNotification(order: OrderData): Promise<void> {
   const teamEmail = process.env.TEAM_NOTIFICATION_EMAIL;
   if (!teamEmail) return;
 
-  // Debug: log exactly what image URLs are being used
-  const sampleItem = order.items[0];
-  if (sampleItem) {
-    const sampleImgCode = sampleItem.base_code || sampleItem.code.replace(/\/.*$/, "");
-    console.log(`[EMAIL DEBUG] SITE_URL env = "${process.env.SITE_URL}"`);
-    console.log(`[EMAIL DEBUG] siteUrl resolved = "${siteUrl}"`);
-    console.log(`[EMAIL DEBUG] Sample image URL = "${siteUrl}/images/products/${sampleImgCode}.png"`);
-  }
+  const attachments = buildImageAttachments(order.items, siteUrl);
+  console.log(`[EMAIL] Sending team notification with ${attachments.length} inline image(s)`);
 
   const { error } = await resend.emails.send({
     from: `Persimmon Signage Portal <${fromEmail}>`,
     to: teamEmail,
     subject: `New Order: ${order.orderNumber} - ${order.siteName}`,
+    attachments,
     html: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
         <div style="background:#00474a;padding:24px 32px;border-radius:12px 12px 0 0">
@@ -180,7 +193,7 @@ export async function sendTeamNotification(order: OrderData): Promise<void> {
               </tr>
             </thead>
             <tbody>
-              ${itemRowsHtml(order.items, siteUrl)}
+              ${itemRowsHtml(order.items)}
             </tbody>
             <tfoot>
               ${totalsHtml(order.subtotal, order.vat, order.total)}

@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
       // Order was created but items failed — log but don't fail the request
     }
 
-    // Send emails (non-blocking — order succeeds even if emails fail)
+    // Send emails — awaited so serverless function stays alive until sent
     const emailData = {
       orderNumber,
       contactName: String(contactName),
@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
       total,
     };
 
-    Promise.all([
+    await Promise.all([
       sendOrderConfirmation(emailData).catch((e) => console.error("Confirmation email failed:", e)),
       sendTeamNotification(emailData).catch((e) => console.error("Team notification failed:", e)),
     ]);

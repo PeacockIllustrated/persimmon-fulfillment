@@ -4,6 +4,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface OrderItem {
   code: string;
+  base_code: string | null;
   name: string;
   size: string | null;
   material: string | null;
@@ -27,17 +28,24 @@ interface OrderData {
   total: number;
 }
 
-function itemRowsHtml(items: OrderItem[]): string {
+function itemRowsHtml(items: OrderItem[], siteUrl: string): string {
   return items
-    .map(
-      (item) => `
+    .map((item) => {
+      const imgCode = item.base_code || item.code.replace(/\/.*$/, "");
+      const imgSrc = `${siteUrl}/images/products/${imgCode}.png`;
+      return `
     <tr>
-      <td style="padding:8px 12px;border-bottom:1px solid #eee;font-size:14px">${item.code}</td>
-      <td style="padding:8px 12px;border-bottom:1px solid #eee;font-size:14px">${item.name}${item.size ? ` (${item.size})` : ""}</td>
-      <td style="padding:8px 12px;border-bottom:1px solid #eee;font-size:14px;text-align:center">${item.quantity}</td>
-      <td style="padding:8px 12px;border-bottom:1px solid #eee;font-size:14px;text-align:right">&pound;${item.line_total.toFixed(2)}</td>
-    </tr>`
-    )
+      <td style="padding:8px 4px 8px 12px;border-bottom:1px solid #eee;vertical-align:middle;width:48px">
+        <img src="${imgSrc}" alt="${item.code}" width="40" height="40" style="display:block;border-radius:4px;object-fit:contain;background:#f8f8f8" />
+      </td>
+      <td style="padding:8px 8px;border-bottom:1px solid #eee;font-size:14px;vertical-align:middle">
+        <strong style="color:#333">${item.code}</strong><br/>
+        <span style="color:#666;font-size:12px">${item.name}${item.size ? ` (${item.size})` : ""}</span>
+      </td>
+      <td style="padding:8px 8px;border-bottom:1px solid #eee;font-size:14px;text-align:center;vertical-align:middle">${item.quantity}</td>
+      <td style="padding:8px 12px 8px 8px;border-bottom:1px solid #eee;font-size:14px;text-align:right;vertical-align:middle">&pound;${item.line_total.toFixed(2)}</td>
+    </tr>`;
+    })
     .join("");
 }
 
@@ -45,22 +53,23 @@ function totalsHtml(subtotal: number, vat: number, total: number): string {
   return `
     <tr>
       <td colspan="3" style="padding:8px 12px;text-align:right;font-size:14px;color:#666">Subtotal</td>
-      <td style="padding:8px 12px;text-align:right;font-size:14px">&pound;${subtotal.toFixed(2)}</td>
+      <td style="padding:8px 12px 8px 8px;text-align:right;font-size:14px">&pound;${subtotal.toFixed(2)}</td>
     </tr>
     <tr>
       <td colspan="3" style="padding:8px 12px;text-align:right;font-size:14px;color:#666">VAT (20%)</td>
-      <td style="padding:8px 12px;text-align:right;font-size:14px">&pound;${vat.toFixed(2)}</td>
+      <td style="padding:8px 12px 8px 8px;text-align:right;font-size:14px">&pound;${vat.toFixed(2)}</td>
     </tr>
     <tr>
       <td colspan="3" style="padding:8px 12px;text-align:right;font-weight:bold;font-size:14px;color:#00474a">Total</td>
-      <td style="padding:8px 12px;text-align:right;font-weight:bold;font-size:14px;color:#00474a">&pound;${total.toFixed(2)}</td>
+      <td style="padding:8px 12px 8px 8px;text-align:right;font-weight:bold;font-size:14px;color:#00474a">&pound;${total.toFixed(2)}</td>
     </tr>`;
 }
 
 export async function sendOrderConfirmation(order: OrderData): Promise<void> {
-  const fromEmail = process.env.FROM_EMAIL || "orders@persimmonsignage.co.uk";
+  const fromEmail = process.env.FROM_EMAIL || "onboarding@resend.dev";
+  const siteUrl = process.env.SITE_URL || "http://localhost:3000";
 
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: `Persimmon Signage <${fromEmail}>`,
     to: order.email,
     subject: `Order Confirmed - ${order.orderNumber}`,
@@ -86,14 +95,14 @@ export async function sendOrderConfirmation(order: OrderData): Promise<void> {
           <table style="width:100%;border-collapse:collapse;margin:20px 0">
             <thead>
               <tr style="background:#f5f5f5">
-                <th style="padding:8px 12px;text-align:left;font-size:12px;color:#666;text-transform:uppercase">Code</th>
-                <th style="padding:8px 12px;text-align:left;font-size:12px;color:#666;text-transform:uppercase">Product</th>
-                <th style="padding:8px 12px;text-align:center;font-size:12px;color:#666;text-transform:uppercase">Qty</th>
-                <th style="padding:8px 12px;text-align:right;font-size:12px;color:#666;text-transform:uppercase">Total</th>
+                <th style="padding:8px 12px;text-align:left;font-size:12px;color:#666;text-transform:uppercase;width:48px"></th>
+                <th style="padding:8px 8px;text-align:left;font-size:12px;color:#666;text-transform:uppercase">Product</th>
+                <th style="padding:8px 8px;text-align:center;font-size:12px;color:#666;text-transform:uppercase">Qty</th>
+                <th style="padding:8px 12px 8px 8px;text-align:right;font-size:12px;color:#666;text-transform:uppercase">Total</th>
               </tr>
             </thead>
             <tbody>
-              ${itemRowsHtml(order.items)}
+              ${itemRowsHtml(order.items, siteUrl)}
             </tbody>
             <tfoot>
               ${totalsHtml(order.subtotal, order.vat, order.total)}
@@ -104,14 +113,22 @@ export async function sendOrderConfirmation(order: OrderData): Promise<void> {
         </div>
       </div>`,
   });
+
+  if (error) {
+    // Log but don't throw — customer emails may fail without verified domain
+    console.warn(`Customer confirmation skipped (${order.email}):`, error.message);
+    return;
+  }
+  console.log(`Order confirmation email sent to ${order.email}`);
 }
 
 export async function sendTeamNotification(order: OrderData): Promise<void> {
-  const fromEmail = process.env.FROM_EMAIL || "orders@persimmonsignage.co.uk";
+  const fromEmail = process.env.FROM_EMAIL || "onboarding@resend.dev";
+  const siteUrl = process.env.SITE_URL || "http://localhost:3000";
   const teamEmail = process.env.TEAM_NOTIFICATION_EMAIL;
   if (!teamEmail) return;
 
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: `Persimmon Signage Portal <${fromEmail}>`,
     to: teamEmail,
     subject: `New Order: ${order.orderNumber} - ${order.siteName}`,
@@ -147,14 +164,14 @@ export async function sendTeamNotification(order: OrderData): Promise<void> {
           <table style="width:100%;border-collapse:collapse;margin:20px 0">
             <thead>
               <tr style="background:#f5f5f5">
-                <th style="padding:8px 12px;text-align:left;font-size:12px;color:#666;text-transform:uppercase">Code</th>
-                <th style="padding:8px 12px;text-align:left;font-size:12px;color:#666;text-transform:uppercase">Product</th>
-                <th style="padding:8px 12px;text-align:center;font-size:12px;color:#666;text-transform:uppercase">Qty</th>
-                <th style="padding:8px 12px;text-align:right;font-size:12px;color:#666;text-transform:uppercase">Total</th>
+                <th style="padding:8px 12px;text-align:left;font-size:12px;color:#666;text-transform:uppercase;width:48px"></th>
+                <th style="padding:8px 8px;text-align:left;font-size:12px;color:#666;text-transform:uppercase">Product</th>
+                <th style="padding:8px 8px;text-align:center;font-size:12px;color:#666;text-transform:uppercase">Qty</th>
+                <th style="padding:8px 12px 8px 8px;text-align:right;font-size:12px;color:#666;text-transform:uppercase">Total</th>
               </tr>
             </thead>
             <tbody>
-              ${itemRowsHtml(order.items)}
+              ${itemRowsHtml(order.items, siteUrl)}
             </tbody>
             <tfoot>
               ${totalsHtml(order.subtotal, order.vat, order.total)}
@@ -163,4 +180,10 @@ export async function sendTeamNotification(order: OrderData): Promise<void> {
         </div>
       </div>`,
   });
+
+  if (error) {
+    console.error("Resend team notification error:", JSON.stringify(error));
+    throw new Error(`Team notification failed: ${error.message}`);
+  }
+  console.log(`Team notification email sent to ${teamEmail}`);
 }

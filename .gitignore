@@ -13,8 +13,8 @@ node_modules/
 out/
 
 # Environment files
-.env*
-!.env.example
+.env.production
+.env.development
 
 # OS files
 .DS_Store

@@ -128,6 +128,15 @@ export async function sendTeamNotification(order: OrderData): Promise<void> {
   const teamEmail = process.env.TEAM_NOTIFICATION_EMAIL;
   if (!teamEmail) return;
 
+  // Debug: log exactly what image URLs are being used
+  const sampleItem = order.items[0];
+  if (sampleItem) {
+    const sampleImgCode = sampleItem.base_code || sampleItem.code.replace(/\/.*$/, "");
+    console.log(`[EMAIL DEBUG] SITE_URL env = "${process.env.SITE_URL}"`);
+    console.log(`[EMAIL DEBUG] siteUrl resolved = "${siteUrl}"`);
+    console.log(`[EMAIL DEBUG] Sample image URL = "${siteUrl}/images/products/${sampleImgCode}.png"`);
+  }
+
   const { error } = await resend.emails.send({
     from: `Persimmon Signage Portal <${fromEmail}>`,
     to: teamEmail,

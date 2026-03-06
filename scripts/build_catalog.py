@@ -30,6 +30,11 @@ SIZE_NAMES = {
     'H': 'Banner',
 }
 
+# Products to exclude from the catalog entirely
+EXCLUDED_CODES = {
+    'PCF984', 'PCF985', 'PCF986', 'PCF987', 'PCFCOV-19-ENT',  # Covid-19 signs — discontinued
+}
+
 # Category definitions: maps PDF page ranges to categories
 # Built from PDF content analysis
 CATEGORY_DEFINITIONS = [
@@ -324,10 +329,13 @@ def build_catalog():
     products = parse_excel()
     print(f"Loaded {len(products)} products from Excel")
 
-    # Group variants under base codes
+    # Group variants under base codes (skip excluded products)
     product_groups = {}
     for product in products:
         base_code, size_suffix = get_base_code(product['code'])
+
+        if base_code in EXCLUDED_CODES:
+            continue
 
         if base_code not in product_groups:
             product_groups[base_code] = {

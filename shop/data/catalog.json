@@ -1065,7 +1065,7 @@
           "image": "/images/products/PCFCCS18.png"
         }
       ],
-      "productCount": 15
+      "productCount": 14
     },
     {
       "name": "Information Signs",
@@ -6932,7 +6932,7 @@
           "image": "/images/products/PCF911.png"
         }
       ],
-      "productCount": 18
+      "productCount": 17
     },
     {
       "name": "Site Marking",
@@ -22322,7 +22322,7 @@
           "image": "/images/products/PCFS16.png"
         }
       ],
-      "productCount": 154
+      "productCount": 151
     },
     {
       "name": "for Admin Review",
@@ -23255,178 +23255,6 @@
           "image": null
         },
         {
-          "baseCode": "PCF984",
-          "variants": [
-            {
-              "code": "PCF984/E",
-              "size": "200x300mm",
-              "material": "4mm Correx",
-              "description": "200x300mm Prevent the spread of Coronavirus wash your hands frequently (4mm Correx)",
-              "price": 1.18,
-              "persimmonPrice": 0.93,
-              "sizeSuffix": "E"
-            },
-            {
-              "code": "PCF984/F",
-              "size": "300x400mm",
-              "material": "4mm Correx",
-              "description": "300x400mm Prevent the spread of Coronavirus wash your hands frequently (4mm Correx)",
-              "price": 2.36,
-              "persimmonPrice": 1.86,
-              "sizeSuffix": "F"
-            },
-            {
-              "code": "PCF984/M",
-              "size": "400x600mm",
-              "material": "4mm Correx",
-              "description": "400x600mm Prevent the spread of Coronavirus wash your hands frequently (4mm Correx)",
-              "price": 4.73,
-              "persimmonPrice": 3.74,
-              "sizeSuffix": "M"
-            },
-            {
-              "code": "PCF984/Y",
-              "size": "600x800mm",
-              "material": "4mm Correx",
-              "description": "600x800mm Prevent the spread of Coronavirus wash your hands frequently (4mm Correx)",
-              "price": 9.45,
-              "persimmonPrice": 7.47,
-              "sizeSuffix": "Y"
-            }
-          ],
-          "name": "Prevent the spread of Coronavirus wash your hands frequently",
-          "image": null
-        },
-        {
-          "baseCode": "PCF985",
-          "variants": [
-            {
-              "code": "PCF985/E",
-              "size": "200x300mm",
-              "material": "4mm Correx",
-              "description": "200x300mm Prevent the spread of Coronavirus dispose of used tissues... (4mm Correx)",
-              "price": 1.18,
-              "persimmonPrice": 0.93,
-              "sizeSuffix": "E"
-            },
-            {
-              "code": "PCF985/F",
-              "size": "300x400mm",
-              "material": "4mm Correx",
-              "description": "300x400mm Prevent the spread of Coronavirus dispose of used tissues... (4mm Correx)",
-              "price": 2.36,
-              "persimmonPrice": 1.86,
-              "sizeSuffix": "F"
-            },
-            {
-              "code": "PCF985/M",
-              "size": "400x600mm",
-              "material": "4mm Correx",
-              "description": "400x600mm Prevent the spread of Coronavirus dispose of used tissues... (4mm Correx)",
-              "price": 4.73,
-              "persimmonPrice": 3.74,
-              "sizeSuffix": "M"
-            },
-            {
-              "code": "PCF985/Y",
-              "size": "600x800mm",
-              "material": "4mm Correx",
-              "description": "600x800mm Prevent the spread of Coronavirus dispose of used tissues... (4mm Correx)",
-              "price": 9.45,
-              "persimmonPrice": 7.47,
-              "sizeSuffix": "Y"
-            }
-          ],
-          "name": "Prevent the spread of Coronavirus dispose of used tissues...",
-          "image": null
-        },
-        {
-          "baseCode": "PCF986",
-          "variants": [
-            {
-              "code": "PCF986/E",
-              "size": "200x300mm",
-              "material": "4mm Correx",
-              "description": "200x300mm Catch it bin it kill it (4mm Correx)",
-              "price": 1.18,
-              "persimmonPrice": 0.93,
-              "sizeSuffix": "E"
-            },
-            {
-              "code": "PCF986/F",
-              "size": "300x400mm",
-              "material": "4mm Correx",
-              "description": "300x400mm Catch it bin it kill it (4mm Correx)",
-              "price": 2.36,
-              "persimmonPrice": 1.86,
-              "sizeSuffix": "F"
-            },
-            {
-              "code": "PCF986/M",
-              "size": "400x600mm",
-              "material": "4mm Correx",
-              "description": "400x600mm Catch it bin it kill it (4mm Correx)",
-              "price": 4.73,
-              "persimmonPrice": 3.74,
-              "sizeSuffix": "M"
-            },
-            {
-              "code": "PCF986/Y",
-              "size": "600x800mm",
-              "material": "4mm Correx",
-              "description": "600x800mm Catch it bin it kill it (4mm Correx)",
-              "price": 9.45,
-              "persimmonPrice": 7.47,
-              "sizeSuffix": "Y"
-            }
-          ],
-          "name": "Catch it bin it kill it",
-          "image": null
-        },
-        {
-          "baseCode": "PCF987",
-          "variants": [
-            {
-              "code": "PCF987/E",
-              "size": "200x300mm",
-              "material": "4mm Correx",
-              "description": "200x300mm Coronavirus help stop the spread (4mm Correx)",
-              "price": 1.18,
-              "persimmonPrice": 0.93,
-              "sizeSuffix": "E"
-            },
-            {
-              "code": "PCF987/F",
-              "size": "300x400mm",
-              "material": "4mm Correx",
-              "description": "300x400mm Coronavirus help stop the spread (4mm Correx)",
-              "price": 2.36,
-              "persimmonPrice": 1.86,
-              "sizeSuffix": "F"
-            },
-            {
-              "code": "PCF987/M",
-              "size": "400x600mm",
-              "material": "4mm Correx",
-              "description": "400x600mm Coronavirus help stop the spread (4mm Correx)",
-              "price": 4.73,
-              "persimmonPrice": 3.74,
-              "sizeSuffix": "M"
-            },
-            {
-              "code": "PCF987/Y",
-              "size": "600x800mm",
-              "material": "4mm Correx",
-              "description": "600x800mm Coronavirus help stop the spread (4mm Correx)",
-              "price": 9.45,
-              "persimmonPrice": 7.47,
-              "sizeSuffix": "Y"
-            }
-          ],
-          "name": "Coronavirus help stop the spread",
-          "image": null
-        },
-        {
           "baseCode": "PCFA108",
           "variants": [
             {
@@ -23497,22 +23325,6 @@
             }
           ],
           "name": "Safety message of the day",
-          "image": null
-        },
-        {
-          "baseCode": "PCFCOV-19-ENT",
-          "variants": [
-            {
-              "code": "PCFCOV-19-ENT",
-              "size": "375x1220mm",
-              "material": "5mm Foamex",
-              "description": "Covid-19 3-part Site Entrance Sign Set (5mm Foamex) Contains:\n1x 375x1220mm Covid-19 Notice\n1x 1840x450mm Attention all visitors\n1x 1840x450mm Help stop the spread",
-              "price": 170.0,
-              "persimmonPrice": 134.3,
-              "sizeSuffix": null
-            }
-          ],
-          "name": "Covid-19 3-part Site Entrance Sign Set (5mm Foamex) Contains:\n1x 375x1220mm Covid-19 Notice\n1x 1840x450mm Attention all visitors\n1x 1840x450mm Help stop the spread",
           "image": null
         },
         {
@@ -23781,9 +23593,9 @@
           "image": null
         }
       ],
-      "productCount": 62
+      "productCount": 57
     }
   ],
-  "totalProducts": 834,
+  "totalProducts": 829,
   "totalVariants": 1969
 }

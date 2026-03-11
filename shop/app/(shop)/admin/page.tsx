@@ -147,12 +147,12 @@ export default function AdminPage() {
       {tab === "suggestions" ? (
         /* ─── Suggestions Tab ─── */
         <div>
-          <div className="flex gap-2 mb-6">
+          <div className="flex gap-2 mb-6 overflow-x-auto">
             {["all", "new", "noted", "done", "dismissed"].map((f) => (
               <button
                 key={f}
                 onClick={() => setSugFilter(f)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition ${
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition whitespace-nowrap ${
                   sugFilter === f
                     ? "bg-persimmon-navy text-white shadow-sm"
                     : "bg-white text-gray-500 border border-gray-100 hover:bg-gray-50"
@@ -218,12 +218,12 @@ export default function AdminPage() {
       ) : (
       /* ─── Orders Tab ─── */
       <>
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-6 overflow-x-auto">
         {["all", "new", "in-progress", "completed"].map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition ${
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition whitespace-nowrap ${
               filter === f
                 ? "bg-persimmon-navy text-white shadow-sm"
                 : "bg-white text-gray-500 border border-gray-100 hover:bg-gray-50"

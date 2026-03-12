@@ -1,6 +1,14 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: "smtp.office365.com",
+  port: 587,
+  secure: false, // STARTTLS
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
 /** Escape HTML special characters to prevent injection in email templates */
 function esc(str: string | null | undefined): string {
@@ -58,8 +66,8 @@ function buildImageAttachments(items: OrderItem[], siteUrl: string) {
       return {
         path: `${siteUrl}/images/products/${imgCode}.png`,
         filename: `${imgCode}.png`,
-        content_type: "image/png",
-        contentId: imgCode,
+        contentType: "image/png",
+        cid: imgCode,
       };
     })
     .filter((a): a is NonNullable<typeof a> => a !== null);
@@ -76,7 +84,7 @@ const SIGN_TYPE_COLORS: Record<string, { bg: string; fg: string }> = {
   environmental: { bg: "#009639", fg: "#FFF" },
 };
 
-function itemRowsHtml(items: OrderItem[]): string {
+function itemRowsHtml(items: OrderItem[], siteUrl?: string): string {
   return items
     .map((item) => {
       // Custom sign request (price 0, quote on request)
@@ -111,7 +119,7 @@ function itemRowsHtml(items: OrderItem[]): string {
       return `
     <tr>
       <td style="padding:8px 4px 8px 12px;border-bottom:1px solid #eee;vertical-align:middle;width:48px">
-        <img src="cid:${imgCode}" alt="${esc(item.code)}" width="40" height="40" style="display:block;border-radius:4px;object-fit:contain;background:#f8f8f8" />
+        <img src="${siteUrl ? `${siteUrl}/images/products/${imgCode}.png` : `cid:${imgCode}`}" alt="${esc(item.code)}" width="40" height="40" style="display:block;border-radius:4px;object-fit:contain;background:#f8f8f8" />
       </td>
       <td style="padding:8px 8px;border-bottom:1px solid #eee;font-size:14px;vertical-align:middle">
         <strong style="color:#333">${esc(item.code)}</strong><br/>
@@ -142,65 +150,66 @@ function totalsHtml(subtotal: number, vat: number, total: number, hasCustomItems
 }
 
 export async function sendOrderConfirmation(order: OrderData): Promise<void> {
-  const fromEmail = process.env.FROM_EMAIL || "onboarding@resend.dev";
+  const fromEmail = process.env.SMTP_USER;
+  if (!fromEmail) return;
   const siteUrl = process.env.SITE_URL || "http://localhost:3000";
   const attachments = buildImageAttachments(order.items, siteUrl);
 
-  const { error } = await resend.emails.send({
-    from: `Persimmon Signage <${fromEmail}>`,
-    to: order.email,
-    subject: `Order Confirmed - ${order.orderNumber}`,
-    attachments,
-    html: `
-      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
-        <div style="background:#00474a;padding:24px 32px;border-radius:12px 12px 0 0">
-          <h1 style="color:white;margin:0;font-size:20px">Order Confirmed</h1>
-        </div>
-        <div style="padding:32px;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px">
-          <p style="font-size:15px;color:#333">Hi ${esc(order.contactName)},</p>
-          <p style="font-size:15px;color:#333">Thank you for your order. Our team will review it and be in touch shortly.</p>
-
-          <div style="background:#f8faf9;border-radius:8px;padding:16px 20px;margin:20px 0">
-            <p style="margin:0 0 4px;font-size:13px;color:#666">Order Number</p>
-            <p style="margin:0;font-size:18px;font-weight:bold;color:#00474a">${order.orderNumber}</p>
+  try {
+    await transporter.sendMail({
+      from: `Persimmon Signage <${fromEmail}>`,
+      to: order.email,
+      subject: `Order Confirmed - ${order.orderNumber}`,
+      attachments,
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+          <div style="background:#00474a;padding:24px 32px;border-radius:12px 12px 0 0">
+            <h1 style="color:white;margin:0;font-size:20px">Order Confirmed</h1>
           </div>
+          <div style="padding:32px;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px">
+            <p style="font-size:15px;color:#333">Hi ${esc(order.contactName)},</p>
+            <p style="font-size:15px;color:#333">Thank you for your order. Our team will review it and be in touch shortly.</p>
 
-          <div style="margin:20px 0">
-            <p style="font-size:13px;color:#666;margin:0 0 4px">Site: <strong style="color:#333">${esc(order.siteName)}</strong></p>
-            <p style="font-size:13px;color:#666;margin:0">${esc(order.siteAddress)}</p>
+            <div style="background:#f8faf9;border-radius:8px;padding:16px 20px;margin:20px 0">
+              <p style="margin:0 0 4px;font-size:13px;color:#666">Order Number</p>
+              <p style="margin:0;font-size:18px;font-weight:bold;color:#00474a">${order.orderNumber}</p>
+            </div>
+
+            <div style="margin:20px 0">
+              <p style="font-size:13px;color:#666;margin:0 0 4px">Site: <strong style="color:#333">${esc(order.siteName)}</strong></p>
+              <p style="font-size:13px;color:#666;margin:0">${esc(order.siteAddress)}</p>
+            </div>
+
+            <table style="width:100%;border-collapse:collapse;margin:20px 0">
+              <thead>
+                <tr style="background:#f5f5f5">
+                  <th style="padding:8px 12px;text-align:left;font-size:12px;color:#666;text-transform:uppercase;width:48px"></th>
+                  <th style="padding:8px 8px;text-align:left;font-size:12px;color:#666;text-transform:uppercase">Product</th>
+                  <th style="padding:8px 8px;text-align:center;font-size:12px;color:#666;text-transform:uppercase">Qty</th>
+                  <th style="padding:8px 12px 8px 8px;text-align:right;font-size:12px;color:#666;text-transform:uppercase">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${itemRowsHtml(order.items)}
+              </tbody>
+              <tfoot>
+                ${totalsHtml(order.subtotal, order.vat, order.total, order.items.some(i => !!i.custom_data))}
+              </tfoot>
+            </table>
+
+            <p style="font-size:13px;color:#999;margin-top:32px">If you have any questions about your order, please contact us.</p>
           </div>
-
-          <table style="width:100%;border-collapse:collapse;margin:20px 0">
-            <thead>
-              <tr style="background:#f5f5f5">
-                <th style="padding:8px 12px;text-align:left;font-size:12px;color:#666;text-transform:uppercase;width:48px"></th>
-                <th style="padding:8px 8px;text-align:left;font-size:12px;color:#666;text-transform:uppercase">Product</th>
-                <th style="padding:8px 8px;text-align:center;font-size:12px;color:#666;text-transform:uppercase">Qty</th>
-                <th style="padding:8px 12px 8px 8px;text-align:right;font-size:12px;color:#666;text-transform:uppercase">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${itemRowsHtml(order.items)}
-            </tbody>
-            <tfoot>
-              ${totalsHtml(order.subtotal, order.vat, order.total, order.items.some(i => !!i.custom_data))}
-            </tfoot>
-          </table>
-
-          <p style="font-size:13px;color:#999;margin-top:32px">If you have any questions about your order, please contact us.</p>
-        </div>
-      </div>`,
-  });
-
-  if (error) {
-    console.warn(`Customer confirmation skipped (${order.email}):`, error.message);
-    return;
+        </div>`,
+    });
+    console.log(`Order confirmation email sent to ${order.email}`);
+  } catch (err) {
+    console.warn(`Customer confirmation skipped (${order.email}):`, err instanceof Error ? err.message : err);
   }
-  console.log(`Order confirmation email sent to ${order.email}`);
 }
 
 export async function sendTeamNotification(order: OrderData): Promise<void> {
-  const fromEmail = process.env.FROM_EMAIL || "onboarding@resend.dev";
+  const fromEmail = process.env.SMTP_USER;
+  if (!fromEmail) return;
   const siteUrl = process.env.SITE_URL || "http://localhost:3000";
   const teamEmail = process.env.TEAM_NOTIFICATION_EMAIL;
   if (!teamEmail) return;
@@ -208,7 +217,7 @@ export async function sendTeamNotification(order: OrderData): Promise<void> {
   const attachments = buildImageAttachments(order.items, siteUrl);
   console.log(`[EMAIL] Sending team notification with ${attachments.length} inline image(s)`);
 
-  const { error } = await resend.emails.send({
+  await transporter.sendMail({
     from: `Persimmon Signage Portal <${fromEmail}>`,
     to: teamEmail,
     subject: `New Order: ${order.orderNumber} - ${esc(order.siteName)}`,
@@ -261,11 +270,6 @@ export async function sendTeamNotification(order: OrderData): Promise<void> {
         </div>
       </div>`,
   });
-
-  if (error) {
-    console.error("Resend team notification error:", JSON.stringify(error));
-    throw new Error(`Team notification failed: ${error.message}`);
-  }
   console.log(`Team notification email sent to ${teamEmail}`);
 }
 
@@ -275,11 +279,15 @@ export async function sendNestPORequest(order: OrderData): Promise<void> {
     throw new Error("NEST_EMAIL environment variable is not configured");
   }
 
-  const fromEmail = process.env.FROM_EMAIL || "onboarding@resend.dev";
+  const fromEmail = process.env.SMTP_USER;
+  if (!fromEmail) {
+    throw new Error("SMTP_USER environment variable is not configured");
+  }
+
   const siteUrl = process.env.SITE_URL || "http://localhost:3000";
   const attachments = buildImageAttachments(order.items, siteUrl);
 
-  const { error } = await resend.emails.send({
+  await transporter.sendMail({
     from: `Persimmon Signage Portal <${fromEmail}>`,
     to: nestEmail,
     subject: `PO Request — ${order.orderNumber} — ${esc(order.siteName)}`,
@@ -332,9 +340,75 @@ export async function sendNestPORequest(order: OrderData): Promise<void> {
         </div>
       </div>`,
   });
-
-  if (error) {
-    throw new Error(`Nest PO request email failed: ${error.message}`);
-  }
   console.log(`Nest PO request email sent to ${nestEmail} for ${order.orderNumber}`);
+}
+
+/** Build the order notification email HTML with absolute image URLs and Raise PO button */
+export function buildNestPOEmailHtml(order: OrderData, siteUrl: string, raisePoUrl?: string): { subject: string; html: string } {
+  const wb = "word-break:break-word;overflow-wrap:break-word";
+  const buttonHtml = raisePoUrl
+    ? `<div style="text-align:center;margin:28px 0 8px">
+        <a href="${raisePoUrl}" style="background:#3db28c;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;display:inline-block;font-size:16px;font-weight:bold;letter-spacing:0.5px">Raise PO</a>
+        <p style="margin:8px 0 0;font-size:12px;color:#999">Click to send this order to Nest for purchase order processing</p>
+      </div>`
+    : "";
+  return {
+    subject: `PO Request — ${order.orderNumber} — ${esc(order.siteName)}`,
+    html: `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;${wb}">
+        <div style="background:#00474a;padding:24px 32px;border-radius:12px 12px 0 0">
+          <h1 style="color:white;margin:0;font-size:20px">Purchase Order Request</h1>
+        </div>
+        <div style="padding:32px;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px">
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px 20px;margin-bottom:24px">
+            <p style="margin:0;font-size:18px;font-weight:bold;color:#00474a">${order.orderNumber}</p>
+            <p style="margin:4px 0 0;font-size:14px;color:#666">&pound;${order.total.toFixed(2)} inc. VAT &middot; ${order.items.length} items</p>
+          </div>
+
+          <table style="width:100%;margin-bottom:24px" cellpadding="0" cellspacing="0"><tr>
+            <td style="vertical-align:top;width:50%;padding-right:12px">
+              <p style="font-size:12px;color:#999;text-transform:uppercase;margin:0 0 4px">Contact</p>
+              <p style="margin:0;font-size:14px;${wb}"><strong>${esc(order.contactName)}</strong></p>
+              <p style="margin:2px 0;font-size:14px;color:#666;${wb}">${esc(order.email)}</p>
+              <p style="margin:0;font-size:14px;color:#666">${esc(order.phone)}</p>
+            </td>
+            <td style="vertical-align:top;width:50%;padding-left:12px">
+              <p style="font-size:12px;color:#999;text-transform:uppercase;margin:0 0 4px">Site</p>
+              <p style="margin:0;font-size:14px;${wb}"><strong>${esc(order.siteName)}</strong></p>
+              <p style="margin:2px 0;font-size:14px;color:#666;${wb}">${esc(order.siteAddress)}</p>
+            </td>
+          </tr></table>
+
+          ${order.poNumber ? `<p style="font-size:14px;color:#666;margin-bottom:16px;${wb}"><strong>Customer PO:</strong> ${esc(order.poNumber)}</p>` : ""}
+
+          ${order.notes ? `<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px 16px;margin-bottom:24px"><p style="margin:0;font-size:13px;color:#c2410c;${wb}"><strong>Notes:</strong> ${esc(order.notes)}</p></div>` : ""}
+
+          <table style="width:100%;border-collapse:collapse;margin:20px 0;table-layout:fixed">
+            <thead>
+              <tr style="background:#f5f5f5">
+                <th style="padding:8px 12px;text-align:left;font-size:12px;color:#666;text-transform:uppercase;width:48px"></th>
+                <th style="padding:8px 8px;text-align:left;font-size:12px;color:#666;text-transform:uppercase">Product</th>
+                <th style="padding:8px 8px;text-align:center;font-size:12px;color:#666;text-transform:uppercase;width:50px">Qty</th>
+                <th style="padding:8px 12px 8px 8px;text-align:right;font-size:12px;color:#666;text-transform:uppercase;width:80px">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${itemRowsHtml(order.items, siteUrl)}
+            </tbody>
+            <tfoot>
+              ${totalsHtml(order.subtotal, order.vat, order.total, order.items.some(i => !!i.custom_data))}
+            </tfoot>
+          </table>
+
+          ${buttonHtml}
+        </div>
+      </div>`,
+  };
+}
+
+/** Generate a raise-PO token for an order number */
+export function generateRaisePoToken(orderNumber: string): string {
+  const crypto = require("crypto");
+  const secret = process.env.RAISE_PO_SECRET || "psp-raise-po-default";
+  return crypto.createHmac("sha256", secret).update(orderNumber).digest("hex").slice(0, 16);
 }

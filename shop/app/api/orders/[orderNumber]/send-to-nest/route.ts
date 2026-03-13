@@ -95,6 +95,8 @@ export async function POST(
         total: Number(order.total),
         itemCount: (items || []).length,
         hasCustomItems: (items || []).some((i: Record<string, unknown>) => !!i.custom_data),
+        purchaserName: order.purchaser_name || null,
+        purchaserEmail: order.purchaser_email || null,
       }),
     });
 

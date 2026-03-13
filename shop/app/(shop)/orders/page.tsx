@@ -30,6 +30,9 @@ interface Order {
   site: { siteName: string; siteAddress: string };
   poNumber: string | null;
   notes: string | null;
+  purchaserName: string | null;
+  purchaserEmail: string | null;
+  poDocumentName: string | null;
   items: OrderItem[];
   subtotal: number;
   vat: number;
@@ -483,6 +486,17 @@ export default function OrdersPage() {
                         </div>
                       </div>
 
+                      {/* Purchaser */}
+                      {(order.purchaserName || order.purchaserEmail) && (
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <h3 className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Purchaser</h3>
+                            {order.purchaserName && <p className="text-sm font-medium">{order.purchaserName}</p>}
+                            {order.purchaserEmail && <p className="text-sm text-gray-500">{order.purchaserEmail}</p>}
+                          </div>
+                        </div>
+                      )}
+
                       {/* PO / Notes */}
                       {(order.poNumber || order.notes) && (
                         <div className="grid grid-cols-2 gap-4">
@@ -498,6 +512,21 @@ export default function OrdersPage() {
                               <p className="text-sm text-gray-500">{order.notes}</p>
                             </div>
                           )}
+                        </div>
+                      )}
+
+                      {/* PO Document */}
+                      {order.poDocumentName && (
+                        <div>
+                          <a
+                            href={`/api/orders/${order.orderNumber}/download-po`}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-emerald-700 border border-emerald-200 rounded-lg hover:bg-emerald-50 transition"
+                          >
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            PO: {order.poDocumentName}
+                          </a>
                         </div>
                       )}
 

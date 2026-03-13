@@ -46,6 +46,10 @@ export default function CheckoutPage() {
   const [editSiteForm, setEditSiteForm] = useState({ name: "", address: "" });
   const [savingEdit, setSavingEdit] = useState(false);
 
+  // Purchaser (optional)
+  const [purchaserName, setPurchaserName] = useState("");
+  const [purchaserEmail, setPurchaserEmail] = useState("");
+
   // Free-text fields
   const [poNumber, setPoNumber] = useState("");
   const [notes, setNotes] = useState("");
@@ -223,6 +227,8 @@ export default function CheckoutPage() {
           siteAddress: selectedSite.address,
           contactId: selectedContact.id,
           siteId: selectedSite.id,
+          purchaserName: purchaserName.trim() || null,
+          purchaserEmail: purchaserEmail.trim() || null,
           poNumber,
           notes,
           items: items.map((item) => ({
@@ -341,6 +347,16 @@ export default function CheckoutPage() {
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Purchaser (optional) */}
+          <div className="bg-white rounded-2xl border border-gray-100 p-6">
+            <h2 className="text-base font-semibold text-persimmon-navy mb-1">Purchaser</h2>
+            <p className="text-xs text-gray-400 mb-4">The person responsible for raising the purchase order (optional).</p>
+            <div className="grid sm:grid-cols-2 gap-3">
+              <input type="text" placeholder="Name" value={purchaserName} onChange={(e) => setPurchaserName(e.target.value)} className={inputClass} />
+              <input type="email" placeholder="Email" value={purchaserEmail} onChange={(e) => setPurchaserEmail(e.target.value)} className={inputClass} />
+            </div>
           </div>
 
           {/* PO Number & Notes */}

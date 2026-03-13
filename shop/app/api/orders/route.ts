@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { sendOrderConfirmation, sendTeamNotification, buildNestPOEmailHtml, generateRaisePoToken } from "@/lib/email";
-import { generateDeliveryNotePdf } from "@/lib/delivery-note";
 import { isShopAuthed, isAdminAuthed } from "@/lib/auth";
 
 function generateOrderNumber(): string {
@@ -20,7 +19,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { contactName, email, phone, siteName, siteAddress, poNumber, notes, items, contactId, siteId } = body;
+    const { contactName, email, phone, siteName, siteAddress, poNumber, notes, items, contactId, siteId, purchaserName, purchaserEmail } = body;
 
     // Validation
     if (!contactName || !email || !phone || !siteName || !siteAddress || !items?.length) {
@@ -103,6 +102,8 @@ export async function POST(req: NextRequest) {
         notes: notes ? String(notes) : null,
         contact_id: contactId || null,
         site_id: siteId || null,
+        purchaser_name: purchaserName ? String(purchaserName) : null,
+        purchaser_email: purchaserEmail ? String(purchaserEmail) : null,
         subtotal,
         vat,
         total,
@@ -146,17 +147,8 @@ export async function POST(req: NextRequest) {
       total,
     };
 
-    // Generate delivery note PDF (before webhook so we can include it)
     const siteUrl = process.env.SITE_URL || "http://localhost:3000";
     const makeWebhookUrl = process.env.MAKE_WEBHOOK_URL;
-
-    let deliveryNotePdf: string | null = null;
-    try {
-      deliveryNotePdf = await generateDeliveryNotePdf(emailData);
-      console.log(`Delivery note PDF generated for ${orderNumber} — ${Math.round(deliveryNotePdf.length * 0.75 / 1024)}KB`);
-    } catch (e) {
-      console.error("Delivery note PDF generation failed:", e);
-    }
 
     // Send emails + fire Make webhook in parallel
     await Promise.all([
@@ -189,7 +181,8 @@ export async function POST(req: NextRequest) {
                 total,
                 itemCount: validatedItems.length,
                 hasCustomItems: validatedItems.some((i: { custom_data: unknown }) => !!i.custom_data),
-                deliveryNotePdf,
+                purchaserName: purchaserName ? String(purchaserName) : null,
+                purchaserEmail: purchaserEmail ? String(purchaserEmail) : null,
               }),
             })
               .then((r) => console.log(`Make webhook fired for ${orderNumber} — ${r.status}`))
@@ -241,6 +234,9 @@ export async function GET() {
       site: { siteName: o.site_name, siteAddress: o.site_address },
       poNumber: o.po_number,
       notes: o.notes,
+      purchaserName: o.purchaser_name || null,
+      purchaserEmail: o.purchaser_email || null,
+      poDocumentName: o.po_document_name || null,
       items: (allItems || [])
         .filter((item) => item.order_id === o.id)
         .map((item) => ({

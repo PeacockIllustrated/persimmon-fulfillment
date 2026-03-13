@@ -45,21 +45,9 @@ export async function GET(
 
     // Prevent duplicate PO raises — only allow from "new" status
     if (order.status !== "new") {
-      return new NextResponse(
-        `<!DOCTYPE html>
-        <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>PO Already Raised</title></head>
-        <body style="font-family:Arial,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8faf9">
-          <div style="text-align:center;padding:40px;background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1);max-width:400px">
-            <div style="width:48px;height:48px;background:#00474a;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center">
-              <span style="color:white;font-size:24px">&#10003;</span>
-            </div>
-            <h1 style="color:#00474a;font-size:20px;margin:0 0 8px">PO Already Raised</h1>
-            <p style="color:#666;font-size:14px;margin:0">Order <strong>${orderNumber}</strong> has already been sent for purchase order processing.</p>
-            <a href="${siteUrl}/admin" style="display:inline-block;margin-top:20px;background:#3db28c;color:white;padding:10px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:bold">View in Admin Dashboard</a>
-          </div>
-        </body></html>`,
-        { status: 200, headers: { "Content-Type": "text/html" } }
+      // Already raised — redirect to upload page (no &raised flag)
+      return NextResponse.redirect(
+        `${siteUrl}/po-upload/${orderNumber}?t=${token}`
       );
     }
 
@@ -124,27 +112,16 @@ export async function GET(
         total: Number(order.total),
         itemCount: (items || []).length,
         hasCustomItems: (items || []).some((i: Record<string, unknown>) => !!i.custom_data),
+        purchaserName: order.purchaser_name || null,
+        purchaserEmail: order.purchaser_email || null,
       }),
     });
 
     console.log(`Raise PO webhook fired for ${orderNumber} — ${res.status}`);
 
-    // Return a simple confirmation page
-    return new NextResponse(
-      `<!DOCTYPE html>
-      <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-      <title>PO Raised</title></head>
-      <body style="font-family:Arial,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8faf9">
-        <div style="text-align:center;padding:40px;background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1);max-width:400px">
-          <div style="width:48px;height:48px;background:#3db28c;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center">
-            <span style="color:white;font-size:24px">&#10003;</span>
-          </div>
-          <h1 style="color:#00474a;font-size:20px;margin:0 0 8px">PO Request Sent</h1>
-          <p style="color:#666;font-size:14px;margin:0">Order <strong>${orderNumber}</strong> has been sent for purchase order processing.</p>
-          <a href="${siteUrl}/admin" style="display:inline-block;margin-top:20px;background:#3db28c;color:white;padding:10px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:bold">View in Admin Dashboard</a>
-        </div>
-      </body></html>`,
-      { status: 200, headers: { "Content-Type": "text/html" } }
+    // Redirect to PO upload page with confirmation
+    return NextResponse.redirect(
+      `${siteUrl}/po-upload/${orderNumber}?t=${token}&raised=true`
     );
   } catch (error) {
     console.error("Raise PO error:", error);

@@ -93,7 +93,7 @@ export default async function ProductPage({
               >
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="font-medium text-gray-900">{variant.description || product.name}</h3>
+                    <p className="font-medium text-gray-900">{variant.code}</p>
                     {variant.size && (
                       <p className="text-sm text-gray-400 mt-0.5">{variant.size}</p>
                     )}

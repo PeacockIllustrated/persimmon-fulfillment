@@ -46,9 +46,7 @@ function LoginForm() {
       <div className="w-full max-w-sm" style={{ animation: "slide-up 0.5s ease-out" }}>
         {/* Brand mark */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-5 shadow-sm" style={{ background: "linear-gradient(135deg, var(--persimmon-green) 0%, var(--persimmon-green-dark) 100%)" }}>
-            <Image src="/assets/persimmon_icon.svg" alt="Persimmon" width={44} height={44} className="brightness-0 invert" />
-          </div>
+          <Image src="/assets/persimmon_icon.svg" alt="Persimmon" width={80} height={80} className="mx-auto mb-5 w-20 h-auto" />
           <div className="flex justify-center mb-3">
             <Image src="/assets/persimmon_wordmark.svg" alt="Persimmon" width={160} height={24} className="h-5 w-auto" />
           </div>

@@ -21,9 +21,14 @@ export default function LoginLayout({
           className="absolute -bottom-48 -left-24 w-[500px] h-[500px] rounded-full opacity-[0.03]"
           style={{ background: "radial-gradient(circle, var(--persimmon-navy) 0%, transparent 70%)" }}
         />
-        <div
-          className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full opacity-[0.02]"
-          style={{ background: "radial-gradient(circle, var(--persimmon-green) 0%, transparent 60%)" }}
+        {/* Large icon watermark */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/assets/persimmon_icon.svg"
+          alt=""
+          aria-hidden="true"
+          className="absolute -bottom-20 -right-16 w-[420px] h-auto opacity-[0.03] select-none"
+          style={{ transform: "rotate(-12deg)" }}
         />
       </div>
       {children}

@@ -353,7 +353,7 @@ export function buildNestPOEmailHtml(order: OrderData, siteUrl: string, raisePoU
       </div>`
     : "";
   return {
-    subject: `PO Request — ${order.orderNumber} — ${esc(order.siteName)}`,
+    subject: `${raisePoUrl ? "PO Request" : "PO Raised"} — ${order.orderNumber} — ${esc(order.siteName)}`,
     html: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;${wb}">
         <div style="background:#00474a;padding:24px 32px;border-radius:12px 12px 0 0">

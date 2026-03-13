@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { buildNestPOEmailHtml, generateRaisePoToken } from "@/lib/email";
+import { buildNestPOEmailHtml, buildPurchaserPOEmailHtml, generateRaisePoToken } from "@/lib/email";
 
 export async function GET(
   req: NextRequest,
@@ -90,6 +90,12 @@ export async function GET(
 
     const { subject, html } = buildNestPOEmailHtml(orderData, siteUrl);
 
+    // Build purchaser email if a purchaser is attached
+    const uploadPoUrl = `${siteUrl}/po-upload/${orderNumber}?t=${token}`;
+    const purchaserEmailPayload = order.purchaser_email
+      ? buildPurchaserPOEmailHtml({ ...orderData, purchaserName: order.purchaser_name, purchaserEmail: order.purchaser_email }, siteUrl, uploadPoUrl)
+      : null;
+
     // Fire Make webhook with isPO: true
     const res = await fetch(makeWebhookUrl, {
       method: "POST",
@@ -114,6 +120,8 @@ export async function GET(
         hasCustomItems: (items || []).some((i: Record<string, unknown>) => !!i.custom_data),
         purchaserName: order.purchaser_name || null,
         purchaserEmail: order.purchaser_email || null,
+        purchaserEmailSubject: purchaserEmailPayload?.subject || null,
+        purchaserEmailHtml: purchaserEmailPayload?.html || null,
       }),
     });
 

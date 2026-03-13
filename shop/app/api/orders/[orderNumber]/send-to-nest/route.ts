@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { isAdminAuthed } from "@/lib/auth";
-import { buildNestPOEmailHtml } from "@/lib/email";
+import { buildNestPOEmailHtml, buildPurchaserPOEmailHtml, generateRaisePoToken } from "@/lib/email";
 
 export async function POST(
   _req: NextRequest,
@@ -73,6 +73,13 @@ export async function POST(
     const siteUrl = process.env.SITE_URL || "http://localhost:3000";
     const { subject, html } = buildNestPOEmailHtml(orderData, siteUrl);
 
+    // Build purchaser email if a purchaser is attached
+    const token = generateRaisePoToken(orderNumber);
+    const uploadPoUrl = `${siteUrl}/po-upload/${orderNumber}?t=${token}`;
+    const purchaserEmailPayload = order.purchaser_email
+      ? buildPurchaserPOEmailHtml({ ...orderData, purchaserName: order.purchaser_name, purchaserEmail: order.purchaser_email }, siteUrl, uploadPoUrl)
+      : null;
+
     // Fire Make webhook with isPO: true
     const res = await fetch(makeWebhookUrl, {
       method: "POST",
@@ -97,6 +104,8 @@ export async function POST(
         hasCustomItems: (items || []).some((i: Record<string, unknown>) => !!i.custom_data),
         purchaserName: order.purchaser_name || null,
         purchaserEmail: order.purchaser_email || null,
+        purchaserEmailSubject: purchaserEmailPayload?.subject || null,
+        purchaserEmailHtml: purchaserEmailPayload?.html || null,
       }),
     });
 

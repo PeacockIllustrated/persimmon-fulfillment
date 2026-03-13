@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { sendOrderConfirmation, sendTeamNotification, buildNestPOEmailHtml, generateRaisePoToken } from "@/lib/email";
+import { sendOrderConfirmation, sendTeamNotification, buildNestPOEmailHtml, buildPurchaserPOEmailHtml, generateRaisePoToken } from "@/lib/email";
 import { isShopAuthed, isAdminAuthed } from "@/lib/auth";
 
 function generateOrderNumber(): string {
@@ -161,7 +161,14 @@ export async function POST(req: NextRequest) {
         ? (() => {
             const token = generateRaisePoToken(orderNumber);
             const raisePoUrl = `${siteUrl}/api/orders/${orderNumber}/raise-po?t=${token}`;
+            const uploadPoUrl = `${siteUrl}/po-upload/${orderNumber}?t=${token}`;
             const { subject, html } = buildNestPOEmailHtml(emailData, siteUrl, raisePoUrl);
+
+            // Build purchaser email if a purchaser is attached
+            const purchaserEmailPayload = purchaserEmail
+              ? buildPurchaserPOEmailHtml(emailData, siteUrl, uploadPoUrl)
+              : null;
+
             return fetch(makeWebhookUrl, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -186,6 +193,8 @@ export async function POST(req: NextRequest) {
                 hasCustomItems: validatedItems.some((i: { custom_data: unknown }) => !!i.custom_data),
                 purchaserName: purchaserName ? String(purchaserName) : null,
                 purchaserEmail: purchaserEmail ? String(purchaserEmail) : null,
+                purchaserEmailSubject: purchaserEmailPayload?.subject || null,
+                purchaserEmailHtml: purchaserEmailPayload?.html || null,
               }),
             })
               .then((r) => console.log(`Make webhook fired for ${orderNumber} — ${r.status}`))

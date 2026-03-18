@@ -208,7 +208,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-3xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-persimmon-navy">Admin Dashboard</h1>
@@ -278,7 +278,7 @@ export default function AdminPage() {
               <p className="text-gray-400">No suggestions yet.</p>
             </div>
           ) : (
-            <div className="max-w-3xl space-y-3">
+            <div className="space-y-3">
               {filteredSuggestions.map((s) => {
                 const sugStatusColors: Record<string, string> = {
                   new: "bg-blue-50 text-blue-600",
@@ -329,7 +329,7 @@ export default function AdminPage() {
           <div className="flex items-center gap-3 mb-3">
             <h2 className="text-sm font-semibold text-persimmon-navy">Ordered By</h2>
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-1">
+          <div className="flex gap-2 overflow-x-auto pb-1 flex-wrap">
             {contactCards.map((contact) => {
               const isSelected = selectedContactId === contact.contactId;
               const initials = contact.name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2);
@@ -474,7 +474,7 @@ export default function AdminPage() {
           <p className="text-gray-400">No orders found.</p>
         </div>
       ) : (
-        <div className="max-w-3xl space-y-3">
+        <div className="space-y-3">
           {filteredOrders.map((order) => {
             const isExpanded = expandedOrder === order.orderNumber;
 

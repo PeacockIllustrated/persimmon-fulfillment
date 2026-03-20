@@ -239,6 +239,18 @@ export async function GET() {
       return NextResponse.json({ error: "Failed to fetch orders" }, { status: 500 });
     }
 
+    // Fix any orders stuck on awaiting_po that already have a PO uploaded
+    const stuckOrders = orders.filter(
+      (o) => o.status === "awaiting_po" && o.po_document_name
+    );
+    if (stuckOrders.length > 0) {
+      await supabase
+        .from("psp_orders")
+        .update({ status: "new" })
+        .in("id", stuckOrders.map((o) => o.id));
+      for (const o of stuckOrders) o.status = "new";
+    }
+
     // Fetch items for all orders
     const orderIds = orders.map((o) => o.id);
     const { data: allItems } = await supabase

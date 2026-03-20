@@ -324,6 +324,7 @@ export default function CheckoutPage() {
             quantity: item.quantity,
             ...(item.customSign ? { customSign: item.customSign } : {}),
             ...(item.customFieldValues ? { customFieldValues: item.customFieldValues } : {}),
+            ...(item.customSizeData ? { customSizeData: item.customSizeData } : {}),
           })),
           subtotal: totalPrice,
           vat: totalPrice * 0.2,
@@ -492,9 +493,9 @@ export default function CheckoutPage() {
                 <div key={item.code} className="text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-500 truncate mr-2">
-                      {item.customSign ? "Custom Sign" : item.code} x{item.quantity}
+                      {item.customSign ? "Custom Sign" : item.customSizeData?.requiresQuote ? "Custom Size (Quote)" : item.code} x{item.quantity}
                     </span>
-                    {item.customSign ? (
+                    {item.customSign || item.customSizeData?.requiresQuote ? (
                       <span className="font-medium text-amber-600 shrink-0 text-xs">Quote</span>
                     ) : (
                       <span className="font-medium text-gray-700 shrink-0">
@@ -548,9 +549,9 @@ export default function CheckoutPage() {
             <p className="text-[11px] text-gray-400 mt-3 text-center leading-relaxed">
               All prices exclude VAT. You will receive a confirmation email.
             </p>
-            {items.some((i) => i.customSign) && (
+            {items.some((i) => i.customSign || i.customSizeData?.requiresQuote) && (
               <p className="text-[11px] text-amber-600 mt-2 text-center leading-relaxed">
-                Custom sign items will be quoted separately after review.
+                Items requiring a quote will be priced separately after review.
               </p>
             )}
           </div>

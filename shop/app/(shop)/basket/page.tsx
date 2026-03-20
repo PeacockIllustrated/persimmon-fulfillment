@@ -66,7 +66,15 @@ export default function BasketPage() {
                   ))}
                 </div>
               )}
-              {item.customSign ? (
+              {item.customSizeData && !item.customSizeData.requiresQuote && (
+                <p className="text-[11px] text-gray-400 mt-0.5">
+                  Priced as {item.customSizeData.matchedSize}
+                  {item.customSizeData.matchedFromProduct && (
+                    <span> from {item.customSizeData.matchedFromProduct}</span>
+                  )}
+                </p>
+              )}
+              {item.customSign || item.customSizeData?.requiresQuote ? (
                 <p className="text-amber-600 font-semibold mt-1.5 text-sm">Quote on request</p>
               ) : (
                 <p className="text-persimmon-navy font-semibold mt-1.5 text-sm">
@@ -103,7 +111,7 @@ export default function BasketPage() {
                 </button>
               </div>
 
-              {item.customSign ? (
+              {item.customSign || item.customSizeData?.requiresQuote ? (
                 <p className="font-bold text-amber-600 text-xs">Quote</p>
               ) : (
                 <p className="font-bold text-persimmon-navy text-sm">
@@ -133,9 +141,9 @@ export default function BasketPage() {
           </span>
         </div>
 
-        {items.some((i) => i.customSign) && (
+        {items.some((i) => i.customSign || i.customSizeData?.requiresQuote) && (
           <p className="text-xs text-amber-600 mb-4 leading-relaxed">
-            This order includes custom sign requests. Final pricing for those items will be confirmed after review.
+            This order includes items requiring a quote. Final pricing for those items will be confirmed after review.
           </p>
         )}
 

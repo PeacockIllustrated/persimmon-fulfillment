@@ -86,6 +86,32 @@ export const SIGN_TYPE_COLORS: Record<string, { bg: string; fg: string }> = {
   environmental: { bg: "#009639", fg: "#FFF" },
 };
 
+function emailHeaderHtml(title: string, siteUrl: string): string {
+  return `
+    <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:12px 12px 0 0;overflow:hidden">
+      <tr>
+        <td style="background:#00474a;padding:24px 32px">
+          <table width="100%" cellpadding="0" cellspacing="0"><tr>
+            <td style="vertical-align:middle">
+              <img src="${siteUrl}/images/onesign-logo-white.png" alt="Onesign" height="30" style="display:block" />
+            </td>
+            <td style="vertical-align:middle;text-align:right">
+              <span style="color:white;font-size:18px;font-weight:bold;letter-spacing:0.5px">${title}</span>
+            </td>
+          </tr></table>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#3db28c;height:3px;font-size:1px;line-height:1px">&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 32px;text-align:center;font-size:11px;color:#999;border-left:1px solid #eee;border-right:1px solid #eee">
+          Onesign and Digital &nbsp;&middot;&nbsp; D86 Princesway, Gateshead NE11 0TU &nbsp;&middot;&nbsp; 0191 487 6767
+        </td>
+      </tr>
+    </table>`;
+}
+
 function itemRowsHtml(items: OrderItem[], siteUrl?: string): string {
   return items
     .map((item) => {
@@ -165,9 +191,7 @@ export async function sendOrderConfirmation(order: OrderData): Promise<void> {
       attachments,
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
-          <div style="background:#00474a;padding:24px 32px;border-radius:12px 12px 0 0">
-            <h1 style="color:white;margin:0;font-size:20px">Order Confirmed</h1>
-          </div>
+          ${emailHeaderHtml("Order Confirmed", siteUrl)}
           <div style="padding:32px;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px">
             <p style="font-size:15px;color:#333">Hi ${esc(order.contactName)},</p>
             <p style="font-size:15px;color:#333">Thank you for your order. Our team will review it and be in touch shortly.</p>
@@ -228,9 +252,7 @@ export async function sendTeamNotification(order: OrderData): Promise<void> {
     attachments,
     html: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
-        <div style="background:#00474a;padding:24px 32px;border-radius:12px 12px 0 0">
-          <h1 style="color:white;margin:0;font-size:20px">New Order Received</h1>
-        </div>
+        ${emailHeaderHtml("New Order Received", siteUrl)}
         <div style="padding:32px;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px">
           <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px 20px;margin-bottom:24px">
             <p style="margin:0;font-size:18px;font-weight:bold;color:#00474a">${order.orderNumber}</p>
@@ -300,28 +322,26 @@ export async function sendNestPORequest(order: OrderData): Promise<void> {
     attachments,
     html: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
-        <div style="background:#00474a;padding:24px 32px;border-radius:12px 12px 0 0">
-          <h1 style="color:white;margin:0;font-size:20px">Purchase Order Request</h1>
-        </div>
+        ${emailHeaderHtml("Purchase Order Request", siteUrl)}
         <div style="padding:32px;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px">
           <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px 20px;margin-bottom:24px">
             <p style="margin:0;font-size:18px;font-weight:bold;color:#00474a">${order.orderNumber}</p>
             <p style="margin:4px 0 0;font-size:14px;color:#666">&pound;${order.total.toFixed(2)} inc. VAT &middot; ${order.items.length} items</p>
           </div>
 
-          <div style="display:flex;gap:24px;margin-bottom:24px">
-            <div>
+          <table style="width:100%;margin-bottom:24px" cellpadding="0" cellspacing="0"><tr>
+            <td style="vertical-align:top;width:50%;padding-right:12px">
               <p style="font-size:12px;color:#999;text-transform:uppercase;margin:0 0 4px">Contact</p>
               <p style="margin:0;font-size:14px"><strong>${esc(order.contactName)}</strong></p>
               <p style="margin:2px 0;font-size:14px;color:#666">${esc(order.email)}</p>
               <p style="margin:0;font-size:14px;color:#666">${esc(order.phone)}</p>
-            </div>
-            <div>
+            </td>
+            <td style="vertical-align:top;width:50%;padding-left:12px">
               <p style="font-size:12px;color:#999;text-transform:uppercase;margin:0 0 4px">Site</p>
               <p style="margin:0;font-size:14px"><strong>${esc(order.siteName)}</strong></p>
               <p style="margin:2px 0;font-size:14px;color:#666">${esc(order.siteAddress)}</p>
-            </div>
-          </div>
+            </td>
+          </tr></table>
 
           ${order.purchaserName ? `<div style="margin-bottom:24px"><p style="font-size:12px;color:#999;text-transform:uppercase;margin:0 0 4px">Purchaser</p><p style="margin:0;font-size:14px"><strong>${esc(order.purchaserName)}</strong></p><p style="margin:2px 0;font-size:14px;color:#666">${esc(order.purchaserEmail)}</p></div>` : ""}
 
@@ -364,9 +384,7 @@ export function buildNestPOEmailHtml(order: OrderData, siteUrl: string, raisePoU
     subject: `${raisePoUrl ? "PO Request" : "PO Raised"} — ${order.orderNumber} — ${esc(order.siteName)}`,
     html: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;${wb}">
-        <div style="background:#00474a;padding:24px 32px;border-radius:12px 12px 0 0">
-          <h1 style="color:white;margin:0;font-size:20px">Purchase Order Request</h1>
-        </div>
+        ${emailHeaderHtml("Purchase Order Request", siteUrl)}
         <div style="padding:32px;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px">
           <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px 20px;margin-bottom:24px">
             <p style="margin:0;font-size:18px;font-weight:bold;color:#00474a">${order.orderNumber}</p>
@@ -423,9 +441,7 @@ export function buildPurchaserPOEmailHtml(order: OrderData, siteUrl: string, upl
     subject: `Purchase Order Required — ${order.orderNumber} — ${esc(order.siteName)}`,
     html: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;${wb}">
-        <div style="background:#00474a;padding:24px 32px;border-radius:12px 12px 0 0">
-          <h1 style="color:white;margin:0;font-size:20px">Purchase Order Required</h1>
-        </div>
+        ${emailHeaderHtml("Purchase Order Required", siteUrl)}
         <div style="padding:32px;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px">
           <p style="font-size:15px;color:#333;margin:0 0 16px">Hi ${esc(order.purchaserName)},</p>
           <p style="font-size:15px;color:#333;margin:0 0 24px">A signage order has been placed and requires a purchase order. Please review the details below and attach your PO document.</p>

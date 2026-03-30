@@ -38,7 +38,7 @@ export async function POST(
     const arrayBuffer = await file.arrayBuffer();
     const base64 = Buffer.from(arrayBuffer).toString("base64");
 
-    // Fetch current status so we only transition awaiting_po → new
+    // Fetch current status so we only transition awaiting_po → in-progress
     const { data: current } = await supabase
       .from("psp_orders")
       .select("status")
@@ -52,7 +52,7 @@ export async function POST(
     };
 
     if (current?.status === "awaiting_po") {
-      updates.status = "new";
+      updates.status = "in-progress";
     }
 
     const { error } = await supabase

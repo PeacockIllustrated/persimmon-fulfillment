@@ -135,7 +135,7 @@ export default function AdminPage() {
     if (selectedSiteId) result = result.filter((o) => o.siteId === selectedSiteId);
     if (filter === "requires_pricing") {
       result = result.filter((o) => o.items.some((item) =>
-        (item.customData?.signType || (item.customData?.type === "custom_size" && item.customData?.requiresQuote)) && item.price === 0
+        !!item.customData && item.price === 0
       ));
     } else if (filter !== "all") {
       result = result.filter((o) => o.status === filter);
@@ -223,7 +223,7 @@ export default function AdminPage() {
   };
 
   const isQuoteItem = (item: OrderItem) =>
-    (item.customData?.signType || (item.customData?.type === "custom_size" && item.customData?.requiresQuote)) && item.price === 0;
+    !!item.customData && item.price === 0;
 
   const orderNeedsPricing = (order: Order) =>
     order.items.some((item) => isQuoteItem(item));
@@ -529,7 +529,7 @@ export default function AdminPage() {
               <span className="ml-1.5 opacity-60">
                 ({f === "requires_pricing"
                   ? orders.filter((o) => o.items.some((item) =>
-                      (item.customData?.signType || (item.customData?.type === "custom_size" && item.customData?.requiresQuote)) && item.price === 0
+                      !!item.customData && item.price === 0
                     )).length
                   : orders.filter((o) => o.status === f).length})
               </span>
@@ -688,7 +688,8 @@ export default function AdminPage() {
                         {(order.status === "new" || order.status === "awaiting_po") && (
                           <button
                             onClick={(e) => { e.stopPropagation(); sendToNest(order.orderNumber); }}
-                            disabled={sendingToNest === order.orderNumber}
+                            disabled={sendingToNest === order.orderNumber || orderNeedsPricing(order)}
+                            title={orderNeedsPricing(order) ? "Price all custom items first" : undefined}
                             className="px-3 py-1.5 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 text-sm font-medium rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {sendingToNest === order.orderNumber ? "Sending..." : order.status === "awaiting_po" ? "Re-send to Nest" : "Send to Nest"}

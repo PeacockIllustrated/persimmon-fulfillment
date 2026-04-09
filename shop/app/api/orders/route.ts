@@ -36,10 +36,10 @@ export async function POST(req: NextRequest) {
 
     // Recalculate totals server-side (never trust client)
     let subtotal = 0;
-    const validatedItems = items.map((item: { code: string; baseCode?: string; name: string; size?: string; material?: string; description?: string; price: number; quantity: number; customSign?: { signType: string; textContent: string; shape: string; additionalNotes: string }; customFieldValues?: Array<{ label: string; key: string; value: string }>; customSizeData?: { type: string; requestedWidth: number; requestedHeight: number; matchedVariantCode: string | null; matchedSize: string | null; matchedFromProduct: string | null; requiresQuote: boolean } }) => {
+    const validatedItems = items.map((item: { code: string; baseCode?: string; name: string; size?: string; material?: string; description?: string; price: number; quantity: number; customSign?: { signType: string; textContent: string; shape: string; additionalNotes: string }; customFieldValues?: Array<{ label: string; key: string; value: string }>; customSizeData?: { type: string; requestedWidth: number; requestedHeight: number; matchedVariantCode: string | null; matchedSize: string | null; matchedFromProduct: string | null; requiresQuote: boolean }; customQuote?: { code: string | null; description: string; size: string; material: string; additionalNotes: string } }) => {
       const price = Math.round(Number(item.price) * 100) / 100;
       const quantity = Math.max(1, Math.min(9999, Math.floor(Number(item.quantity))));
-      const isQuoteItem = !!item.customSign || !!item.customSizeData?.requiresQuote;
+      const isQuoteItem = !!item.customSign || !!item.customSizeData?.requiresQuote || !!item.customQuote;
       if (!isQuoteItem && (price <= 0 || price > 100000)) {
         throw new Error(`Invalid price for item ${item.code}`);
       }
@@ -67,6 +67,21 @@ export async function POST(req: NextRequest) {
             key: String(f.key),
             value: String(f.value),
           })),
+        };
+      } else if (item.customQuote) {
+        const description = String(item.customQuote.description || "").trim();
+        const size = String(item.customQuote.size || "").trim();
+        const material = String(item.customQuote.material || "").trim();
+        if (!description || !size || !material) {
+          throw new Error("Custom item is missing description, size, or material");
+        }
+        custom_data = {
+          type: "custom_quote" as const,
+          code: item.customQuote.code ? String(item.customQuote.code) : null,
+          description,
+          size,
+          material,
+          additionalNotes: String(item.customQuote.additionalNotes || ""),
         };
       } else if (item.customSizeData) {
         custom_data = {

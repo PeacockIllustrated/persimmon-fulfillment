@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { sendOrderConfirmation, sendTeamNotification, buildNestPOEmailHtml, buildPurchaserPOEmailHtml, generateRaisePoToken } from "@/lib/email";
 import { isShopAuthed, isAdminAuthed } from "@/lib/auth";
 import { calculateDeliveryFee } from "@/lib/delivery";
+import { orderHasUnpricedCustomItems } from "@/lib/order-gating";
 
 function generateOrderNumber(): string {
   const date = new Date();
@@ -171,7 +172,7 @@ export async function POST(req: NextRequest) {
     await Promise.all([
       sendOrderConfirmation(emailData).catch((e) => console.error("Confirmation email failed:", e)),
       sendTeamNotification(emailData).catch((e) => console.error("Team notification failed:", e)),
-      makeWebhookUrl
+      makeWebhookUrl && !orderHasUnpricedCustomItems(itemsWithOrderId)
         ? (() => {
             const token = generateRaisePoToken(orderNumber);
             const raisePoUrl = `${siteUrl}/api/orders/${orderNumber}/raise-po?t=${token}`;
@@ -219,6 +220,9 @@ export async function POST(req: NextRequest) {
         : Promise.resolve(),
     ]);
 
+    if (makeWebhookUrl && orderHasUnpricedCustomItems(itemsWithOrderId)) {
+      console.log(`Order ${orderNumber} held for pricing — Make webhook skipped`);
+    }
     console.log(`Order ${orderNumber} saved to Supabase — £${total.toFixed(2)}`);
 
     return NextResponse.json({ orderNumber, message: "Order submitted successfully" });

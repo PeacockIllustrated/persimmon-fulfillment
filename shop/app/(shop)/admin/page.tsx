@@ -24,6 +24,11 @@ interface OrderItem {
     matchedSize?: string;
     matchedFromProduct?: string;
     requiresQuote?: boolean;
+    // custom_quote
+    code?: string | null;
+    description?: string;
+    material?: string;
+    size?: string;
   } | null;
 }
 
@@ -135,7 +140,7 @@ export default function AdminPage() {
     if (selectedSiteId) result = result.filter((o) => o.siteId === selectedSiteId);
     if (filter === "requires_pricing") {
       result = result.filter((o) => o.items.some((item) =>
-        (item.customData?.signType || (item.customData?.type === "custom_size" && item.customData?.requiresQuote)) && item.price === 0
+        !!item.customData && item.price === 0
       ));
     } else if (filter !== "all") {
       result = result.filter((o) => o.status === filter);
@@ -223,7 +228,7 @@ export default function AdminPage() {
   };
 
   const isQuoteItem = (item: OrderItem) =>
-    (item.customData?.signType || (item.customData?.type === "custom_size" && item.customData?.requiresQuote)) && item.price === 0;
+    !!item.customData && item.price === 0;
 
   const orderNeedsPricing = (order: Order) =>
     order.items.some((item) => isQuoteItem(item));
@@ -529,7 +534,7 @@ export default function AdminPage() {
               <span className="ml-1.5 opacity-60">
                 ({f === "requires_pricing"
                   ? orders.filter((o) => o.items.some((item) =>
-                      (item.customData?.signType || (item.customData?.type === "custom_size" && item.customData?.requiresQuote)) && item.price === 0
+                      !!item.customData && item.price === 0
                     )).length
                   : orders.filter((o) => o.status === f).length})
               </span>
@@ -688,7 +693,8 @@ export default function AdminPage() {
                         {(order.status === "new" || order.status === "awaiting_po") && (
                           <button
                             onClick={(e) => { e.stopPropagation(); sendToNest(order.orderNumber); }}
-                            disabled={sendingToNest === order.orderNumber}
+                            disabled={sendingToNest === order.orderNumber || orderNeedsPricing(order)}
+                            title={orderNeedsPricing(order) ? "Price all custom items first" : undefined}
                             className="px-3 py-1.5 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 text-sm font-medium rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {sendingToNest === order.orderNumber ? "Sending..." : order.status === "awaiting_po" ? "Re-send to Nest" : "Send to Nest"}
@@ -906,6 +912,70 @@ export default function AdminPage() {
                                         </div>
                                       ) : (
                                         <span className="text-gray-700">{"\u00A3"}{(item.price * item.quantity).toFixed(2)}</span>
+                                      )}
+                                    </td>
+                                  </tr>
+                                );
+                              }
+
+                              // Custom quote request (non-sign)
+                              if (item.customData?.type === "custom_quote") {
+                                return (
+                                  <tr key={i} className="border-b border-gray-50">
+                                    <td className="py-2 pr-2">
+                                      <div className="w-9 h-9 rounded bg-amber-100 flex items-center justify-center">
+                                        <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                        </svg>
+                                      </div>
+                                    </td>
+                                    <td className="py-2.5">
+                                      <p className="font-medium text-amber-600 text-xs">CUSTOM ITEM</p>
+                                      <p className="text-xs text-gray-700 mt-0.5">{item.customData.description}</p>
+                                      <p className="text-xs text-gray-500">
+                                        {item.customData.code ? `${item.customData.code} · ` : ""}
+                                        {item.size || item.customData.size || ""} · {item.customData.material || ""}
+                                      </p>
+                                      {item.customData.additionalNotes && (
+                                        <p className="text-[10px] text-gray-400 mt-0.5">Notes: {item.customData.additionalNotes}</p>
+                                      )}
+                                    </td>
+                                    <td className="py-2.5 text-center text-gray-500">{item.quantity}</td>
+                                    <td className="py-2.5 text-right font-medium text-xs">
+                                      {item.price === 0 || editingPrices[item.id] !== undefined ? (
+                                        <div className="flex items-center justify-end gap-1">
+                                          <span className="text-gray-400 text-xs">{"\u00A3"}</span>
+                                          <input
+                                            type="number"
+                                            step="0.01"
+                                            min="0.01"
+                                            placeholder="0.00"
+                                            value={editingPrices[item.id] ?? ""}
+                                            onChange={(e) => setEditingPrices((prev) => ({ ...prev, [item.id]: e.target.value }))}
+                                            onKeyDown={(e) => { if (e.key === "Enter") saveItemPrice(order.orderNumber, item.id); }}
+                                            className="w-20 px-2 py-1 text-right text-sm border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-persimmon-green/30 focus:border-persimmon-green"
+                                          />
+                                          <button
+                                            onClick={() => saveItemPrice(order.orderNumber, item.id)}
+                                            disabled={savingPrice === item.id || !editingPrices[item.id]}
+                                            className="px-2 py-1 text-[10px] font-semibold bg-persimmon-green text-white rounded-lg hover:bg-persimmon-green/90 transition disabled:opacity-40"
+                                          >
+                                            {savingPrice === item.id ? "..." : "Save"}
+                                          </button>
+                                        </div>
+                                      ) : (
+                                        <div className="flex items-center justify-end gap-1">
+                                          <span className="text-gray-700">{"\u00A3"}{(item.price * item.quantity).toFixed(2)}</span>
+                                          <button
+                                            onClick={() => setEditingPrices((prev) => ({ ...prev, [item.id]: "" }))}
+                                            className="text-gray-300 hover:text-persimmon-green transition ml-0.5"
+                                            title="Edit price"
+                                          >
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            </svg>
+                                          </button>
+                                        </div>
                                       )}
                                     </td>
                                   </tr>

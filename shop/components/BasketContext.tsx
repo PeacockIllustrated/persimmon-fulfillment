@@ -17,6 +17,14 @@ export interface CustomFieldValue {
   value: string;
 }
 
+export interface CustomQuoteData {
+  code: string | null;
+  description: string;
+  size: string;
+  material: string;
+  additionalNotes: string;
+}
+
 export interface BasketItem {
   code: string;
   baseCode: string;
@@ -30,6 +38,7 @@ export interface BasketItem {
   customSign?: CustomSignData;
   customFieldValues?: CustomFieldValue[];
   customSizeData?: CustomSizeData;
+  customQuote?: CustomQuoteData;
 }
 
 interface BasketContextType {

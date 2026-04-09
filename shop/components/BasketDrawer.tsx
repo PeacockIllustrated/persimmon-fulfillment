@@ -102,7 +102,7 @@ export default function BasketDrawer() {
                         </button>
                       </div>
                       <div className="flex items-center gap-2">
-                        {item.customSign ? (
+                        {item.customSign || item.customSizeData?.requiresQuote || !!item.customQuote ? (
                           <span className="text-xs font-semibold text-amber-600">Quote</span>
                         ) : (
                           <span className="text-sm font-semibold text-persimmon-navy">
@@ -164,7 +164,7 @@ export default function BasketDrawer() {
                 <span>Total</span>
                 <span>{"\u00A3"}{((totalPrice + deliveryFee) * 1.2).toFixed(2)}</span>
               </div>
-              {items.some((i) => i.customSign) && (
+              {items.some((i) => i.customSign || i.customSizeData?.requiresQuote || !!i.customQuote) && (
                 <p className="text-[11px] text-amber-600 leading-relaxed">
                   Custom sign items will be quoted separately.
                 </p>

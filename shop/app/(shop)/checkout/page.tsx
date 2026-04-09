@@ -325,6 +325,7 @@ export default function CheckoutPage() {
             ...(item.customSign ? { customSign: item.customSign } : {}),
             ...(item.customFieldValues ? { customFieldValues: item.customFieldValues } : {}),
             ...(item.customSizeData ? { customSizeData: item.customSizeData } : {}),
+            ...(item.customQuote ? { customQuote: item.customQuote } : {}),
           })),
           subtotal: totalPrice,
           deliveryFee,
@@ -494,9 +495,9 @@ export default function CheckoutPage() {
                 <div key={item.code} className="text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-500 truncate mr-2">
-                      {item.customSign ? "Custom Sign" : item.customSizeData?.requiresQuote ? "Custom Size (Quote)" : item.code} x{item.quantity}
+                      {item.customSign ? "Custom Sign" : item.customQuote ? "Custom Item (Quote)" : item.customSizeData?.requiresQuote ? "Custom Size (Quote)" : item.code} x{item.quantity}
                     </span>
-                    {item.customSign || item.customSizeData?.requiresQuote ? (
+                    {item.customSign || item.customSizeData?.requiresQuote || !!item.customQuote ? (
                       <span className="font-medium text-amber-600 shrink-0 text-xs">Quote</span>
                     ) : (
                       <span className="font-medium text-gray-700 shrink-0">
@@ -558,7 +559,7 @@ export default function CheckoutPage() {
             <p className="text-[11px] text-gray-400 mt-3 text-center leading-relaxed">
               All prices exclude VAT. You will receive a confirmation email.
             </p>
-            {items.some((i) => i.customSign || i.customSizeData?.requiresQuote) && (
+            {items.some((i) => i.customSign || i.customSizeData?.requiresQuote || !!i.customQuote) && (
               <p className="text-[11px] text-amber-600 mt-2 text-center leading-relaxed">
                 Items requiring a quote will be priced separately after review.
               </p>

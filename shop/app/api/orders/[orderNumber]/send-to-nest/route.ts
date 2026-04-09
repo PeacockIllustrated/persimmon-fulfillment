@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { isAdminAuthed } from "@/lib/auth";
 import { buildNestPOEmailHtml, buildPurchaserPOEmailHtml, generateRaisePoToken } from "@/lib/email";
+import { orderHasUnpricedCustomItems } from "@/lib/order-gating";
 
 export async function POST(
   _req: NextRequest,
@@ -38,6 +39,13 @@ export async function POST(
       .from("psp_order_items")
       .select("*")
       .eq("order_id", order.id);
+
+    if (orderHasUnpricedCustomItems(items || [])) {
+      return NextResponse.json(
+        { error: "Order has unpriced custom items — price them before sending to Nest" },
+        { status: 400 }
+      );
+    }
 
     // Build order data for email (matches OrderData interface in email.ts)
     const orderData = {

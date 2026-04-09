@@ -28,6 +28,7 @@ interface OrderItem {
     code?: string | null;
     description?: string;
     material?: string;
+    size?: string;
   } | null;
 }
 

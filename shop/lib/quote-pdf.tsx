@@ -322,6 +322,32 @@ function CustomSignRow({ item, index }: { item: OrderItem; index: number }) {
   );
 }
 
+function CustomQuoteRow({ item, index }: { item: OrderItem; index: number }) {
+  const cd = item.custom_data!;
+  const detail = [cd.code, cd.size || item.size, cd.material || item.material]
+    .filter(Boolean)
+    .join(" · ");
+
+  return (
+    <View style={[s.tableRow, index % 2 === 1 ? s.tableRowAlt : {}]} wrap={false}>
+      <View style={s.colImage}>
+        <View style={[s.signBadge, { backgroundColor: "#fef3c7" }]}>
+          <Text style={[s.signBadgeText, { color: "#d97706" }]}>CUSTOM</Text>
+        </View>
+      </View>
+      <View style={s.colProduct}>
+        <Text style={s.customSignTitle}>CUSTOM ITEM</Text>
+        {cd.description ? <Text style={s.customSignDetail}>{cd.description}</Text> : null}
+        {detail ? <Text style={s.customSignDetail}>{detail}</Text> : null}
+        {cd.additionalNotes ? <Text style={s.customSignNotes}>Notes: {cd.additionalNotes}</Text> : null}
+      </View>
+      <View style={s.colQty}><Text style={s.qtyText}>{item.quantity}</Text></View>
+      <View style={s.colPrice}><Text style={s.priceText}>{item.price > 0 ? fmt(item.price) : "Quote"}</Text></View>
+      <View style={s.colTotal}><Text style={item.price > 0 ? s.totalText : s.priceText}>{item.price > 0 ? fmt(item.line_total) : "Quote"}</Text></View>
+    </View>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /*  Main Document                                                      */
 /* ------------------------------------------------------------------ */
@@ -375,6 +401,8 @@ function QuoteDocument({ order, images }: { order: OrderData; images: ImageMap }
           {order.items.map((item, i) =>
             item.custom_data?.signType ? (
               <CustomSignRow key={i} item={item} index={i} />
+            ) : item.custom_data?.type === "custom_quote" ? (
+              <CustomQuoteRow key={i} item={item} index={i} />
             ) : (
               <StandardItemRow key={i} item={item} images={images} index={i} />
             )

@@ -36,6 +36,11 @@ export interface OrderItem {
     shape?: string;
     additionalNotes?: string;
     fields?: Array<{ label: string; key: string; value: string }>;
+    // custom_quote (non-sign "Request a Custom Item" requests)
+    code?: string | null;
+    description?: string;
+    size?: string;
+    material?: string;
   } | null;
 }
 
@@ -135,6 +140,34 @@ function itemRowsHtml(items: OrderItem[], siteUrl?: string): string {
       </td>
       <td style="padding:8px 8px;border-bottom:1px solid #eee;font-size:14px;text-align:center;vertical-align:middle">${item.quantity}</td>
       <td style="padding:8px 12px 8px 8px;border-bottom:1px solid #eee;font-size:12px;text-align:right;vertical-align:middle;color:#d97706;font-weight:bold">Quote</td>
+    </tr>`;
+      }
+
+      // Custom item / quote request (non-sign) — free-text detail from the customer
+      if (item.custom_data && item.custom_data.type === "custom_quote") {
+        const cd = item.custom_data;
+        const detail = [cd.code, cd.size || item.size, cd.material || item.material]
+          .filter(Boolean)
+          .map((v) => esc(v as string))
+          .join(" &middot; ");
+        const priceCell = item.price > 0
+          ? `&pound;${item.line_total.toFixed(2)}`
+          : `<span style="color:#d97706;font-weight:bold">Quote</span>`;
+        return `
+    <tr>
+      <td style="padding:8px 4px 8px 12px;border-bottom:1px solid #eee;vertical-align:middle;width:48px">
+        <div style="width:40px;height:40px;border-radius:4px;background:#fef3c7;display:flex;align-items:center;justify-content:center">
+          <span style="color:#d97706;font-size:9px;font-weight:bold;text-align:center;line-height:1.1">CUSTOM</span>
+        </div>
+      </td>
+      <td style="padding:8px 8px;border-bottom:1px solid #eee;font-size:14px;vertical-align:middle">
+        <strong style="color:#333">CUSTOM ITEM</strong><br/>
+        <span style="color:#666;font-size:12px">${esc(cd.description)}</span>
+        ${detail ? `<br/><span style="color:#999;font-size:11px">${detail}</span>` : ""}
+        ${cd.additionalNotes ? `<br/><span style="color:#999;font-size:11px">Notes: ${esc(cd.additionalNotes)}</span>` : ""}
+      </td>
+      <td style="padding:8px 8px;border-bottom:1px solid #eee;font-size:14px;text-align:center;vertical-align:middle">${item.quantity}</td>
+      <td style="padding:8px 12px 8px 8px;border-bottom:1px solid #eee;font-size:14px;text-align:right;vertical-align:middle">${priceCell}</td>
     </tr>`;
       }
 

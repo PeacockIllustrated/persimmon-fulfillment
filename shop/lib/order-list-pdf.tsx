@@ -402,6 +402,30 @@ function StandardItemRow({ item, images, index, hasArtwork }: { item: OrderItem;
   );
 }
 
+function CustomQuoteRow({ item, index }: { item: OrderItem; index: number }) {
+  const cd = item.custom_data!;
+
+  return (
+    <View style={[s.tableRow, index % 2 === 1 ? s.tableRowAlt : {}]} wrap={false}>
+      <View style={s.colImage}>
+        <View style={[s.signBadge, { backgroundColor: "#fef3c7" }]}>
+          <Text style={[s.signBadgeText, { color: "#d97706" }]}>CUSTOM</Text>
+        </View>
+      </View>
+      <View style={s.colProduct}>
+        <Text style={s.customSignTitle}>CUSTOM ITEM</Text>
+        {cd.description ? <Text style={s.customSignDetail}>{cd.description}</Text> : null}
+        {cd.code ? <Text style={s.customSignDetail}>Code: {cd.code}</Text> : null}
+        {cd.additionalNotes ? <Text style={s.customSignNotes}>Notes: {cd.additionalNotes}</Text> : null}
+      </View>
+      <View style={s.colMaterial}><Text style={s.materialText}>{item.material || cd.material || "Custom"}</Text></View>
+      <View style={s.colArtwork}><Text style={s.artworkNo}>N/A</Text></View>
+      <View style={s.colQty}><Text style={s.qtyText}>{item.quantity}</Text></View>
+      <View style={s.colCheck}><View style={s.checkBox} /></View>
+    </View>
+  );
+}
+
 function CustomSignRow({ item, index }: { item: OrderItem; index: number }) {
   const cd = item.custom_data!;
   const colors = SIGN_TYPE_COLORS[cd.signType || ""] || { bg: "#666", fg: "#FFF" };
@@ -504,6 +528,9 @@ function OrderListDocument({ order, images, artworkCodes }: { order: OrderData; 
                 <View style={s.colCheck}><Text style={[s.tableHeaderText, { textAlign: "center" }]}>{"\u2713"}</Text></View>
               </View>
               {group.items.map((item, i) => {
+                if (item.custom_data?.type === "custom_quote") {
+                  return <CustomQuoteRow key={i} item={item} index={i} />;
+                }
                 const baseCode = (item.base_code || item.code.replace(/\/.*$/, "")).replace(/\//g, "_");
                 return <StandardItemRow key={i} item={item} images={images} index={i} hasArtwork={artworkCodes.has(baseCode)} />;
               })}

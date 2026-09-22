@@ -43,6 +43,30 @@ Measured from real artwork, not invented:
 
 Catalogue sizes read `AxB mm` but print as **B wide x A high**.
 
+## Safety symbols
+
+The real ISO 7010 set, from [`@iso-safety-signs/assets`](https://karlnorling.github.io/iso-safety-signs/)
+(npm, MIT). Each symbol already carries its own disc and the standard colour,
+so they are placed as they are rather than wrapped in a background.
+
+| Code | Symbol | Used on |
+|---|---|---|
+| `M001` | General mandatory | Site organisation — protect unfixed materials |
+| `M030` | Place trash in the bin | Site organisation — rubbish in skips |
+| `M014` | Head protection | Compound board |
+| `M015` | High-visibility clothing | Compound board |
+| `M008` | Protective footwear | Compound board |
+| `E003` | First aid | Compound board |
+| `P036` | No children playing | Compound board |
+| `P004` | No access for pedestrians | Compound board |
+
+Only the eight in use are committed, in `assets/iso7010/`. The full 332-symbol
+set covers emergency, fire, mandatory, prohibition and warning classes; pull it
+from npm when another sign needs one.
+
+Symbols are embedded as data URIs, because several inline SVGs on one page
+collide on element ids.
+
 ## Fonts
 
 Roboto Condensed Bold and Roboto Bold stand in for Helvetica Neue, which is not
@@ -79,5 +103,6 @@ neither is passed through and flagged `MISMATCH`.
 - `PCF151` and `PCFA107` are rebuilt from the Charles Church artwork in the
   1UVU job, panel for panel and word for word, with Persimmon branding. The
   boards are the product; the logo is the housebuilder.
-- Safety pictograms are drawn, not lifted. They read correctly but they are not
-  Persimmon's own symbols -- worth a look before plate.
+- The **no parking on site roads** symbol is drawn, not ISO: it is a
+  road-traffic sign, outside the ISO 7010 set, and the board it came from uses
+  the road version.

@@ -199,16 +199,16 @@ def compound_board(w, h, site, manager, phone):
         ("title", [site], 0.115),
         ("panel", ["WE APOLOGISE FOR ANY INCONVENIENCE",
                    "CAUSED DURING DEVELOPMENT WORKS"], 0.052, GREEN),
-        ("icons", [(_mandatory(HARD_HAT, ICON), ["SAFETY HELMETS", "MUST BE WORN"]),
-                   (_mandatory(HI_VIZ, ICON), ["HIGH VISIBILITY CLOTHING", "MUST BE WORN"]),
-                   (_mandatory(BOOT, ICON), ["PROTECTIVE FOOTWEAR", "MUST BE WORN"])],
+        ("icons", [(iso("M014", ICON), ["SAFETY HELMETS", "MUST BE WORN"]),
+                   (iso("M015", ICON), ["HIGH VISIBILITY CLOTHING", "MUST BE WORN"]),
+                   (iso("M008", ICON), ["PROTECTIVE FOOTWEAR", "MUST BE WORN"])],
          0.048, BLUE),
     ]
     right_spec = [
-        ("icons", [(_prohibition(CHILDREN, ICON),
+        ("icons", [(iso("P036", ICON),
                     ["PARENTS, BUILDING SITES ARE DANGEROUS",
                      "PLEASE KEEP YOUR CHILDREN AWAY"]),
-                   (_prohibition(PEDESTRIAN, ICON),
+                   (iso("P004", ICON),
                     ["ANY PERSON CAUGHT PILFERING OR CAUSING",
                      "DAMAGE WILL BE LIABLE FOR PROSECUTION"])],
          0.044, RED),
@@ -264,10 +264,7 @@ def compound_board(w, h, site, manager, phone):
                            f'<div style="background:{bg};border-radius:{w*0.012}mm;'
                            f'flex:0 0 26%;display:flex;align-items:center;justify-content:center;'
                            f'gap:{pad_x*0.6}mm;padding:{pad_y*0.7}mm;box-sizing:border-box;">'
-                           f'<svg viewBox="0 0 100 100" style="width:{ICON*0.8}mm;'
-                           f'height:{ICON*0.8}mm;flex:0 0 auto;">'
-                           f'<rect x="38" y="14" width="24" height="72" fill="#fff"/>'
-                           f'<rect x="14" y="38" width="72" height="24" fill="#fff"/></svg>'
+                           f'{iso("E003", ICON*0.85)}'
                            f'<div style="font-family:SignCond;color:#fff;font-size:{sz}mm;'
                            f'line-height:1.05;">FIRST<br>AID</div></div>'
                            f'<div style="flex:1;background:{bg};border-radius:{w*0.012}mm;'
@@ -304,46 +301,48 @@ def compound_board(w, h, site, manager, phone):
   <div style="flex:1;display:flex;flex-direction:column;gap:{gap}mm;">{right_html}</div>
 </div>""")
 
-def _mandatory(inner, size):
-    """Blue disc, white symbol — 'must be worn' / 'must do' class."""
-    return (f'<svg viewBox="0 0 100 100" style="width:{size}mm;height:{size}mm;flex:0 0 auto;">'
-            f'<circle cx="50" cy="50" r="48" fill="{BLUE}"/>{inner}</svg>')
+# --------------------------------------------------------------------------
+# Safety pictograms
+#
+# The real ISO 7010 symbols, from @iso-safety-signs/assets (npm, MIT), rather
+# than drawn by hand. Each file carries its own disc and the standard colour,
+# so they are placed as they are and never wrapped in a background.
+#
+#   M001 general mandatory         M030 place trash in the bin
+#   M008 protective footwear       E003 first aid
+#   M014 head protection           P004 no access for pedestrians
+#   M015 high-visibility clothing  P036 no children playing
+#
+# Embedded as data URIs: several inline SVGs on one page collide on element
+# ids, and an <img> keeps each symbol in its own document.
+# --------------------------------------------------------------------------
+
+ISO_DIR = ASSETS / "iso7010"
+_iso_cache: dict[str, str] = {}
 
 
-def _prohibition(inner, size):
-    """White disc, red ring and bar — 'do not' class."""
-    return (f'<svg viewBox="0 0 100 100" style="width:{size}mm;height:{size}mm;flex:0 0 auto;">'
-            f'<circle cx="50" cy="50" r="48" fill="#fff"/>{inner}'
-            f'<circle cx="50" cy="50" r="41" fill="none" stroke="{RED}" stroke-width="11"/>'
-            f'<rect x="44" y="-2" width="12" height="104" fill="{RED}"'
+def iso(code, size_mm):
+    """An ISO 7010 symbol at a given size."""
+    if code not in _iso_cache:
+        _iso_cache[code] = base64.b64encode((ISO_DIR / f"{code}.svg").read_bytes()).decode()
+    return (f'<img src="data:image/svg+xml;base64,{_iso_cache[code]}" alt="{code}" '
+            f'style="width:{size_mm}mm;height:{size_mm}mm;flex:0 0 auto;'
+            f'object-fit:contain;">')
+
+
+def no_parking(size_mm):
+    """No parking on site roads.
+
+    Drawn rather than ISO: this is a road-traffic sign, outside the ISO 7010
+    set, and the board it comes from uses the road version.
+    """
+    return (f'<svg viewBox="0 0 100 100" style="width:{size_mm}mm;height:{size_mm}mm;'
+            f'flex:0 0 auto;">'
+            f'<circle cx="50" cy="50" r="46" fill="{BLUE}"/>'
+            f'<path d="M38 26h18a13 13 0 0 1 0 26h-9v22h-9z" fill="#fff"/>'
+            f'<circle cx="50" cy="50" r="42" fill="none" stroke="{RED}" stroke-width="9"/>'
+            f'<rect x="45" y="2" width="10" height="96" fill="{RED}"'
             f' transform="rotate(45 50 50)"/></svg>')
-
-
-HARD_HAT = (  # head in profile wearing a helmet, as ISO 7010 M014
-    '<path d="M28 56a22 22 0 0 1 44 0z" fill="#fff"/>'
-    '<rect x="20" y="56" width="60" height="8" rx="4" fill="#fff"/>'
-    '<path d="M34 66h28l-4 16H38z" fill="#fff"/>')
-HI_VIZ = (  # vest with shoulders, V-neck and two reflective bands
-    '<path d="M38 26h24l14 12v42H24V38z" fill="#fff"/>'
-    '<path d="M44 26h12l-6 12z" fill="'+BLUE+'"/>'
-    '<rect x="47" y="30" width="6" height="50" fill="'+BLUE+'"/>'
-    '<rect x="28" y="54" width="44" height="6" fill="'+BLUE+'"/>')
-BOOT = (  # safety boot in profile
-    '<path d="M32 22h16v28l18 6a10 10 0 0 1 8 10v12H32z" fill="#fff"/>'
-    '<rect x="30" y="74" width="46" height="6" rx="3" fill="#fff"/>')
-BANG = ('<rect x="44" y="20" width="12" height="38" rx="5" fill="#fff"/>'
-        '<circle cx="50" cy="72" r="7" fill="#fff"/>')
-LITTER = ('<circle cx="42" cy="26" r="7" fill="#fff"/>'
-          '<path d="M36 36h12l6 22h-9l-4-12v30h-8V36z" fill="#fff"/>'
-          '<path d="M60 44h18l-3 32H63z" fill="#fff"/>')
-PEDESTRIAN = ('<circle cx="50" cy="24" r="8" fill="#231F20"/>'
-              '<path d="M44 34h10l10 22-7 4-6-12v12l8 22h-8l-8-20-6 20h-8l8-30z" fill="#231F20"/>')
-CHILDREN = ('<circle cx="36" cy="26" r="7" fill="#231F20"/>'
-            '<path d="M30 35h12l8 18-6 4-4-9v12l6 20h-7l-5-16-5 16h-7l6-24z" fill="#231F20"/>'
-            '<circle cx="66" cy="30" r="6" fill="#231F20"/>'
-            '<path d="M61 38h10l6 15-5 3-3-7v10l5 17h-6l-4-13-4 13h-6l5-20z" fill="#231F20"/>')
-NO_PARK = ('<circle cx="50" cy="50" r="34" fill="'+BLUE+'"/>'
-           '<path d="M40 30h16a12 12 0 0 1 0 24h-8v16h-8z" fill="#fff"/>')
 
 
 def site_organisation(w, h):
@@ -372,11 +371,11 @@ def site_organisation(w, h):
                   "GET IT RIGHT FIRST TIME"],                 0.85, None, "#fff"),
         (RED,    ["TAKE PRIDE IN YOUR WORK"],                 1.15, None, "#fff"),
         (BLUE,   ["PROTECT AND RE-COVER ALL",
-                  "UNFIXED MATERIALS"],                       0.85, BANG, "#fff"),
+                  "UNFIXED MATERIALS"],                       0.85, "M001", "#fff"),
         (BLUE,   ["PLEASE PLACE YOUR RUBBISH AND",
-                  "PACKAGING IN THE SKIPS PROVIDED"],         0.85, LITTER, "#fff"),
+                  "PACKAGING IN THE SKIPS PROVIDED"],         0.85, "M030", "#fff"),
         (YELLOW, ["No Parking is permitted",
-                  "on site roads"],                           0.85, NO_PARK, BLACK),
+                  "on site roads"],                           0.85, "NOPARK", BLACK),
         (GREEN,  ["WE PROMOTE SITE SAFETY",
                   "AND TEAMWORK ON THIS SITE"],               0.95, None, "#fff"),
     ]
@@ -424,9 +423,9 @@ def site_organisation(w, h):
         # mandatory disc on a blue row is invisible, which is exactly how the
         # first two rows here shipped.
         px = size * len(lines) * 1.10 * icon_frac
-        draw = _prohibition if icon is NO_PARK else _mandatory
+        glyph = no_parking(px) if icon == "NOPARK" else iso(icon, px)
         rows.append(f'<div style="display:flex;align-items:center;gap:{pad_x*0.7}mm;">'
-                    f'{draw(icon, px)}{panel}</div>')
+                    f'{glyph}{panel}</div>')
 
     return shell(w, h, f"""
 <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-start;

@@ -136,3 +136,68 @@ update psp_orders
 
 create index if not exists idx_psp_orders_fulfilment_status
   on psp_orders(fulfilment_status);
+
+-- ============================================================
+-- Artwork proofs and approval (added 2026-09-22)
+-- ============================================================
+--
+-- Admin-side only. Nothing here is read by any customer-facing route: the
+-- shop, checkout, order confirmation and the customer's own order view are
+-- untouched, and a Persimmon buyer sees exactly what they saw before.
+--
+-- Deliberately NOT columns on psp_orders. The admin orders API does
+-- `select("*")` across every order, so a base64 pack PDF added there would be
+-- pulled into memory on every admin page load. Separate tables keep that query
+-- the size it is today.
+
+create table if not exists psp_artwork_packs (
+  order_number     text primary key,
+  built_at         timestamptz not null default now(),
+  line_items       integer not null,
+  pages_packed     integer not null,
+  needs_attention  jsonb not null default '[]'::jsonb,
+  manifest         jsonb not null,
+  pack_filename    text,
+  pack_document    text,            -- base64 PDF, written by its own request
+  pack_size_bytes  integer
+);
+
+-- One row per page of the pack, which is one line item of the order. The
+-- decision is per page on purpose: approving a whole order at once is what
+-- keeps a human reviewing all of it forever. A straight library pull that
+-- passed every gate is not the same risk as a sign drawn from scratch, and
+-- only per-page decisions let the second kind be the only kind that needs eyes.
+create table if not exists psp_artwork_pages (
+  id             uuid primary key default gen_random_uuid(),
+  order_number   text not null,
+  page_no        integer not null,
+  code           text not null,
+  base_code      text,
+  name           text not null,
+  size           text,
+  quantity       integer not null default 1,
+  provenance     text not null,
+  reason         text,
+  brand          text,
+  fit_note       text,
+  source_file    text,
+  source_page    integer,
+  preview        text,             -- base64 PNG, downscaled for the proof grid
+  decision       text not null default 'pending'
+                 check (decision in ('pending','approved','rejected')),
+  decision_note  text,
+  decided_at     timestamptz,
+  unique (order_number, page_no)
+);
+
+create index if not exists idx_psp_artwork_pages_order
+  on psp_artwork_pages(order_number);
+create index if not exists idx_psp_artwork_pages_decision
+  on psp_artwork_pages(decision);
+
+alter table psp_artwork_packs enable row level security;
+alter table psp_artwork_pages enable row level security;
+create policy "service_psp_artwork_packs" on psp_artwork_packs
+  for all using (true) with check (true);
+create policy "service_psp_artwork_pages" on psp_artwork_pages
+  for all using (true) with check (true);

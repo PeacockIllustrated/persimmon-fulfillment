@@ -30,6 +30,8 @@ reprint and a site visit.
 from __future__ import annotations
 
 import argparse
+import base64
+import io
 import json
 import os
 import subprocess
@@ -203,6 +205,7 @@ class Plan:
     palette_changes: list[str] = field(default_factory=list)
     palette_flags: list[str] = field(default_factory=list)
     out: str | None = None
+    preview: str | None = field(default=None, repr=False)
 
     @property
     def packable(self) -> bool:
@@ -577,8 +580,113 @@ def manifest(order: dict, plans: list[Plan], packed: int, size_problems: list[st
             + size_problems
             + [f"{p.code}: {p.fit_note}" for p in plans if "MISMATCH" in p.fit_note]
         ),
-        "pages": [asdict(p) for p in plans],
+        # asdict would drag every page's base64 preview into the manifest,
+        # which is then stored again as the manifest column.
+        "pages": [{k: v for k, v in asdict(p).items() if k != "preview"}
+                  for p in plans],
     }
+
+
+# ---------------------------------------------------------------------------
+# Publishing to the admin side
+# ---------------------------------------------------------------------------
+
+PREVIEW_WIDTH = 720        # enough to read a sign, small enough to send 10 of
+
+
+def shop_config() -> tuple[str, str]:
+    """Where the shop is and the admin token, from the environment or shop/.env."""
+    values: dict[str, str] = {}
+    env_path = REPO_ROOT / "shop" / ".env"
+    if env_path.exists():
+        for line in env_path.read_text().splitlines():
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, _, value = line.partition("=")
+                values[key.strip()] = value.strip().strip('"').strip("'")
+    for key in ("SITE_URL", "ADMIN_AUTH_TOKEN"):
+        if os.environ.get(key):
+            values[key] = os.environ[key]
+    missing = [k for k in ("SITE_URL", "ADMIN_AUTH_TOKEN") if not values.get(k)]
+    if missing:
+        raise SystemExit(f"--publish needs {', '.join(missing)} in the environment "
+                         f"or shop/.env")
+    return values["SITE_URL"].rstrip("/"), values["ADMIN_AUTH_TOKEN"]
+
+
+def previews(plans: list[Plan], pages_dir: Path) -> None:
+    """Downscale the proof renders so a pack's worth fits in one request."""
+    try:
+        from PIL import Image
+    except ImportError:
+        return
+    shots = sorted(pages_dir.glob("page*.png"))
+    packed = [p for p in plans if p.packable and p.out]
+    for plan, shot in zip(packed, shots):
+        with Image.open(shot) as img:
+            img = img.convert("RGB")
+            img.thumbnail((PREVIEW_WIDTH, PREVIEW_WIDTH))
+            buf = io.BytesIO()
+            img.save(buf, format="PNG", optimize=True)
+        plan.preview = base64.b64encode(buf.getvalue()).decode()
+
+
+def publish(order: dict, plans: list[Plan], report: dict, pack_pdf: Path) -> None:
+    """Hand the proof to the admin side for a human to approve, page by page.
+
+    A pack built in an agent session dies with the container, so the artwork
+    and the decision both have to live somewhere else. Nothing sent here is
+    reachable without the admin cookie.
+    """
+    import requests
+
+    base, token = shop_config()
+    number = order["order_number"]
+    cookies = {"admin-auth": token}
+
+    packed = [p for p in plans if p.packable and p.out]
+    payload = {
+        "manifest": report,
+        "pages": [
+            {
+                "pageNo": i,
+                "code": p.code,
+                "baseCode": p.base_code,
+                "name": p.name,
+                "size": p.size,
+                "quantity": p.qty,
+                "provenance": p.provenance,
+                "reason": p.reason,
+                "brand": p.brand,
+                "fitNote": p.fit_note,
+                "sourceFile": p.source,
+                "sourcePage": p.page,
+                "preview": p.preview,
+            }
+            for i, p in enumerate(packed, 1)
+        ],
+    }
+
+    resp = requests.post(f"{base}/api/fulfilment/{number}", json=payload,
+                         cookies=cookies, timeout=120)
+    if not resp.ok:
+        raise SystemExit(f"publish failed ({resp.status_code}): {resp.text[:300]}")
+
+    if pack_pdf.exists():
+        # Raw PDF, not base64 in JSON: a nine-page pack is megabytes and
+        # base64 on the wire adds a third for nothing.
+        resp = requests.put(
+            f"{base}/api/fulfilment/{number}/artwork",
+            params={"filename": pack_pdf.name},
+            data=pack_pdf.read_bytes(),
+            headers={"Content-Type": "application/pdf"},
+            cookies=cookies,
+            timeout=300,
+        )
+        if not resp.ok:
+            raise SystemExit(f"pack upload failed ({resp.status_code}): {resp.text[:300]}")
+
+    print(f"     published to {base}/admin/artwork/{number}")
 
 
 # ---------------------------------------------------------------------------
@@ -630,6 +738,8 @@ def run_order(order: dict, index: dict[str, dict], args, nd: Path | None) -> dic
 
     if packed:
         proof_sheet(plans, pack_pdf, out_dir / f"{number}-proof.png", nd)
+        if args.publish:
+            previews(plans, out_dir / "_proof")
     (out_dir / f"{number}-manifest.json").write_text(json.dumps(report, indent=2))
 
     where = pack_pdf if packed else "nothing packed"
@@ -637,7 +747,11 @@ def run_order(order: dict, index: dict[str, dict], args, nd: Path | None) -> dic
     for note in report["needsAttention"]:
         print(f"     needs attention: {note}")
 
-    if args.apply and packed == len(plans) and not report["needsAttention"]:
+    if args.publish and packed:
+        # Publishing is itself the move to proof_ready -- the route sets it,
+        # because a proof nobody can open is not a proof that is ready.
+        publish(order, plans, report, pack_pdf)
+    elif args.apply and packed == len(plans) and not report["needsAttention"]:
         set_fulfilment_status(number, "proof_ready")
     elif args.apply:
         # Something wants a human before this is worth proofing. Leave it
@@ -660,6 +774,8 @@ def main() -> None:
                         help="decide and report; draw nothing")
     parser.add_argument("--apply", action="store_true",
                         help="move fulfilment_status as the pack is built")
+    parser.add_argument("--publish", action="store_true",
+                        help="send the proof to the admin side for approval")
     parser.add_argument("--node-dir", help="directory holding node_modules")
     args = parser.parse_args()
 
@@ -667,6 +783,8 @@ def main() -> None:
         parser.error("name at least one order, or pass --outstanding")
     if args.apply and args.from_file:
         parser.error("--apply writes to the database; it cannot run from --from-file")
+    if args.publish and args.resolve_only:
+        parser.error("--resolve-only draws nothing, so there is no proof to publish")
 
     library = json.loads(LIBRARY_PATH.read_text())
     index = index_library(library)

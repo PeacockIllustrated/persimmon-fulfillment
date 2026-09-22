@@ -199,6 +199,79 @@ litho against a Pantone book, leave the spots alone — matching ink is the
 printer's job, and `#C22033` is a screen sample of a catalogue image, not an
 ink spec.
 
+## Approval, and the flywheel
+
+A pack is built, proofed, approved page by page, and what was approved becomes
+library artwork. That last step is the one that compounds: without it the
+library stops growing and every new code is drawn again, order after order,
+which is how `PCF465 Safe working load` came to be artworked seven times.
+
+```bash
+# build and hand the proof to the admin side
+build_pack.py PER-20260914-J5NO --artwork-root ~/"Persimmon App Jobs" --publish
+
+# ... a human approves it at /admin/artwork/PER-20260914-J5NO ...
+
+# file what was approved back into the library
+write_back.py PER-20260914-J5NO --artwork-root ~/"Persimmon App Jobs" --apply
+```
+
+`--publish` needs `SITE_URL` and `ADMIN_AUTH_TOKEN`, from the environment or
+`shop/.env`.
+
+### Admin only
+
+Everything here is behind admin auth, and nothing a Persimmon buyer touches
+changed. The approval page lives under `app/(shop)/admin/`, whose layout
+redirects anyone without the admin cookie; every route under
+`app/api/fulfilment/` checks `isAdminAuthed()` and returns 403 otherwise.
+
+Two decisions were made specifically to keep it that way:
+
+- **Fulfilment state is not on `GET /api/orders`.** That route is reachable
+  with shop auth as well as admin auth, so anything added to its response goes
+  out to Persimmon's own buyers. The admin page fetches `GET /api/fulfilment`
+  alongside it and merges the two client-side, leaving the customer payload
+  exactly as it was.
+- **The pack is not a column on `psp_orders`.** The admin orders API does
+  `select("*")` over every order, so a base64 pack PDF there would be pulled
+  into memory on every admin page load. `psp_artwork_packs` and
+  `psp_artwork_pages` keep that query the size it is today.
+
+### Decided per page, not per order
+
+Approving a whole order in one click is what keeps a human reviewing all of it
+forever. A straight library pull that passed every gate is not the same risk as
+a sign drawn from scratch, and only per-page decisions let the second kind
+eventually be the only kind that needs eyes.
+
+A rejection has to say what is wrong with it — a rejection with no reason is a
+page that gets rebuilt into the same problem. The pack can only be signed off
+once every page is decided and none is rejected: an order that goes to print a
+sign short is worse than one that waits.
+
+### What gets kept, and as what
+
+| Provenance | Written back as | Why |
+|---|---|---|
+| `GENERATED` | `ready` | carries no order-specific text, so it is reusable exactly as drawn |
+| `MERGED` | `template` | the layout is reusable, the text is this order's site, manager and phone — recording it as `ready` would ship one site's board to another |
+| `LIBRARY` | nothing | it came from the library |
+
+`write_back.py` takes its artwork from the pack stored against the order, not
+from a file left on disk. A pack built in an agent session goes away with the
+container, so reading it back from the database is what makes this runnable
+anywhere, at any later date.
+
+It leaves `shop/data/artwork-library.json` and `artwork-registry.json` changed
+in the working tree; commit them.
+
+**Measured on J5NO.** Before: 4 `GENERATED`, 2 `MERGED`, 3 `LIBRARY`. Approve
+and write back, and the same order rebuilds as 7 `LIBRARY`, 2 `MERGED`, nothing
+drawn — including `PCF151`, which had been blocked as Charles Church and is now
+our own Persimmon board. The registry went 77 to 80 codes. The two that stay
+`MERGED` stay that way permanently, and should: their text is the site's.
+
 ## Page fitting
 
 A library page is the sheet **as it was printed**, which is not always one sign

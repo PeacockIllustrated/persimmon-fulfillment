@@ -5,12 +5,20 @@ Style taken from measured artwork, not invented:
   HelveticaNeue-CondensedBold (stand-in: Roboto Condensed Bold)
 Catalogue sizes read "AxB mm" but print as B wide x A high.
 """
-import base64, pathlib
+import base64, pathlib, re
 
 # Fonts and the extracted vector logo band live alongside this module.
 ASSETS = pathlib.Path(__file__).resolve().parent / "assets"
 
-RED, YELLOW, BLUE, GREEN, BLACK = "#E72419", "#FFDB00", "#005FB9", "#0D754C", "#231F20"
+# Palette measured from the catalogue product images in
+# shop/public/images/products, which are the spec Persimmon orders against.
+# The ISO 7010 symbols ship in their own slightly different safety colours and
+# are recoloured to these on load, so a disc and the panel it sits on match.
+RED, BLUE, GREEN, YELLOW, BLACK = "#C22033", "#1E509E", "#0D764A", "#FADC05", "#231F20"
+
+# What the ISO pack uses, mapped to ours.
+ISO_RECOLOUR = {"#005387": BLUE, "#B71F2E": RED, "#237F52": GREEN}
+
 LOGO_BAND = 0.1464          # logo band height as a fraction of sign width
 
 def font_css():
@@ -72,81 +80,85 @@ html,body {{ margin:0; padding:0; width:{w_mm}mm; height:{h_mm}mm;
 
 
 def pedestrians_ahead(w, h):
-    """PCF144 -- solid blue directional panel, white text over a white arrow."""
-    body = h - w * LOGO_BAND - 8            # height actually available
+    """PCF144 -- red panel, white PEDESTRIANS over a white up arrow.
+
+    Matches the catalogue image (shop/public/images/products/PCF144.png): red,
+    not the blue directional treatment. The arrow carries "ahead"; the sign
+    itself reads PEDESTRIANS.
+    """
+    body = h - w * LOGO_BAND - 8
+    size = fit_size(["PEDESTRIANS"], w * 0.80, body * 0.42, char_w=0.52)
     return shell(w, h, f"""
-<div class="panel" style="flex:1;background:{BLUE};display:flex;flex-direction:column;
+<div class="panel" style="flex:1;background:{RED};display:flex;flex-direction:column;
      align-items:center;justify-content:center;gap:{body*0.05}mm;
      padding:{body*0.07}mm 0;box-sizing:border-box;overflow:hidden;">
-  <div style="font-family:SignCond;color:#fff;font-size:{body*0.24}mm;line-height:0.96;
-       letter-spacing:-0.01em;text-align:center;">PEDESTRIANS<br>AHEAD</div>
-  <svg viewBox="0 0 100 100" style="width:{body*0.32}mm;height:{body*0.32}mm;flex:0 0 auto;">
+  <div style="font-family:SignCond;color:#fff;font-size:{size}mm;line-height:1;
+       letter-spacing:-0.01em;white-space:nowrap;">PEDESTRIANS</div>
+  <svg viewBox="0 0 100 100" style="width:{body*0.34}mm;height:{body*0.34}mm;flex:0 0 auto;">
     <path d="M50 6 L86 44 L66 44 L66 94 L34 94 L34 44 L14 44 Z" fill="#fff"/>
   </svg>
 </div>""")
 
 
 def parking_left(w, h):
-    """PCF350 -- house parking treatment: blue keyline, white field,
-    blue left arrow, blue P tile with a white P, black PARKING.
+    """PCF350 -- white field inside a black keyline, two stacked blue tiles
+    (P above a left arrow) and "Parking" in black.
 
-    Follows PCF316, the only parking sign we hold artwork for, rather than the
-    solid directional panel: a solid panel bleeds to the sheet edge and leaves
-    nowhere for the word to sit.
-
-    Width is the binding constraint on a landscape sign, so the row is budgeted
-    across the available width first and only then capped by height. Sizing the
-    glyphs off height alone pushed the word through the keyline.
+    Matches the catalogue image (PCF350.png). Sentence case, not caps.
 
     The arrow tip is at x=6, the left edge of the viewBox. A right-hand variant
     mirrors this path; do not reuse this one for it.
     """
-    frame, margin, padding = h*0.030, w*0.030, h*0.055
-    inner_w = w - 2*margin - 2*frame - 2*padding
+    frame, margin = h * 0.030, w * 0.030
+    padding = h * 0.055
     inner_h = h - w*LOGO_BAND - 8 - 2*margin - 2*frame - 2*padding
-
-    arrow_w = inner_w * 0.27
-    tile_w = inner_w * 0.22
-    word_w = inner_w * 0.39
-    gap = inner_w * 0.05                      # two gaps: .27+.05+.22+.05+.39 = 0.98
-
-    arrow = min(arrow_w, inner_h * 0.90)
-    tile_pad = tile_w * 0.14
-    tile_font = min((tile_w - 2*tile_pad) / 0.62, inner_h * 0.80 / 1.06)
-    word = min(word_w / (len("PARKING") * 0.52), inner_h * 0.34)
-
+    inner_w = w - 2*margin - 2*frame - 2*padding
+    tile = min(inner_h * 0.47, inner_w * 0.26)
+    word = fit_size(["Parking"], inner_w - tile - inner_w*0.06, inner_h * 0.52,
+                    char_w=0.55)
     return shell(w, h, f"""
 <div class="panel" style="flex:1;margin:0 {margin}mm {margin}mm;
-     border:{frame}mm solid {BLUE};display:flex;align-items:center;
-     justify-content:center;gap:{gap}mm;padding:{padding}mm;
+     border:{frame}mm solid {BLACK};display:flex;align-items:center;
+     justify-content:flex-start;gap:{inner_w*0.06}mm;padding:{padding}mm;
      box-sizing:border-box;overflow:hidden;">
-  <svg viewBox="0 0 100 100" style="width:{arrow}mm;height:{arrow}mm;flex:0 0 auto;">
-    <path d="M6 50 L44 16 L44 34 L94 34 L94 66 L44 66 L44 84 Z" fill="{BLUE}"/>
-  </svg>
-  <div style="background:{BLUE};color:#fff;font-family:SignReg;font-size:{tile_font}mm;
-       line-height:1.06;padding:{tile_pad*0.45}mm {tile_pad}mm;
-       border-radius:{w*0.014}mm;flex:0 0 auto;">P</div>
-  <div style="font-family:SignCond;color:{BLACK};font-size:{word}mm;line-height:1;
-       white-space:nowrap;flex:0 0 auto;">PARKING</div>
+  <div style="display:flex;flex-direction:column;gap:{tile*0.10}mm;flex:0 0 auto;">
+    <div style="width:{tile}mm;height:{tile}mm;background:{BLUE};display:flex;
+         align-items:center;justify-content:center;font-family:SignReg;color:#fff;
+         font-size:{tile*0.78}mm;line-height:1;">P</div>
+    <div style="width:{tile}mm;height:{tile}mm;background:{BLUE};display:flex;
+         align-items:center;justify-content:center;">
+      <svg viewBox="0 0 100 100" style="width:{tile*0.74}mm;height:{tile*0.74}mm;">
+        <path d="M6 50 L44 16 L44 34 L94 34 L94 66 L44 66 L44 84 Z" fill="#fff"/>
+      </svg>
+    </div>
+  </div>
+  <div style="font-family:SignReg;color:{BLACK};font-size:{word}mm;line-height:1;
+       white-space:nowrap;flex:0 0 auto;">Parking</div>
 </div>""")
 
 
-def working_hours(w, h, rows, site):
-    """PCF03 -- Security-class board: blue header, white body, black hours."""
-    tr = "".join(
-        f"""<div style="display:flex;justify-content:space-between;align-items:baseline;
-        padding:{h*0.018}mm {w*0.045}mm;border-bottom:{h*0.006}mm solid #D8D8D8;">
-        <span style="font-family:SignCond;color:{BLACK};font-size:{h*0.085}mm;">{d}</span>
-        <span style="font-family:SignCond;color:{BLACK};font-size:{h*0.085}mm;">{t}</span></div>"""
-        for d, t in rows)
+def working_hours(w, h, lines, heading="SITE WORKING HOURS"):
+    """PCF03 -- solid red panel, white heading over the hours.
+
+    Matches the catalogue image (PCF03.png), which also carries the hours
+    themselves: Monday-Friday 8:00am-5:30pm, Saturday 8:00am-1:00pm.
+    """
+    body = h - w * LOGO_BAND - 8
+    pad = body * 0.07
+    # On the catalogue sign the hours are the larger type and the heading sits
+    # above them, not the other way round.
+    head = fit_size([heading], w * 0.86, body * 0.15, char_w=0.52)
+    rest = fit_size(lines, w * 0.80, body - 2*pad - head*1.25,
+                    line_height=1.18, char_w=0.52)
+    rows = "".join(f'<div style="white-space:nowrap;">{l}</div>' for l in lines)
     return shell(w, h, f"""
-<div class="panel" style="flex:1;border:{h*0.022}mm solid {BLUE};display:flex;
-     flex-direction:column;overflow:hidden;">
-  <div style="background:{BLUE};color:#fff;font-family:SignCond;font-size:{h*0.115}mm;
-       text-align:center;padding:{h*0.025}mm 0;line-height:1;">SITE WORKING HOURS</div>
-  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">{tr}</div>
-  <div style="font-family:SignCond;color:{BLACK};font-size:{h*0.052}mm;text-align:center;
-       padding:{h*0.018}mm 0;opacity:.75;">{site}</div>
+<div class="panel" style="flex:1;background:{RED};display:flex;flex-direction:column;
+     align-items:center;justify-content:center;padding:{pad}mm 0;
+     box-sizing:border-box;overflow:hidden;">
+  <div style="font-family:SignCond;color:#fff;font-size:{head}mm;line-height:1.1;
+       white-space:nowrap;">{heading}</div>
+  <div style="font-family:SignCond;color:#fff;font-size:{rest}mm;line-height:1.18;
+       text-align:center;margin-top:{body*0.02}mm;">{rows}</div>
 </div>""")
 
 
@@ -322,9 +334,12 @@ _iso_cache: dict[str, str] = {}
 
 
 def iso(code, size_mm):
-    """An ISO 7010 symbol at a given size."""
+    """An ISO 7010 symbol at a given size, in our palette."""
     if code not in _iso_cache:
-        _iso_cache[code] = base64.b64encode((ISO_DIR / f"{code}.svg").read_bytes()).decode()
+        svg = (ISO_DIR / f"{code}.svg").read_text(errors="replace")
+        for pack_colour, ours in ISO_RECOLOUR.items():
+            svg = re.sub(pack_colour, ours, svg, flags=re.I)
+        _iso_cache[code] = base64.b64encode(svg.encode()).decode()
     return (f'<img src="data:image/svg+xml;base64,{_iso_cache[code]}" alt="{code}" '
             f'style="width:{size_mm}mm;height:{size_mm}mm;flex:0 0 auto;'
             f'object-fit:contain;">')
@@ -393,8 +408,11 @@ def site_organisation(w, h):
     # pass 2: shrink everything until the column fits the height
     def column_height(ss):
         total = gap * (len(spec) - 1)
-        for (bg, lines, _w, _i, _f), size in zip(spec, ss):
-            total += len(lines) * size * 1.10 + (2*pad_y if bg else 0)
+        for (bg, lines, _w, icon, _f), size in zip(spec, ss):
+            text_h = len(lines) * size * 1.10
+            # an icon row is as tall as the taller of its text and its disc
+            row_h = max(text_h, text_h * icon_frac) if icon else text_h
+            total += row_h + (2*pad_y if bg else 0)
         return total
 
     # 0.95 leaves headroom for the browser's line box being a shade taller
@@ -404,6 +422,15 @@ def site_organisation(w, h):
     # costs a little white space; erring large clips the last row off the board.
     scale = min(1.0, avail_h * 0.88 / column_height(sizes))
     sizes = [x * scale for x in sizes]
+
+    # One icon size for every icon row. Sizing each icon off its own row makes
+    # the panels beside them start at different x, and the column reads as
+    # ragged down its left edge.
+    icon_px = max(
+        (size * len(lines) * 1.10 * icon_frac
+         for (bg, lines, _wt, icon, _fg), size in zip(spec, sizes) if icon is not None),
+        default=0.0,
+    )
 
     rows = []
     for (bg, lines, _wt, icon, fg), size in zip(spec, sizes):
@@ -422,8 +449,7 @@ def site_organisation(w, h):
         # The disc sits on white beside the panel, never inside it: a blue
         # mandatory disc on a blue row is invisible, which is exactly how the
         # first two rows here shipped.
-        px = size * len(lines) * 1.10 * icon_frac
-        glyph = no_parking(px) if icon == "NOPARK" else iso(icon, px)
+        glyph = no_parking(icon_px) if icon == "NOPARK" else iso(icon, icon_px)
         rows.append(f'<div style="display:flex;align-items:center;gap:{pad_x*0.7}mm;">'
                     f'{glyph}{panel}</div>')
 

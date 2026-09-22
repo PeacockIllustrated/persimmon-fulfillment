@@ -32,9 +32,17 @@ to site is the one failure worth stopping the line for.
 
 ## House style
 
-Measured from real artwork, not invented:
+**`shop/public/images/products/<CODE>.png` is the spec.** There is a catalogue
+image for every product and it is what Persimmon orders against: it settles the
+colour, the layout and often the wording. Look at it before drawing anything.
+Skipping this step produced a blue `PCF03` and `PCF144` when both are red, and
+a `PCF350` that bore no relation to the catalogue one.
 
-- red `#E72419`, yellow `#FFDB00`, blue `#005FB9`, green `#0D754C`, black `#231F20`
+Palette measured from those images:
+
+- red `#C22033`, blue `#1E509E`, green `#0D764A`, yellow `#FADC05`, black `#231F20`
+- ISO 7010 symbols ship in their own safety colours and are recoloured to these
+  on load, so a mandatory disc and the panel it sits on are the same blue
 - HelveticaNeue-CondensedBold for sign text, HelveticaNeue-Bold for regular width
 - Hazard class sets the colour: prohibition/info red, warning yellow on black,
   mandatory and directional blue, site labels green on white

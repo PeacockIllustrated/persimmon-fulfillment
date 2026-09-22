@@ -93,6 +93,11 @@ confidence and **never guesses**:
 4. A site name — `Fairways 351`
 5. The same suffix allowing for O/0 and I/L/1 being mistyped — `ANCO` → `ANC0`
 
+`shop/data/folder-overrides.json` is checked before all of these: it records
+folder-to-order corrections settled by a human, such as `K1RA` →
+`PER-20260511-K1R4`. Add an entry whenever `match` reports a folder unmatched
+and you know where it belongs.
+
 A folder matching more than one order is reported as *ambiguous*, one matching
 none as *unmatched*, both for a human to settle. Unmatched folders get a
 near-miss hint (`K1RA` → `PER-20260511-K1R4`) which is never applied
@@ -123,6 +128,13 @@ Every page lands in one of four buckets:
 | `likely` | Looser match to an item on that order | Yes |
 | `review` | No item on the order fits; a catalogue-wide guess | **No** |
 | unidentified | Blank, image-only, or bespoke custom text | No |
+
+Where a folder holds several PDFs, the file recorded against a variant is the
+one whose filename carries that variant's size — print files are named by sheet
+size (`2440x1220.pdf`) and the catalogue by sign size (`1220x2440mm`), the same
+pair transposed. Without this a sign ordered at two sizes gets whichever file
+sorted first. When no filename matches, every candidate is kept rather than one
+picked arbitrarily.
 
 The order's own line items always get first refusal, because matching
 catalogue-wide first produces confident-looking wrong answers — a page reading

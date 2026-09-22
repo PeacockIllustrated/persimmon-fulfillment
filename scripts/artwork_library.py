@@ -394,6 +394,24 @@ def match_folder_name(name: str, idx: dict, overrides: dict[str, str] | None = N
     return [], "unmatched"
 
 
+DIMS_RE = re.compile(r"(\d{2,4})\s*[x\u00d7]\s*(\d{2,4})", re.I)
+
+
+def sizes_match(filename: str, size: str, tol: int = 5) -> bool:
+    """True when a filename's dimensions match an ordered size, either way up.
+
+    Print files are named by sheet size (2440x1220.pdf) and the catalogue
+    records the sign size (1220x2440mm); the same pair, transposed.
+    """
+    fm = DIMS_RE.search(Path(filename).stem)
+    sm = DIMS_RE.search(size or "")
+    if not (fm and sm):
+        return False
+    a = sorted((int(fm.group(1)), int(fm.group(2))))
+    b = sorted((int(sm.group(1)), int(sm.group(2))))
+    return all(abs(x - y) <= tol for x, y in zip(a, b))
+
+
 def near_misses(name: str, idx: dict, max_edits: int = 1) -> list[str]:
     """Order numbers one typo away from a folder name, as a hint for a human.
 
@@ -530,9 +548,20 @@ def cmd_match(args: argparse.Namespace) -> None:
             if i.get("custom_data") is not None
         } - {"CUSTOM", "CUSTOM-ITEM"}
         pdfs = sorted({p["file"] for p in pages if p.get("file")})
-        record["templateByCode"] = {
-            code: pdfs for code in sorted(personalised - set(file_map)) if pdfs
-        }
+        # Where a folder holds several PDFs and several personalised items,
+        # giving every item every file makes the recorded template a coin
+        # flip. These filenames are sizes, so prefer the file whose name
+        # carries the size that item was ordered at.
+        record["templateByCode"] = {}
+        for code in sorted(personalised - set(file_map)):
+            if not pdfs:
+                continue
+            sizes = {
+                i.get("size") for i in order.get("psp_order_items", []) or []
+                if (i.get("base_code") or i.get("code") or "").upper() == code
+            }
+            sized = [f for f in pdfs if any(sizes_match(f, sz) for sz in sizes if sz)]
+            record["templateByCode"][code] = sized or pdfs
 
         record["pages"] = pages
         record["fileByCode"] = file_map
@@ -604,9 +633,12 @@ def apply_matches(report: dict) -> None:
                     continue
                 if variant["artwork"]["status"] == "ready" and variant["artwork"]["file"]:
                     continue
+                # Several files can carry the same sign at different sizes.
+                # Prefer the one whose name matches this variant's size.
+                sized = [f for f in files if sizes_match(f, variant.get("size") or "")]
                 variant["artwork"] = {
                     "status": "ready",
-                    "file": files[0],
+                    "file": (sized or files)[0],
                     "sourceOrder": rec["orderNumber"],
                     "capturedAt": report["generatedAt"],
                 }

@@ -975,8 +975,8 @@
           "qty": 55,
           "artwork": {
             "status": "ready",
-            "file": "WN02/PRINT.pdf",
-            "sourceOrder": "PER-20260721-WN02",
+            "file": "PER-2EUB/400x300.pdf",
+            "sourceOrder": "PER-20260423-2EUB",
             "capturedAt": "2026-09-22"
           }
         },
@@ -1389,10 +1389,10 @@
           "material": "4mm Correx",
           "qty": 12,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "1UVU/400x300.pdf",
+            "sourceOrder": "PER-20260430-1UVU",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1430,10 +1430,10 @@
           "material": "4mm Correx",
           "qty": 20,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "1UVU/400x300.pdf",
+            "sourceOrder": "PER-20260430-1UVU",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1565,10 +1565,10 @@
           "material": "4mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "6X6P/600x400.pdf",
+            "sourceOrder": "PER-20260511-6X6P",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1852,10 +1852,10 @@
           "material": "4mm Correx",
           "qty": 4,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "1UVU/400x300.pdf",
+            "sourceOrder": "PER-20260430-1UVU",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1910,9 +1910,9 @@
           "qty": 3,
           "artwork": {
             "status": "ready",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "file": "1UVU/1220x800.pdf",
+            "sourceOrder": "PER-20260430-1UVU",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1922,9 +1922,9 @@
           "qty": 1,
           "artwork": {
             "status": "ready",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "file": "1UVU/1220x1800pdf.pdf",
+            "sourceOrder": "PER-20260430-1UVU",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2029,10 +2029,11 @@
           "material": "4mm Correx",
           "qty": 3,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "template",
+            "file": "7M7F/400X300.pdf",
+            "sourceOrder": "PER-20260624-7M7F",
+            "capturedAt": "2026-09-22",
+            "note": "layout only -- text is per order"
           }
         }
       ],
@@ -2098,8 +2099,8 @@
           "qty": 2,
           "artwork": {
             "status": "ready",
-            "file": "PER-TRMB/PRINT.pdf",
-            "sourceOrder": "PER-20260413-TRMB",
+            "file": "PER-2EUB/ACM.pdf",
+            "sourceOrder": "PER-20260423-2EUB",
             "capturedAt": "2026-09-22"
           }
         },
@@ -2177,10 +2178,11 @@
           "material": "Magnetic Dry Wipe Board",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "template",
+            "file": "1UVU/1220x1800pdf.pdf",
+            "sourceOrder": "PER-20260430-1UVU",
+            "capturedAt": "2026-09-22",
+            "note": "layout only -- text is per order"
           }
         }
       ],
@@ -2206,8 +2208,8 @@
           "qty": 2,
           "artwork": {
             "status": "template",
-            "file": "FN12/2440x1220.pdf",
-            "sourceOrder": "PER-20260428-FN12",
+            "file": "1UVU/2440x1220.pdf",
+            "sourceOrder": "PER-20260430-1UVU",
             "capturedAt": "2026-09-22",
             "note": "layout only -- text is per order"
           }
@@ -3235,10 +3237,10 @@
           "material": "Self-Adhesive Vinyl",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-2EUB/Vinyl.pdf",
+            "sourceOrder": "PER-20260423-2EUB",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3707,10 +3709,10 @@
           "material": "10mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-2EUB/ACM.pdf",
+            "sourceOrder": "PER-20260423-2EUB",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3788,10 +3790,10 @@
           "material": "Magnetic Dry Wipe Board",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "1UVU/1220x900.pdf",
+            "sourceOrder": "PER-20260430-1UVU",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -4220,10 +4222,10 @@
           "material": "Magnetic Dry Wipe Board",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-2EUB/ACM.pdf",
+            "sourceOrder": "PER-20260423-2EUB",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -4247,10 +4249,10 @@
           "material": "Magnetic Dry Wipe Board",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-2EUB/ACM.pdf",
+            "sourceOrder": "PER-20260423-2EUB",
+            "capturedAt": "2026-09-22"
           }
         }
       ],

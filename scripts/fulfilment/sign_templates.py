@@ -20,6 +20,31 @@ RED, BLUE, GREEN, YELLOW, BLACK = "#C22033", "#1E509E", "#0D764A", "#FADC05", "#
 ISO_RECOLOUR = {"#005387": BLUE, "#B71F2E": RED, "#237F52": GREEN}
 
 LOGO_BAND = 0.1464          # logo band height as a fraction of sign width
+SHEET_PAD = 4.0             # shell() padding, in mm, on every edge of the page
+
+# Every template's usable width is the sheet minus that padding on both sides.
+# The height calculations always subtracted it (the "- 8" in each of them) but
+# the width ones did not, which made every fit 8mm optimistic: PCF19 sized
+# "SUB-CONTRACTORS" to a column 7.5mm narrower than the fitter believed and
+# Chromium wrapped it. Measured against the rendered page, not reasoned about.
+def body_w(w_mm):
+    return w_mm - 2 * SHEET_PAD
+
+# Average glyph advance as a fraction of font size, per face and case. Measured
+# by rendering each string in Chromium and dividing its advance width by
+# (font-size x characters), then rounded up: fitting to an optimistic number is
+# what let "SUB-CONTRACTORS" wrap to two lines inside a panel sized to hold it
+# on one. Caps are much wider than the mixed-case average, so they are separate.
+#
+#   SignCond caps   SUB-CONTRACTORS 0.551  PEDESTRIANS 0.525  IMMEDIATELY 0.507
+#   SignCond mixed  Contracts Manager 0.448
+#   SignReg  caps   GRAINGER ANTIQUE 0.582
+#   SignReg  mixed  Parking 0.496
+# Carrying ~5% over the worst measured string, deliberately. At 0.56 the fitted
+# PCF19 put "SUB-CONTRACTORS" in a 184.3mm box needing exactly 184.3mm -- it fit
+# by luck, and any rounding the other way wraps it.
+COND_CAPS, COND_MIXED = 0.58, 0.49
+REG_CAPS, REG_MIXED = 0.61, 0.53
 
 def font_css():
     cond = base64.b64encode((ASSETS / "RobotoCondensed-Bold.woff2").read_bytes()).decode()
@@ -45,10 +70,10 @@ def use_proof_logo():
 def fit_size(lines, inner_w, inner_h, line_height=1.10, char_w=0.60, cap=None):
     """Largest font size (mm) at which these lines fit the box on both axes.
 
-    char_w is the average glyph advance as a fraction of the font size:
-    ~0.60 for Roboto Bold, ~0.52 for the condensed cut. Measured by eye against
-    rendered output, so it is deliberately conservative -- text that is a shade
-    small is a nuisance, text that overruns the keyline is a reprint.
+    char_w is the average glyph advance as a fraction of the font size. Use the
+    measured COND_CAPS / COND_MIXED / REG_CAPS / REG_MIXED above rather than a
+    guess: they are rounded up from rendered measurements, because text a shade
+    small is a nuisance and text that overruns the keyline is a reprint.
     """
     longest = max((len(l) for l in lines), default=1)
     by_width = inner_w / max(longest * char_w, 0.001)
@@ -119,7 +144,8 @@ def pedestrians_ahead(w, h):
     itself reads PEDESTRIANS.
     """
     body = h - w * LOGO_BAND - 8
-    size = fit_size(["PEDESTRIANS"], w * 0.80, body * 0.42, char_w=0.52)
+    size = fit_size(["PEDESTRIANS"], body_w(w) * 0.82, body * 0.42,
+                    char_w=COND_CAPS)
     return shell(w, h, f"""
 <div class="panel" style="flex:1;background:{RED};display:flex;flex-direction:column;
      align-items:center;justify-content:center;gap:{body*0.05}mm;
@@ -144,7 +170,7 @@ def parking_left(w, h):
     frame, margin = h * 0.030, w * 0.030
     padding = h * 0.055
     inner_h = h - w*LOGO_BAND - 8 - 2*margin - 2*frame - 2*padding
-    inner_w = w - 2*margin - 2*frame - 2*padding
+    inner_w = body_w(w) - 2*margin - 2*frame - 2*padding
     tile = min(inner_h * 0.47, inner_w * 0.26)
     word = fit_size(["Parking"], inner_w - tile - inner_w*0.06, inner_h * 0.52,
                     char_w=0.55)
@@ -180,7 +206,7 @@ def working_hours(w, h, lines, heading="SITE WORKING HOURS"):
     # On the catalogue sign the hours are the larger type and the heading sits
     # above them, not the other way round.
     head = fit_size([heading], w * 0.86, body * 0.15, char_w=0.52)
-    rest = fit_size(lines, w * 0.80, body - 2*pad - head*1.25,
+    rest = fit_size(lines, body_w(w) * 0.82, body - 2*pad - head*1.25,
                     line_height=1.18, char_w=0.52)
     rows = "".join(f'<div style="white-space:nowrap;">{l}</div>' for l in lines)
     return shell(w, h, f"""
@@ -204,7 +230,7 @@ def green_on_white(w, h, text):
     frame = h * 0.030                      # keyline weight
     margin = w * 0.030                     # white margin outside the keyline
     padding = h * 0.075                    # white margin inside the keyline
-    inner_w = w - 2*margin - 2*frame - 2*padding
+    inner_w = body_w(w) - 2*margin - 2*frame - 2*padding
     inner_h = h - w*LOGO_BAND - 8 - 2*margin - 2*frame - 2*padding
     # The order form hands this over as a single string; a caller may also pass
     # lines it has already chosen.
@@ -410,7 +436,7 @@ def site_organisation(w, h):
     """
     margin = w * 0.045
     avail_h = h - w*LOGO_BAND - 8 - margin
-    avail_w = w - 2*margin
+    avail_w = body_w(w) - 2*margin
 
     # (background, lines, relative weight, icon, text colour)
     spec = [
@@ -492,3 +518,220 @@ def site_organisation(w, h):
     return shell(w, h, f"""
 <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-start;
      gap:{gap}mm;margin:0 {margin}mm {margin}mm;overflow:hidden;">{"".join(rows)}</div>""")
+
+
+def tick_svg(size_mm):
+    """The hand-drawn style check mark used on the green "tidy site" signs.
+
+    Not an ISO symbol -- ISO 7010 has no plain tick, and the catalogue sign
+    uses a brushed swoosh rather than a geometric one.
+    """
+    return (f'<svg viewBox="0 0 100 100" style="width:{size_mm}mm;height:{size_mm}mm;'
+            f'flex:0 0 auto;">'
+            f'<path d="M10 52 L20 42 L40 62 L84 10 L94 20 L41 84 Z" fill="#fff"/>'
+            f'</svg>')
+
+
+def panel_sign(w, h, lines, colour, lead=None, symbol=None):
+    """A solid rounded panel of one colour, white text, optional lead word.
+
+    Covers the plainest shape in the catalogue, which several codes share:
+
+        PCF27   green,  tick above "A TIDY SITE IS / A SAFE SITE"
+        PCF46   red,    "REPORT ALL / ACCIDENTS / IMMEDIATELY"
+        PCF139  blue,   "PLEASE" large over "KEEP THIS / AREA CLEAN"
+        PCF99   blue,   whatever text the order carries
+
+    ``lead`` is the first line set larger, which is what separates PCF139 from
+    PCF46 -- the rest of the layout is identical. ``symbol`` is HTML placed
+    above the text, for the tick.
+
+    The two blocks are fitted against a split of the panel rather than the
+    whole, so a long lead word cannot squeeze the body to nothing.
+    """
+    body_h = h - w * LOGO_BAND - 8
+    pad_x, pad_y = w * 0.05, body_h * 0.08
+    inner_w = body_w(w) - 2 * pad_x
+    inner_h = body_h - 2 * pad_y
+
+    sym_h = inner_h * 0.30 if symbol else 0.0
+    gap = inner_h * 0.05 if (symbol or lead) else 0.0
+    text_h = inner_h - sym_h - gap
+
+    parts = []
+    if symbol:
+        parts.append(symbol)
+    if lead:
+        lead_h, rest_h = text_h * 0.46, text_h * 0.54
+        lead_size = fit_size([lead], inner_w, lead_h, line_height=1.0,
+                             char_w=COND_CAPS)
+        parts.append(f'<div style="font-family:SignCond;color:#fff;'
+                     f'font-size:{lead_size}mm;line-height:1;white-space:nowrap;">'
+                     f'{lead}</div>')
+    else:
+        rest_h = text_h
+    size = fit_size(lines, inner_w, rest_h, line_height=1.12, char_w=COND_CAPS)
+    parts.append(f'<div style="font-family:SignCond;color:#fff;font-size:{size}mm;'
+                 f'line-height:1.12;text-align:center;">'
+                 f'{"<br>".join(lines)}</div>')
+
+    return shell(w, h, f"""
+<div class="panel" style="flex:1;background:{colour};display:flex;
+     flex-direction:column;align-items:center;justify-content:center;
+     gap:{gap}mm;padding:{pad_y}mm {pad_x}mm;box-sizing:border-box;
+     overflow:hidden;">{''.join(parts)}</div>""")
+
+
+def notice_with_disc(w, h, iso_code, upper, lower,
+                     upper_colour=None, lower_colour=None):
+    """PCF19 -- white field in a keyline, mandatory disc left, two stacked panels.
+
+    The disc is the real ISO symbol, not a drawn circle: M001 is exactly the
+    blue disc with a white exclamation that this sign uses.
+
+    Both panels are fitted to the same font size. Sizing them independently
+    let the two-line lower panel set larger than the three-line upper one,
+    which reads as a mistake rather than as emphasis.
+    """
+    upper_colour = upper_colour or BLUE
+    lower_colour = lower_colour or RED
+    frame, margin = h * 0.022, w * 0.030
+    padding = h * 0.035
+    inner_h = h - w*LOGO_BAND - 8 - 2*margin - 2*frame - 2*padding
+    inner_w = body_w(w) - 2*margin - 2*frame - 2*padding
+
+    disc = min(inner_h * 0.92, inner_w * 0.34)
+    gap = inner_w * 0.05
+    col_w = inner_w - disc - gap
+    upper_h = inner_h * (len(upper) / (len(upper) + len(lower)))
+    lower_h = inner_h - upper_h
+    pad = col_w * 0.04
+
+    size = min(
+        fit_size(upper, col_w - 2*pad, upper_h - 2*pad, line_height=1.16,
+                 char_w=COND_CAPS),
+        fit_size(lower, col_w - 2*pad, lower_h - 2*pad, line_height=1.16,
+                 char_w=COND_CAPS),
+    )
+
+    def block(lines, colour, height):
+        return (f'<div style="background:{colour};height:{height}mm;display:flex;'
+                f'align-items:center;justify-content:center;padding:{pad}mm;'
+                f'box-sizing:border-box;overflow:hidden;">'
+                f'<div style="font-family:SignCond;color:#fff;font-size:{size}mm;'
+                f'line-height:1.16;text-align:center;">{"<br>".join(lines)}</div></div>')
+
+    return shell(w, h, f"""
+<div class="panel" style="flex:1;margin:0 {margin}mm {margin}mm;
+     border:{frame}mm solid {BLUE};display:flex;align-items:center;
+     gap:{gap}mm;padding:{padding}mm;box-sizing:border-box;overflow:hidden;">
+  {iso(iso_code, disc)}
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+    {block(upper, upper_colour, upper_h)}
+    {block(lower, lower_colour, lower_h)}
+  </div>
+</div>""")
+
+
+def name_plate(w, h, role, name):
+    """PCF171 -- green panel, the role in sentence case, the name in a white box.
+
+    The role is sentence case and the name is caps, which is how the catalogue
+    sign sets it; both are condensed.
+    """
+    body_h = h - w * LOGO_BAND - 8
+    pad_x, pad_y = w * 0.05, body_h * 0.09
+    inner_w = body_w(w) - 2 * pad_x
+    inner_h = body_h - 2 * pad_y
+    gap = inner_h * 0.08
+    role_h = (inner_h - gap) * 0.42
+    box_h = (inner_h - gap) * 0.58
+    keyline = max(h * 0.008, 0.6)
+    box_pad = box_h * 0.12
+
+    role_size = fit_size([role], inner_w, role_h, line_height=1.0,
+                         char_w=COND_MIXED)
+    name_size = fit_size([name or "NAME"], inner_w - 4*box_pad,
+                         box_h - 2*box_pad - 2*keyline, line_height=1.0,
+                         char_w=COND_CAPS)
+    return shell(w, h, f"""
+<div class="panel" style="flex:1;background:{GREEN};display:flex;
+     flex-direction:column;align-items:center;justify-content:center;gap:{gap}mm;
+     padding:{pad_y}mm {pad_x}mm;box-sizing:border-box;overflow:hidden;">
+  <div style="font-family:SignCond;color:#fff;font-size:{role_size}mm;
+       line-height:1;white-space:nowrap;">{role}</div>
+  <div style="width:100%;height:{box_h}mm;background:#fff;
+       border:{keyline}mm solid {BLACK};border-radius:{w*0.006}mm;
+       display:flex;align-items:center;justify-content:center;
+       box-sizing:border-box;overflow:hidden;">
+    <div style="font-family:SignCond;color:{BLACK};font-size:{name_size}mm;
+         line-height:1;white-space:nowrap;">{name or ""}</div>
+  </div>
+</div>""")
+
+
+def you_said_we_did(w, h):
+    """PCFCCS19 -- a dry-wipe board, so the two panels are left blank to write on.
+
+    This one does not use the standard logo band: the catalogue board puts the
+    logo inline at top left with the title on a white tab beside it, so the
+    shell is built here rather than borrowed.
+
+    The speech bubbles straddle the divide between the panels, the red one
+    above and left of the green, each ringed in white so it reads clear of
+    whichever panel it overlaps. The supplier credit in the corner of the
+    catalogue image is deliberately not reproduced -- it is their mark.
+    """
+    pad = w * 0.020
+    head_h = h * 0.17
+    frame = min(w, h) * 0.020
+    title = fit_size(["You Said, We Did"], w * 0.62, head_h * 0.64,
+                     char_w=REG_MIXED)
+    bubble = min(h * 0.34, w * 0.19)
+
+    def speech(colour, top, bottom, drop):
+        return (f'<div style="width:{bubble}mm;height:{bubble}mm;flex:0 0 auto;'
+                f'margin-top:{drop}mm;border-radius:50%;background:{colour};'
+                f'display:flex;flex-direction:column;align-items:center;'
+                f'justify-content:center;color:#fff;font-family:SignCond;'
+                f'line-height:1.02;box-shadow:0 0 0 {bubble*0.05}mm #fff;">'
+                f'<span style="font-size:{bubble*0.25}mm;">{top}</span>'
+                f'<span style="font-size:{bubble*0.33}mm;">{bottom}</span></div>')
+
+    return f"""<!doctype html><html><head><meta charset="utf-8"><style>
+{font_css()}
+@page {{ size:{w}mm {h}mm; margin:0; }}
+html,body {{ margin:0;padding:0;width:{w}mm;height:{h}mm;overflow:hidden;
+  background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact; }}
+.sheet {{ position:absolute;top:0;left:0;width:{w}mm;height:{h}mm;
+  box-sizing:border-box;padding:{pad}mm;display:flex;flex-direction:column;
+  overflow:hidden; }}
+.board {{ flex:1;display:flex;position:relative;min-height:0;gap:{frame}mm; }}
+.wipe {{ flex:1;background:#fff;border-radius:{w*0.012}mm;min-width:0; }}
+</style></head><body><div class="sheet">
+  <div style="height:{head_h}mm;flex:0 0 {head_h}mm;display:flex;
+       align-items:center;gap:{w*0.02}mm;">
+    <div style="flex:0 0 {w*0.30}mm;height:100%;{LOGO_BG};
+         background-size:contain;background-repeat:no-repeat;
+         background-position:left center;"></div>
+    <div style="flex:1;height:78%;border:{frame*0.6}mm solid {BLACK};
+         border-radius:{w*0.010}mm;background:#fff;display:flex;
+         align-items:center;justify-content:center;font-family:SignReg;
+         font-size:{title}mm;line-height:1;white-space:nowrap;">
+      <span style="color:{BLACK};">You&nbsp;</span>
+      <span style="color:{RED};">Said</span>
+      <span style="color:{BLACK};">,&nbsp;We&nbsp;</span>
+      <span style="color:{GREEN};">Did</span>
+    </div>
+  </div>
+  <div class="board" style="margin-top:{pad*0.8}mm;">
+    <div class="wipe" style="border:{frame}mm solid {RED};"></div>
+    <div class="wipe" style="border:{frame}mm solid {GREEN};"></div>
+    <div style="position:absolute;left:50%;top:{bubble*0.22}mm;
+         transform:translateX(-50%);display:flex;align-items:flex-start;
+         gap:{bubble*0.04}mm;">
+      {speech(RED, "you", "said", 0)}
+      {speech(GREEN, "we", "did", bubble * 0.30)}
+    </div>
+  </div>
+</div></body></html>"""

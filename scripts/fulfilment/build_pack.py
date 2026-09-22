@@ -85,13 +85,37 @@ def _field(merge: dict, *names: str) -> str:
     return ""
 
 
+# Wording is transcribed from the catalogue image for each code, which is the
+# spec. Where a sign's own copy could not be read at catalogue resolution it is
+# not here: PCF706's emergency-services board has a sub-label beside DIAL 999
+# that is a few pixels tall, and guessing wording on an emergency sign is not a
+# thing to do.
+
 # base code -> (width_mm, height_mm, merge fields) -> HTML for one sign.
 GENERATORS = {
     "PCF03":   lambda w, h, m: T.working_hours(w, h, HOUSE_HOURS),
+    "PCF19":   lambda w, h, m: T.notice_with_disc(
+        w, h, "M001",
+        ["SUB-CONTRACTORS", "MUST REPORT TO", "SITE OFFICE"],
+        ["BEFORE", "STARTING WORK"]),
+    "PCF27":   lambda w, h, m: T.panel_sign(
+        w, h, ["A TIDY SITE IS", "A SAFE SITE"], T.GREEN,
+        symbol=T.tick_svg((h - w * T.LOGO_BAND) * 0.26)),
+    "PCF46":   lambda w, h, m: T.panel_sign(
+        w, h, ["REPORT ALL", "ACCIDENTS", "IMMEDIATELY"], T.RED),
+    "PCF99":   lambda w, h, m: T.panel_sign(
+        w, h, T.wrap_best(_field(m, "custom_text"), T.body_w(w) * 0.90,
+                          (h - w * T.LOGO_BAND - 8) * 0.84,
+                          char_w=T.COND_CAPS), T.BLUE),
     "PCF114":  lambda w, h, m: T.green_on_white(w, h, _field(m, "custom_text")),
+    "PCF139":  lambda w, h, m: T.panel_sign(
+        w, h, ["KEEP THIS", "AREA CLEAN"], T.BLUE, lead="PLEASE"),
     "PCF144":  lambda w, h, m: T.pedestrians_ahead(w, h),
     "PCF151":  lambda w, h, m: T.site_organisation(w, h),
+    "PCF171":  lambda w, h, m: T.name_plate(
+        w, h, "Contracts Manager", _field(m, "name", "site_managers_name")),
     "PCF350":  lambda w, h, m: T.parking_left(w, h),
+    "PCFCCS19": lambda w, h, m: T.you_said_we_did(w, h),
     "PCFA107": lambda w, h, m: T.compound_board(
         w, h,
         _field(m, "site_name"),

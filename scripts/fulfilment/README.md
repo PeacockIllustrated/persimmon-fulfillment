@@ -51,6 +51,33 @@ Palette measured from those images:
 
 Catalogue sizes read `AxB mm` but print as **B wide x A high**.
 
+## Fitting text
+
+`fit_size` sizes type from an average glyph advance, `char_w`, expressed as a
+fraction of the font size. Use the measured constants, not a guess:
+
+| | Caps | Sentence case |
+|---|---|---|
+| `SignCond` (Roboto Condensed Bold) | `COND_CAPS` 0.58 | `COND_MIXED` 0.49 |
+| `SignReg` (Roboto Bold) | `REG_CAPS` 0.61 | `REG_MIXED` 0.53 |
+
+They come from rendering each string in Chromium and dividing the advance width
+by (font-size × characters), then adding ~5%. Caps are much wider than a
+mixed-case average — `SUB-CONTRACTORS` measures 0.551 against `Contracts
+Manager`'s 0.448 — so fitting caps at a mixed-case ratio wraps them.
+
+**A template's usable width is `body_w(w)`, not `w`.** `shell()` pads every edge
+of the page by `SHEET_PAD`, and the height calculations always subtracted it
+(the `- 8` in each of them) while the width ones did not. That made every fit
+8mm optimistic; `PCF19` sized `SUB-CONTRACTORS` to a column 7.5mm narrower than
+the fitter believed and Chromium wrapped it mid-word.
+
+Check a new template by measuring the rendered page rather than reading the
+numbers back: a text div inside a centring flex parent is shrink-to-fit, so its
+own width always equals its longest line and comparing the two proves nothing.
+Measure each line against the **parent's** content box. Current worst case
+across the drawn signs is 5.2% headroom on `PCF19`.
+
 ## Safety symbols
 
 The real ISO 7010 set, from [`@iso-safety-signs/assets`](https://karlnorling.github.io/iso-safety-signs/)

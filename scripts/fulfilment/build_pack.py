@@ -213,9 +213,15 @@ class Plan:
 
 
 def index_library(library: dict) -> dict[str, dict]:
-    """Variant code -> its record, with the entry's name folded in."""
-    index = {}
+    """Variant code -> its record, with the entry's name folded in.
+
+    Also indexed under ``base:<code>`` so a miss can say what we *do* hold for
+    that sign. "No artwork held" and "held, but only at 200x300" are different
+    problems with different fixes, and the first wording hid the second.
+    """
+    index: dict[str, dict] = {}
     for entry in library["entries"]:
+        siblings = []
         for variant in entry["variants"]:
             index[variant["code"]] = {
                 "baseCode": entry["baseCode"],
@@ -223,7 +229,22 @@ def index_library(library: dict) -> dict[str, dict]:
                 "personalised": entry.get("personalised", False),
                 **variant,
             }
+            if variant["artwork"].get("status") in ("ready", "ready-scaled", "template"):
+                siblings.append(variant)
+        if siblings:
+            index[f"base:{entry['baseCode']}"] = {"variants": siblings}
     return index
+
+
+def held_elsewhere(index: dict[str, dict], base: str) -> str:
+    """What we hold for this sign at other sizes, phrased for a human."""
+    entry = index.get(f"base:{base}")
+    if not entry:
+        return ""
+    shown = ", ".join(f"{v['code']} ({v.get('size') or 'size unknown'})"
+                      for v in entry["variants"][:3])
+    more = len(entry["variants"]) - 3
+    return shown + (f" and {more} more" if more > 0 else "")
 
 
 def resolve_item(item: dict, index: dict[str, dict], artwork_root: Path | None) -> Plan:
@@ -247,8 +268,12 @@ def resolve_item(item: dict, index: dict[str, dict], artwork_root: Path | None) 
             plan.provenance = "MERGED"
             plan.reason = "personalised -- template redrawn with this order's text"
         else:
-            plan.reason = ("personalised, and no template to merge into -- "
-                           "artwork held for this code belongs to another site")
+            held = held_elsewhere(index, base)
+            plan.reason = (
+                f"personalised, and no house template to merge into; "
+                f"the library holds {held}, but that carries another site's text"
+                if held else
+                "personalised, and no house template to merge into")
         return plan
 
     # 2. Artwork we hold, at this size or scalable to it.
@@ -276,7 +301,12 @@ def resolve_item(item: dict, index: dict[str, dict], artwork_root: Path | None) 
                        else "no artwork held; drawn from the catalogue image")
         return plan
 
-    plan.reason = plan.reason or "no artwork held and no house template for this code"
+    if not plan.reason:
+        held = held_elsewhere(index, base)
+        plan.reason = (f"nothing at this size and no house template; "
+                       f"the library holds {held}"
+                       if held else
+                       "no artwork held and no house template for this code")
     return plan
 
 

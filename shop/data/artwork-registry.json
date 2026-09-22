@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-03-18",
-  "description": "Product base codes with production-ready artwork. Used by order list PDF to show artwork status.",
+  "updatedAt": "2026-09-22",
+  "description": "Product base codes with production-ready artwork. Used by order list PDF to show artwork status. GENERATED from artwork-library.json -- edit that instead.",
   "codes": [
     "PCF105",
     "PCF151",

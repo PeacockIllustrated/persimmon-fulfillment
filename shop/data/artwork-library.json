@@ -1,0 +1,4423 @@
+{
+  "updatedAt": "2026-09-22",
+  "description": "Ready-made artwork library. One entry per base code, listing every size/material variant actually ordered through the portal, how often it has been ordered, and whether production artwork exists for it. 'personalised' entries carry order-specific text and are reusable as templates, not as finished files.",
+  "source": "psp_orders + psp_order_items",
+  "entries": [
+    {
+      "baseCode": "CUSTOM-ITEM",
+      "name": "Custom Item (Quote on Request)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "CUSTOM-ITEM-1776061573098",
+          "size": "1200mm x 1800mm",
+          "material": "ACM",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-ITEM-1777380169707",
+          "size": "Approx 50mm x 200mm",
+          "material": "4mm corex",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-ITEM-1777559498577",
+          "size": "All",
+          "material": "A",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-ITEM-1778751630774",
+          "size": "80MM X 250MM",
+          "material": "WHITE CORREX",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-ITEM-1779785857151",
+          "size": "1200 x 8000mm",
+          "material": "correx",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-ITEM-1780909432648",
+          "size": "600 x 400",
+          "material": "4mm correx",
+          "qty": 60,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-ITEM-1780909469226",
+          "size": "A4",
+          "material": "POSTER",
+          "qty": 30,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-ITEM-1781084025129",
+          "size": "400 x 300",
+          "material": "correx",
+          "qty": 30,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-ITEM-1781084066728",
+          "size": "838 sq",
+          "material": "floor laminate",
+          "qty": 22,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-ITEM-1782464324974",
+          "size": "300 x 200",
+          "material": "4mm correx",
+          "qty": 30,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-ITEM-1782464377256",
+          "size": "300 x 200",
+          "material": "4mm correx",
+          "qty": 30,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-ITEM-1786537491322",
+          "size": "1200 x 800",
+          "material": "4mm correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-ITEM-1786701086590",
+          "size": "600 x 400",
+          "material": "4mm correx",
+          "qty": 30,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260814-C2RG",
+          "PER-20260812-UEZK",
+          "PER-20260626-HA4Q",
+          "PER-20260610-Y24L",
+          "PER-20260608-BDFC",
+          "PER-20260526-MIAH",
+          "PER-20260514-XTVS",
+          "PER-20260430-1UVU",
+          "PER-20260428-FN12",
+          "PER-20260413-TRMB"
+        ],
+        "totalQty": 253,
+        "lastOrdered": "2026-08-14",
+        "ordersUsedIn": 10
+      }
+    },
+    {
+      "baseCode": "PCF115",
+      "name": "Black on White (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF115/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 12,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003408244",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003445461",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003451971",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003462607",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003472583",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003479079",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003485559",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003490961",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003498340",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003502961",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003511841",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003519328",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003522852",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003531389",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003534898",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003540523",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003544484",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003602373",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1774003607428",
+          "size": "Custom: 250\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147091101",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147149851",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147156287",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147167875",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147249014",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147254043",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147280977",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147290135",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147295917",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147302803",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147318924",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147325282",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147334585",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147339760",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1776147347153",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529684989",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529702495",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529716243",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529722986",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529732730",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529747708",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529753318",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529761921",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529771738",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529782562",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529789470",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529801470",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529806586",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529814424",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/E-cs1777529819509",
+          "size": "Custom: 300\u00d780mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 28,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF115/Y",
+          "size": "600x800mm",
+          "material": "4mm Correx",
+          "qty": 9,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260701-OMAL",
+          "PER-20260514-UJYI",
+          "PER-20260430-1MVN",
+          "PER-20260428-FN12",
+          "PER-20260421-80OA",
+          "PER-20260414-KXOW",
+          "PER-20260414-ZJ2K",
+          "PER-20260320-THIX",
+          "PER-20260317-H39Z"
+        ],
+        "totalQty": 102,
+        "lastOrdered": "2026-07-01",
+        "ordersUsedIn": 9
+      }
+    },
+    {
+      "baseCode": "PCF465",
+      "name": "Safe working load",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF465/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 70,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF465/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 30,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF465/Y",
+          "size": "600x800mm",
+          "material": "4mm Correx",
+          "qty": 15,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260921-55KY",
+          "PER-20260917-AQDP",
+          "PER-20260914-YLSQ",
+          "PER-20260910-N3GU",
+          "PER-20260601-U81L",
+          "PER-20260410-ZX4K",
+          "PER-20260319-2T1Q"
+        ],
+        "totalQty": 115,
+        "lastOrdered": "2026-09-21",
+        "ordersUsedIn": 7
+      }
+    },
+    {
+      "baseCode": "PCF01",
+      "name": "Construction area keep out",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF01/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 30,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF01/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 55,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF01/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 20,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260917-AQDP",
+          "PER-20260721-WN02",
+          "PER-20260720-OU8L",
+          "PER-20260423-2EUB",
+          "PER-20260313-5QHS"
+        ],
+        "totalQty": 105,
+        "lastOrdered": "2026-09-17",
+        "ordersUsedIn": 5
+      }
+    },
+    {
+      "baseCode": "PCF375",
+      "name": "Pedestrian crossing point",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF375/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 30,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF375/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF375/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 16,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260721-WN02",
+          "PER-20260720-OU8L",
+          "PER-20260514-UJYI",
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 56,
+        "lastOrdered": "2026-07-21",
+        "ordersUsedIn": 4
+      }
+    },
+    {
+      "baseCode": "PCF114",
+      "name": "Green on White (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF114/H",
+          "size": "1220x1600mm",
+          "material": "10mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF114/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 53,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF114/W",
+          "size": "800x1220mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260914-J5NO",
+          "PER-20260914-YLSQ",
+          "PER-20260513-YY29",
+          "PER-20260413-TRMB"
+        ],
+        "totalQty": 55,
+        "lastOrdered": "2026-09-14",
+        "ordersUsedIn": 4
+      }
+    },
+    {
+      "baseCode": "CUSTOM",
+      "name": "Custom Information Sign",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "CUSTOM-1774439721192",
+          "size": "600 \u00d7 800mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-1774948068039",
+          "size": "600 \u00d7 800mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-1775816515764",
+          "size": "800 \u00d7 1220mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-1775816538847",
+          "size": "800 \u00d7 1220mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-1775816750481",
+          "size": "800 \u00d7 1220mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-1775816765089",
+          "size": "800 \u00d7 1220mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-1775817170234",
+          "size": "800 \u00d7 1220mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-1775817179625",
+          "size": "800 \u00d7 1220mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-1775817541654",
+          "size": "800 \u00d7 1220mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "CUSTOM-1782919335445",
+          "size": "400 \u00d7 600mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260701-OMAL",
+          "PER-20260410-ZX4K",
+          "PER-20260331-ITLI",
+          "PER-20260325-98QL"
+        ],
+        "totalQty": 17,
+        "lastOrdered": "2026-07-01",
+        "ordersUsedIn": 4
+      }
+    },
+    {
+      "baseCode": "PCF960",
+      "name": "Danger construction site children must not...",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF960/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 26,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF960/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 30,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260917-AQDP",
+          "PER-20260807-095L",
+          "PER-20260601-U81L"
+        ],
+        "totalQty": 56,
+        "lastOrdered": "2026-09-17",
+        "ordersUsedIn": 3
+      }
+    },
+    {
+      "baseCode": "PCF251",
+      "name": "5mph Site speed limit",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF251/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 23,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF251/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 30,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260917-AQDP",
+          "PER-20260807-095L",
+          "PER-20260611-NPQB"
+        ],
+        "totalQty": 53,
+        "lastOrdered": "2026-09-17",
+        "ordersUsedIn": 3
+      }
+    },
+    {
+      "baseCode": "PCF07",
+      "name": "No unauthorised access",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF07/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF07/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 40,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260807-095L",
+          "PER-20260410-ZX4K",
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 50,
+        "lastOrdered": "2026-08-07",
+        "ordersUsedIn": 3
+      }
+    },
+    {
+      "baseCode": "PCF963",
+      "name": "Pedestrian access route",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF963/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 12,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF963/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 20,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260914-J5NO",
+          "PER-20260430-1UVU",
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 32,
+        "lastOrdered": "2026-09-14",
+        "ordersUsedIn": 3
+      }
+    },
+    {
+      "baseCode": "PCF346",
+      "name": "Pedestrians ahead + Symbol",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF346/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 20,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF346/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260508-J4C2",
+          "PER-20260430-1UVU",
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 30,
+        "lastOrdered": "2026-05-08",
+        "ordersUsedIn": 3
+      }
+    },
+    {
+      "baseCode": "PCF29",
+      "name": "Caution site entrance",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF29/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 5,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF29/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 20,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260914-J5NO",
+          "PER-20260410-ZX4K",
+          "PER-20260313-5QHS"
+        ],
+        "totalQty": 25,
+        "lastOrdered": "2026-09-14",
+        "ordersUsedIn": 3
+      }
+    },
+    {
+      "baseCode": "PCF966",
+      "name": "10mph Please drive carefully",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF966/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 14,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF966/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260410-ZX4K",
+          "PER-20260401-N16F",
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 24,
+        "lastOrdered": "2026-04-10",
+        "ordersUsedIn": 3
+      }
+    },
+    {
+      "baseCode": "PCF12",
+      "name": "Site Manager (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF12/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF12/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260511-6X6P",
+          "PER-20260410-ZX4K",
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 3,
+        "lastOrdered": "2026-05-11",
+        "ordersUsedIn": 3
+      }
+    },
+    {
+      "baseCode": "PA82PCF",
+      "name": "When working at height do don't",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA82PCF/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 36,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260901-VVND",
+          "PER-20260601-U81L"
+        ],
+        "totalQty": 36,
+        "lastOrdered": "2026-09-01",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PA644Y",
+      "name": "Safe Working Load Keep loading bay gate closed",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA644Y/C",
+          "size": "800x600mm",
+          "material": "4mm Correx",
+          "qty": 28,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260514-UJYI",
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 28,
+        "lastOrdered": "2026-05-14",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCF99",
+      "name": "White on Blue (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF99/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF99/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260401-1TKH",
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 20,
+        "lastOrdered": "2026-04-01",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCF714",
+      "name": "Please keep gates closed",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF714/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 16,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260921-55KY",
+          "PER-20260721-WN02"
+        ],
+        "totalQty": 16,
+        "lastOrdered": "2026-09-21",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCF961",
+      "name": "PPE must be worn beyond this point",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF961/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF961/Y",
+          "size": "600x800mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260914-J5NO",
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 14,
+        "lastOrdered": "2026-09-14",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCF383",
+      "name": "Caution forklift operating in this area",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF383/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 8,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF383/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260601-U81L",
+          "PER-20260508-J4C2"
+        ],
+        "totalQty": 12,
+        "lastOrdered": "2026-06-01",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCF30",
+      "name": "Caution site access",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF30/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF30/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 6,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260721-WN02",
+          "PER-20260508-J4C2"
+        ],
+        "totalQty": 10,
+        "lastOrdered": "2026-07-21",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCF127",
+      "name": "Keep this facility clean it is for your benefit",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF127/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF127/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260720-OU8L",
+          "PER-20260430-1UVU"
+        ],
+        "totalQty": 6,
+        "lastOrdered": "2026-07-20",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCFDWTP",
+      "name": "Traffic & Environmental Management Plan (Magnetic Dry Wipe Board + Magnetic Symbol Sheet) Site name",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCFDWTP/STANDARD",
+          "size": "900x1200mm",
+          "material": "Magnetic Dry Wipe Board",
+          "qty": 5,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260414-2ZL2",
+          "PER-20260414-ZJ2K"
+        ],
+        "totalQty": 5,
+        "lastOrdered": "2026-04-14",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCF151",
+      "name": "Site organisation",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF151/W",
+          "size": "1220x800mm",
+          "material": "4mm Correx",
+          "qty": 3,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF151/Y",
+          "size": "1800x1220mm",
+          "material": "10mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260914-J5NO",
+          "PER-20260430-1UVU"
+        ],
+        "totalQty": 4,
+        "lastOrdered": "2026-09-14",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCF384",
+      "name": "Site entrance",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF384/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF384/Y",
+          "size": "600x800mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260622-ZLQ1",
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 4,
+        "lastOrdered": "2026-06-22",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCF93",
+      "name": "Keep clear entrance in constant use",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF93/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF93/Y",
+          "size": "600x800mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260401-N16F",
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 4,
+        "lastOrdered": "2026-04-01",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCF170",
+      "name": "Custom Position/Name Sign (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF170/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 3,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260807-095L",
+          "PER-20260624-7M7F"
+        ],
+        "totalQty": 3,
+        "lastOrdered": "2026-08-07",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCF316",
+      "name": "Construction site car park",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF316/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF316/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260519-ANC0",
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 3,
+        "lastOrdered": "2026-05-19",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCFDWYP",
+      "name": "Year Planner",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCFDWYP/LARGE",
+          "size": "1220x1800mm",
+          "material": "Magnetic Dry Wipe Board",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCFDWYP/STANDARD",
+          "size": "900x1200mm",
+          "material": "Magnetic Dry Wipe Board",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260423-2EUB",
+          "PER-20260413-TRMB"
+        ],
+        "totalQty": 3,
+        "lastOrdered": "2026-04-23",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCFA107",
+      "name": "Landscape Main Compound Board (10mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCFA107",
+          "size": "1220x2440mm",
+          "material": "10mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCFA107/W",
+          "size": "800x1220mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260914-J5NO",
+          "PER-20260430-1UVU"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-09-14",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCFDWTP2",
+      "name": "Traffic & Environmental Management Plan (Magnetic Dry Wipe Board + Pre-cut Magnetic Symbols in Storage Box) Site name",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCFDWTP2/STANDAR",
+          "size": "900x1200mm",
+          "material": "Magnetic Dry Wipe Board",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260430-1UVU",
+          "PER-20260423-2EUB"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-04-30",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCFHS051",
+      "name": "Branded Hoarding Sign with Site Name (3mm Dibond)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCFHS051/D",
+          "size": "1220x2440mm",
+          "material": "Dibond",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260430-1UVU",
+          "PER-20260428-FN12"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-04-30",
+        "ordersUsedIn": 2
+      }
+    },
+    {
+      "baseCode": "PCF410",
+      "name": "Plot number (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF410/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 61,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260611-NPQB"
+        ],
+        "totalQty": 61,
+        "lastOrdered": "2026-06-11",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF723",
+      "name": "Fire point",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF723/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 30,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260921-55KY"
+        ],
+        "totalQty": 30,
+        "lastOrdered": "2026-09-21",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PA130PCF",
+      "name": "No smoking no vaporizers",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA130PCF/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 20,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260611-NPQB"
+        ],
+        "totalQty": 20,
+        "lastOrdered": "2026-06-11",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF344",
+      "name": "Pedestrians left + Symbol",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF344/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 20,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 20,
+        "lastOrdered": "2026-03-13",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF722",
+      "name": "Fire alarm call point",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF722/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 18,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260720-OU8L"
+        ],
+        "totalQty": 18,
+        "lastOrdered": "2026-07-20",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF36",
+      "name": "Beware construction traffic",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF36/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF36/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260410-ZX4K"
+        ],
+        "totalQty": 14,
+        "lastOrdered": "2026-04-10",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF811",
+      "name": "Danger construction site keep out",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF811/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 11,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260508-J4C2"
+        ],
+        "totalQty": 11,
+        "lastOrdered": "2026-05-08",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PA111",
+      "name": "\u2026we aim to please This project aims to provide a safe and\u2026",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA111/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 10,
+        "lastOrdered": "2026-04-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PA596E",
+      "name": "Do not tamper with the safety decking",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA596E/C",
+          "size": "300x200mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 10,
+        "lastOrdered": "2026-04-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF18",
+      "name": "All visitors and delivery drivers must report to...",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF18/Y",
+          "size": "600x800mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 10,
+        "lastOrdered": "2026-03-13",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF326",
+      "name": "Pedestrians look both ways",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF326/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 10,
+        "lastOrdered": "2026-03-13",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF345",
+      "name": "Pedestrians right + Symbol",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF345/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 10,
+        "lastOrdered": "2026-03-13",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF364",
+      "name": "Footpath closed",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF364/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 10,
+        "lastOrdered": "2026-03-13",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCFFH32/1",
+      "name": "Welcome Floor Mat",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCFFH32/1",
+          "size": "500x700mm",
+          "material": "Paper",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260410-ZX4K"
+        ],
+        "totalQty": 10,
+        "lastOrdered": "2026-04-10",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCFSB45",
+      "name": "Safe working load (Side A) Danger scaffolding incomplete (Side B)",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCFSB45/H",
+          "size": "900x600mm",
+          "material": "Reversible Scaffold Banner",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260811-LC5Z"
+        ],
+        "totalQty": 10,
+        "lastOrdered": "2026-08-11",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCFSF29",
+      "name": "Children are not allowed to play on this site",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCFSF29",
+          "size": "600x400mm",
+          "material": "SCAF-FOLD",
+          "qty": 10,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260720-OU8L"
+        ],
+        "totalQty": 10,
+        "lastOrdered": "2026-07-20",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF100",
+      "name": "Danger high voltage",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF100/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 8,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260319-2T1Q"
+        ],
+        "totalQty": 8,
+        "lastOrdered": "2026-03-19",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF381",
+      "name": "Caution pedestrians crossing",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF381/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 8,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260508-J4C2"
+        ],
+        "totalQty": 8,
+        "lastOrdered": "2026-05-08",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF611",
+      "name": "Site Name Directional Sign Left (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF611/DP",
+          "size": "200x600mm",
+          "material": "Dibond",
+          "qty": 7,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260414-2ZL2"
+        ],
+        "totalQty": 7,
+        "lastOrdered": "2026-04-14",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF999",
+      "name": "Warning/Mandatory Sign (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF999/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 5,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF999/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 7,
+        "lastOrdered": "2026-04-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF03",
+      "name": "Site working hours",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF03/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 6,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260914-J5NO"
+        ],
+        "totalQty": 6,
+        "lastOrdered": "2026-09-14",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF144",
+      "name": "Pedestrians ahead",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF144/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 6,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260914-J5NO"
+        ],
+        "totalQty": 6,
+        "lastOrdered": "2026-09-14",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF27",
+      "name": "A tidy site is a safe site",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF27/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 6,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 6,
+        "lastOrdered": "2026-04-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF372",
+      "name": "Pedestrians beware uneven surface",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF372/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 6,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260508-J4C2"
+        ],
+        "totalQty": 6,
+        "lastOrdered": "2026-05-08",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF94",
+      "name": "White on Green (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF94/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 6,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260511-K1R4"
+        ],
+        "totalQty": 6,
+        "lastOrdered": "2026-05-11",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF05",
+      "name": "Hard hats must be worn beyond this point",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF05/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 5,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260410-ZX4K"
+        ],
+        "totalQty": 5,
+        "lastOrdered": "2026-04-10",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF129",
+      "name": "Hi-viz clothing must be worn on site",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF129/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 5,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260410-ZX4K"
+        ],
+        "totalQty": 5,
+        "lastOrdered": "2026-04-10",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF78",
+      "name": "Caution men working overhead",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF78/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 5,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260611-NPQB"
+        ],
+        "totalQty": 5,
+        "lastOrdered": "2026-06-11",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF374",
+      "name": "Beware pedestrians",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF374/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260508-J4C2"
+        ],
+        "totalQty": 4,
+        "lastOrdered": "2026-05-08",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF38",
+      "name": "Caution site traffic",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF38/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260508-J4C2"
+        ],
+        "totalQty": 4,
+        "lastOrdered": "2026-05-08",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF46",
+      "name": "Report all accidents immediately",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF46/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 4,
+        "lastOrdered": "2026-04-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF715",
+      "name": "Pedestrian walkway left",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF715/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260508-J4C2"
+        ],
+        "totalQty": 4,
+        "lastOrdered": "2026-05-08",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF716",
+      "name": "Pedestrian walkway right",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF716/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260508-J4C2"
+        ],
+        "totalQty": 4,
+        "lastOrdered": "2026-05-08",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF812",
+      "name": "No parking except residents",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF812/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260514-UJYI"
+        ],
+        "totalQty": 4,
+        "lastOrdered": "2026-05-14",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCFHS021",
+      "name": "Branded Hoarding Sign",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCFHS021/D",
+          "size": "610x1220mm",
+          "material": "Dibond",
+          "qty": 4,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260430-1UVU"
+        ],
+        "totalQty": 4,
+        "lastOrdered": "2026-04-30",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF343",
+      "name": "Site compound ahead",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF343/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 3,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 3,
+        "lastOrdered": "2026-04-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PA523",
+      "name": "Concrete Washout",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA523",
+          "size": "200x500mm",
+          "material": "Self-Adhesive Vinyl",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260423-2EUB"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-04-23",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PA535",
+      "name": "General Waste",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA535/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260611-NPQB"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-06-11",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF08",
+      "name": "No admittance without a permit to work",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF08/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260622-ZLQ1"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-06-22",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF128",
+      "name": "Please leave this room as you would expect to find it",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF128/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260601-U81L"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-06-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF311",
+      "name": "Reserved parking for Site Management",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF311/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260901-VVND"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-09-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF314",
+      "name": "NHBC reserved parking",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF314/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF314/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260901-VVND"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-09-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF342",
+      "name": "Site compound right",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF342/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-04-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF350",
+      "name": "Parking left",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF350/Y",
+          "size": "600x800mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260914-J5NO"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-09-14",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF39",
+      "name": "Slow lorries turning",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF39/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260622-ZLQ1"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-06-22",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF450",
+      "name": "Assembly point",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF450/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260414-2ZL2"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-04-14",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF72",
+      "name": "Concealed site entrance",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF72/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260622-ZLQ1"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-06-22",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF970",
+      "name": "Site entrance 100 yards",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF970/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260622-ZLQ1"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-06-22",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF971",
+      "name": "Site entrance 300 yards",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF971/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260622-ZLQ1"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-06-22",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF972",
+      "name": "Battery charging area",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF972/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260611-NPQB"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-06-11",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF973",
+      "name": "Bucket changing area",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF973/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-04-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF98",
+      "name": "White on Red (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF98/H",
+          "size": "1220x1600mm",
+          "material": "10mm Correx",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260622-ZLQ1"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-06-22",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCFHS011",
+      "name": "Branded Hoarding Sign",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCFHS011/D",
+          "size": "1220x2440mm",
+          "material": "Dibond",
+          "qty": 2,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260430-1UVU"
+        ],
+        "totalQty": 2,
+        "lastOrdered": "2026-04-30",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PA100",
+      "name": "Health & Safety Notice Board (10mm Correx w/ 9x A4 (P) Folded Holders)",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA100",
+          "size": "1220x800mm",
+          "material": "10mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260423-2EUB"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-04-23",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PA318/S/10",
+      "name": "Get the \"Thumbs Up\" before approaching or passing me! Be safe, get seen! (Self-adhesive Vinyl)",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA318/S/10",
+          "size": "300x200mm",
+          "material": "Self-Adhesive Vinyl",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260319-2T1Q"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-03-19",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PA51",
+      "name": "Fire Exit Right/Down",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA51/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260611-NPQB"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-06-11",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PA639",
+      "name": "Quality Common Scoring",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA639",
+          "size": "900x1200mm",
+          "material": "Magnetic Dry Wipe Board",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260430-1UVU"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-04-30",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PA648",
+      "name": "Sub-soil",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA648/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-04-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF106",
+      "name": "Accident man",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF106/Y",
+          "size": "1800x1220mm",
+          "material": "10mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260901-VVND"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-09-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF154",
+      "name": "Report to site office sign",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF154/W",
+          "size": "1220x800mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260519-ANC0"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-05-19",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF162",
+      "name": "Safety on site starts here",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF162/W",
+          "size": "1220x800mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260519-ANC0"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-05-19",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF171",
+      "name": "Contracts Manager (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF171/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-03-13",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF174",
+      "name": "Project Manager (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF174/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260410-ZX4K"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-04-10",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF175",
+      "name": "Site Agent (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF175/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260410-ZX4K"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-04-10",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF178",
+      "name": "NHBC Inspector (4mm Correx)",
+      "personalised": true,
+      "variants": [
+        {
+          "code": "PCF178/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260313-YAGA"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-03-13",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF26",
+      "name": "Toilet",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF26/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260921-55KY"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-09-21",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF348",
+      "name": "Assembly point right",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF348/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260519-ANC0"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-05-19",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF385",
+      "name": "Meeting room",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF385/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-04-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF81",
+      "name": "Stores",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF81/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260401-N16F"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-04-01",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCFBA101",
+      "name": "SHE Notice Board",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCFBA101",
+          "size": "1100x1630mm",
+          "material": "10mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260317-ITJ0"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-03-17",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCFBA103",
+      "name": "Canteen Board",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCFBA103",
+          "size": "1220x550mm",
+          "material": "10mm Correx",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260317-ITJ0"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-03-17",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCFCCS04",
+      "name": "Do not pass this point\u2026",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCFCCS04",
+          "size": "140x1220mm",
+          "material": "3mm Foamex",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260519-ANC0"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-05-19",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCFCCS51",
+      "name": "Plot Requirement Summary",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCFCCS51/STANDAR",
+          "size": "900x1200mm",
+          "material": "Magnetic Dry Wipe Board",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260423-2EUB"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-04-23",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCFDWBH",
+      "name": "Hazard Board",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCFDWBH/LARGE",
+          "size": "1220x1800mm",
+          "material": "Magnetic Dry Wipe Board",
+          "qty": 1,
+          "artwork": {
+            "status": "none",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [
+          "PER-20260423-2EUB"
+        ],
+        "totalQty": 1,
+        "lastOrdered": "2026-04-23",
+        "ordersUsedIn": 1
+      }
+    },
+    {
+      "baseCode": "PCF105",
+      "name": "Check your working platform",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF105/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF105/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF105/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF105/Y",
+          "size": "600x800mm",
+          "material": "4mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [],
+        "totalQty": 0,
+        "lastOrdered": null,
+        "ordersUsedIn": 0
+      }
+    },
+    {
+      "baseCode": "PCF153",
+      "name": "Health & Safety Information",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF153/W",
+          "size": "1220x800mm",
+          "material": "4mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF153/Y",
+          "size": "1800x1220mm",
+          "material": "10mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [],
+        "totalQty": 0,
+        "lastOrdered": null,
+        "ordersUsedIn": 0
+      }
+    },
+    {
+      "baseCode": "PCF167",
+      "name": "Welcome safety starts here",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF167/W",
+          "size": "1220x800mm",
+          "material": "4mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF167/Y",
+          "size": "1800x1220mm",
+          "material": "10mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [],
+        "totalQty": 0,
+        "lastOrdered": null,
+        "ordersUsedIn": 0
+      }
+    },
+    {
+      "baseCode": "PCF40",
+      "name": "Works access",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCF40/E",
+          "size": "200x300mm",
+          "material": "4mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF40/F",
+          "size": "300x400mm",
+          "material": "4mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF40/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        },
+        {
+          "code": "PCF40/Y",
+          "size": "600x800mm",
+          "material": "4mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [],
+        "totalQty": 0,
+        "lastOrdered": null,
+        "ordersUsedIn": 0
+      }
+    },
+    {
+      "baseCode": "PCFCCS18",
+      "name": "Meet the person who is\u2026",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PCFCCS18",
+          "size": "1220x610mm",
+          "material": "5mm Foamex",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": null,
+            "sourceOrder": null,
+            "capturedAt": null
+          }
+        }
+      ],
+      "history": {
+        "orderNumbers": [],
+        "totalQty": 0,
+        "lastOrdered": null,
+        "ordersUsedIn": 0
+      }
+    }
+  ]
+}

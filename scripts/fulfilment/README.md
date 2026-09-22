@@ -90,6 +90,47 @@ Needs `pypdf` and, for rendering, node with `playwright`, `pdfjs-dist` and
 python3 scripts/fulfilment/build_pack.py PER-20260914-J5NO
 ```
 
+## One palette across the pack
+
+Library artwork was drawn for litho and its flat brand areas are Pantone spot
+colours — **PANTONE 485 C** red, **300 C** blue, **Yellow C** — while pages we
+generate are built to the house hex values above. Dropped into one pack the
+mismatch shows: `PCF963` rendered `#DE241B` two pages after `PCF144` rendered
+`#C22033`.
+
+`palette.py` snaps every page onto the house palette on the way into the pack.
+It rewrites two things and nothing else:
+
+- **spot separations** — the flat brand areas. The separation keeps its Pantone
+  name, so a RIP still sees one plate; what changes is the alternate space it
+  converts through.
+- **near-blacks** — rich, registration and flat blacks all become `#231F20`.
+
+Everything else is left as drawn and *reported*. Inline fills are where the
+illustration lives: on `PCF963` the figure's jeans are a CMYK blue that
+classifies as brand blue and its hi-vis vest as brand yellow, and snapping
+either would repaint the drawing. The Persimmon logo is the same trap — its
+three greens sit within 35 of house green in plain RGB distance. So a chromatic
+inline fill that looks like a brand colour is flagged for a human, never
+changed on a guess.
+
+Two things this got wrong first time, both worth keeping in mind:
+
+- **The naive CMYK formula is not what you see.** `255*(1-c)*(1-k)` put the
+  colours tens of points out and made the offending red look as though it were
+  not in the content stream at all. `cmyk_to_rgb` is the polynomial pdf.js
+  uses, which is what the proof renders through.
+- **The alternate space is read from its numbers, not its name.** Illustrator
+  writes Pantone alternates as an ICCBased Lab profile as often as a plain
+  `/Lab` array. Matching on the name caught `Yellow C` and missed `485 C` and
+  `300 C`, and the pack came back with two pages still off-palette and nothing
+  in the log to say why.
+
+Print note: this redefines a spot, it does not remove it. If a job is going to
+litho against a Pantone book, leave the spots alone — matching ink is the
+printer's job, and `#C22033` is a screen sample of a catalogue image, not an
+ink spec.
+
 ## Page fitting
 
 A library page is the sheet **as it was printed**, which is not always one sign

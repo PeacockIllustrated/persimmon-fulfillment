@@ -581,8 +581,11 @@ def manifest(order: dict, plans: list[Plan], packed: int, size_problems: list[st
             + [f"{p.code}: {p.fit_note}" for p in plans if "MISMATCH" in p.fit_note]
         ),
         # asdict would drag every page's base64 preview into the manifest,
-        # which is then stored again as the manifest column.
-        "pages": [{k: v for k, v in asdict(p).items() if k != "preview"}
+        # which is then stored again as the manifest column, and `out` is a
+        # path inside whatever machine built the pack -- noise in a record
+        # that outlives it.
+        "pages": [{k: v for k, v in asdict(p).items()
+                   if k not in ("preview", "out")}
                   for p in plans],
     }
 
@@ -591,7 +594,8 @@ def manifest(order: dict, plans: list[Plan], packed: int, size_problems: list[st
 # Publishing to the admin side
 # ---------------------------------------------------------------------------
 
-PREVIEW_WIDTH = 720        # enough to read a sign, small enough to send 10 of
+PREVIEW_WIDTH = 560        # readable in the proof grid and its zoom
+PREVIEW_COLOURS = 64       # see previews()
 
 
 def shop_config() -> tuple[str, str]:
@@ -615,7 +619,13 @@ def shop_config() -> tuple[str, str]:
 
 
 def previews(plans: list[Plan], pages_dir: Path) -> None:
-    """Downscale the proof renders so a pack's worth fits in one request."""
+    """Downscale the proof renders so a pack's worth fits in one request.
+
+    Quantised to an adaptive 64-colour palette, which is the difference between
+    a 850KB payload and a 100KB one. Signs are flat colour: the only continuous
+    tone anywhere is the cartoon figure on the pedestrian signs and the logo,
+    and both survive it. Full-size renders stay on disk for the proof sheet.
+    """
     try:
         from PIL import Image
     except ImportError:
@@ -624,7 +634,7 @@ def previews(plans: list[Plan], pages_dir: Path) -> None:
     packed = [p for p in plans if p.packable and p.out]
     for plan, shot in zip(packed, shots):
         with Image.open(shot) as img:
-            img = img.convert("RGB")
+            img = img.convert("P", palette=Image.ADAPTIVE, colors=PREVIEW_COLOURS)
             img.thumbnail((PREVIEW_WIDTH, PREVIEW_WIDTH))
             buf = io.BytesIO()
             img.save(buf, format="PNG", optimize=True)

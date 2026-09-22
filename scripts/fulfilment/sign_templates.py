@@ -56,6 +56,38 @@ def fit_size(lines, inner_w, inner_h, line_height=1.10, char_w=0.60, cap=None):
     return min(by_width, by_height, cap or 1e9)
 
 
+def wrap_best(text, inner_w, inner_h, line_height=1.10, char_w=0.60, max_lines=6):
+    """Break a run of text into the line count that sets largest in this box.
+
+    Custom-text signs arrive from the order form as one string, and where it
+    breaks is a design decision nobody made. Rather than a rule about commas,
+    try every greedy wrap width and keep whichever sets biggest: on the
+    Fairways board that lands the breaks after "BRICKS," and "TILES." on its
+    own, because those are the lines that balance.
+    """
+    words = str(text).split()
+    if not words:
+        return [""]
+    seen, best = set(), None
+    for width in range(max(len(w) for w in words), len(text) + 1):
+        lines, current = [], ""
+        for word in words:
+            candidate = f"{current} {word}".strip()
+            if current and len(candidate) > width:
+                lines.append(current)
+                current = word
+            else:
+                current = candidate
+        lines.append(current)
+        if len(lines) > max_lines or tuple(lines) in seen:
+            continue
+        seen.add(tuple(lines))
+        size = fit_size(lines, inner_w, inner_h, line_height, char_w)
+        if best is None or size > best[0]:
+            best = (size, lines)
+    return best[1] if best else [str(text)]
+
+
 def shell(w_mm, h_mm, body, pad=4.0):
     """Page shell: reserves the logo band at the top, body fills the rest."""
     band = w_mm * LOGO_BAND
@@ -174,6 +206,10 @@ def green_on_white(w, h, text):
     padding = h * 0.075                    # white margin inside the keyline
     inner_w = w - 2*margin - 2*frame - 2*padding
     inner_h = h - w*LOGO_BAND - 8 - 2*margin - 2*frame - 2*padding
+    # The order form hands this over as a single string; a caller may also pass
+    # lines it has already chosen.
+    if isinstance(text, str):
+        text = wrap_best(text, inner_w, inner_h, line_height=1.12, char_w=0.60)
     size = fit_size(text, inner_w, inner_h, line_height=1.12, char_w=0.60)
     return shell(w, h, f"""
 <div class="panel" style="flex:1;margin:0 {margin}mm {margin}mm;

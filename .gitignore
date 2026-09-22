@@ -5,8 +5,8 @@ BROCHURE & PRICELIST/
 src/
 /public/
 
-# Node modules
-node_modules/
+# Node modules (no trailing slash: also catches a symlinked tree)
+node_modules
 
 # Next.js
 .next/

@@ -1,0 +1,11 @@
+{
+  "name": "persimmon-fulfilment",
+  "private": true,
+  "type": "module",
+  "description": "Rendering and brand-checking helpers for the artwork pack builder.",
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.60",
+    "pdfjs-dist": "^4.6.82",
+    "playwright": "^1.47.0"
+  }
+}

@@ -100,3 +100,39 @@ alter table psp_orders add column if not exists contact_id uuid references psp_c
 alter table psp_orders add column if not exists site_id uuid references psp_sites(id);
 create index if not exists idx_psp_orders_contact_id on psp_orders(contact_id);
 create index if not exists idx_psp_orders_site_id on psp_orders(site_id);
+
+-- ============================================================
+-- Fulfilment state (added 2026-09-22)
+-- ============================================================
+--
+-- `status` tracks the order as the customer sees it: placed, in progress,
+-- delivered. It says nothing about whether the artwork exists yet, so there was
+-- no way to ask "what still needs artworking?" — which is the question the pack
+-- builder has to answer before it can do anything unattended.
+--
+-- `fulfilment_status` is that second axis, and only that. The two move
+-- independently: an order can be 'completed' for the customer while its artwork
+-- was drawn by hand and never recorded here.
+--
+--   pending      nobody has resolved this order's line items yet
+--   resolving    the pack builder is working on it
+--   proof_ready  a pack and proof sheet exist, waiting on a human
+--   approved     signed off, page by page
+--   packed       released to print
+--
+-- Mirrored in FULFILMENT_STATES in scripts/fulfilment/build_pack.py.
+
+alter table psp_orders add column if not exists fulfilment_status text
+  not null default 'pending'
+  check (fulfilment_status in ('pending','resolving','proof_ready','approved','packed'));
+
+-- Backfill from what we already know. A delivered order had its artwork made,
+-- even though no row records how, so it is 'packed' rather than 'pending' —
+-- otherwise the first `build_pack.py --outstanding` run tries to redo all 42 of
+-- them. Everything else is genuinely outstanding.
+update psp_orders
+   set fulfilment_status = case when status = 'completed' then 'packed' else 'pending' end
+ where fulfilment_status = 'pending';
+
+create index if not exists idx_psp_orders_fulfilment_status
+  on psp_orders(fulfilment_status);

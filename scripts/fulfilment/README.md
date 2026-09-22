@@ -83,12 +83,80 @@ anything goes to plate.
 
 ## Running it
 
-Needs `pypdf` and, for rendering, node with `playwright`, `pdfjs-dist` and
-`@napi-rs/canvas`. Chromium comes from `PLAYWRIGHT_BROWSERS_PATH`.
+```bash
+# what would this order take? -- no browser, no renderer, no credentials
+build_pack.py PER-20260914-J5NO --resolve-only
+
+# build the pack
+build_pack.py PER-20260914-J5NO --artwork-root ~/"Persimmon App Jobs"
+
+# everything still outstanding, moving each order's state as it goes
+build_pack.py --outstanding --artwork-root ~/"Persimmon App Jobs" --apply
+```
+
+Each order gets a folder under `--out` (default `out/`) holding the pack PDF,
+the proof sheet and a manifest recording every page's provenance, brand verdict,
+fit note and palette substitutions.
+
+`--from-file` takes an orders JSON export and runs with no database at all.
+`--apply` is refused alongside it: it writes, and the export is a copy.
+
+Needs `pypdf`, plus node for rendering and the brand check:
 
 ```bash
-python3 scripts/fulfilment/build_pack.py PER-20260914-J5NO
+cd scripts/fulfilment && npm install
 ```
+
+Node resolves an ESM import by walking up from the **script's own directory**,
+so the dependencies have to sit beside these scripts or above them — anywhere
+else is invisible to it, which surfaces as `ERR_MODULE_NOT_FOUND` on a path that
+plainly contains `node_modules`. Chromium is found via `PLAYWRIGHT_CHROMIUM_PATH`,
+then playwright's own resolution, then the newest build under
+`PLAYWRIGHT_BROWSERS_PATH`.
+
+## Order of operations
+
+The stages are separable on purpose, and their order is load-bearing:
+
+1. **Resolve** every line item — reads nothing but the library JSON.
+2. **Build library pages** — lift, then crop or scale to the size ordered.
+3. **Brand check** — needs pages to look at, so it cannot run earlier.
+4. **Redraw what it blocked** — a blocked page is still a sign the site needs.
+   `PCF151` is the case: the only board we hold is Charles Church branded, so
+   it is blocked and then drawn in Persimmon branding. Blocking is about never
+   *shipping* another housebuilder's board, not refusing to supply the sign.
+5. **Draw everything else** — one browser launch for the lot.
+6. **Palette, then size** — and the pack is assembled.
+
+A line item is only ever `UNRESOLVED` when there is nothing to work from and no
+house template. It is named in the manifest's `needsAttention` and left out of
+the pack: a missing sign is a phone call, a wrong sign on a hoarding is a
+reprint and a site visit.
+
+## Fulfilment state
+
+`psp_orders.status` tracks the order as the customer sees it. It says nothing
+about whether the artwork exists, so there was no way to ask what still needs
+artworking — which is the question `--outstanding` has to answer.
+
+`fulfilment_status` is that second axis and only that:
+
+| State | Meaning |
+|---|---|
+| `pending` | nobody has resolved this order's line items yet |
+| `resolving` | the pack builder is working on it |
+| `proof_ready` | a pack and proof sheet exist, waiting on a human |
+| `approved` | signed off, page by page |
+| `packed` | released to print |
+
+Added in `shop/supabase-setup.sql`, which backfills delivered orders to `packed`
+— their artwork was made, even though no row records how — so the first
+`--outstanding` run does not try to redo all 42 of them.
+
+Under `--apply` the builder only reaches `proof_ready` when every line item made
+it into the pack with nothing flagged. Anything short of that stays `pending`,
+because claiming a proof is ready when a sign is missing is worse than saying
+nothing.
 
 ## One palette across the pack
 

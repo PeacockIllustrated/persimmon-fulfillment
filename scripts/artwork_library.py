@@ -534,7 +534,10 @@ def cmd_match(args: argparse.Namespace) -> None:
                 if hit["code"] is None:
                     blank += 1
                 elif hit["tier"] in ("confirmed", "likely"):
-                    file_map.setdefault(hit["code"], []).append(rel)
+                    # Keep the page: a print sheet can hold twenty signs, and
+                    # "it is somewhere in this PDF" is not a pick instruction.
+                    file_map.setdefault(hit["code"], []).append(
+                        {"file": rel, "page": hit["page"], "tier": hit["tier"]})
 
         # A personalised sign carries bespoke text, so it can never match a
         # catalogue name and would otherwise drop out entirely. Its layout is
@@ -588,8 +591,9 @@ def cmd_match(args: argparse.Namespace) -> None:
 
     for rec in report["matched"]:
         print(f"\n  {rec['folder']}  ->  {rec['orderNumber']}  ({rec['matchedBy']}, {rec['siteName']})")
-        for code, files in sorted(rec["fileByCode"].items()):
-            print(f"      {code:<12} {', '.join(sorted(set(files)))}")
+        for code, hits in sorted(rec["fileByCode"].items()):
+            where = ', '.join(f"{h['file']} p{h['page']}" for h in hits)
+            print(f"      {code:<12} {where}")
         for code, files in sorted(rec["templateByCode"].items()):
             print(f"      {code:<12} {', '.join(files)}  (template, bespoke text)")
         if rec["codesWithoutFile"]:
@@ -635,10 +639,19 @@ def apply_matches(report: dict) -> None:
                     continue
                 # Several files can carry the same sign at different sizes.
                 # Prefer the one whose name matches this variant's size.
-                sized = [f for f in files if sizes_match(f, variant.get("size") or "")]
+                sized = [h for h in files
+                         if sizes_match(h["file"], variant.get("size") or "")]
+                # A sheet can match the same code on several pages, one of
+                # them loosely. Take the strongest, or a wrong page gets
+                # picked off the right file.
+                pick = sorted(
+                    sized or files,
+                    key=lambda h: (h.get("tier") != "confirmed", -(h.get("page") or 0)),
+                )[0]
                 variant["artwork"] = {
                     "status": "ready",
-                    "file": (sized or files)[0],
+                    "file": pick["file"],
+                    "page": pick["page"],
                     "sourceOrder": rec["orderNumber"],
                     "capturedAt": report["generatedAt"],
                 }
@@ -714,6 +727,7 @@ def propagate_by_aspect(library: dict, today: str, tol: float = 0.02) -> int:
                 variant["artwork"] = {
                     "status": "ready-scaled",
                     "file": src["artwork"]["file"],
+                    "page": src["artwork"].get("page"),
                     "sourceOrder": src["artwork"]["sourceOrder"],
                     "scaledFrom": src["code"],
                     "capturedAt": today,

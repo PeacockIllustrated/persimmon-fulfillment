@@ -113,15 +113,61 @@ def _decode(content: bytes) -> str:
     return re.sub(r'\s+', ' ', text).strip()
 
 
+def _page_order(objs: dict[int, bytes], data: bytes) -> list[int]:
+    """Page object numbers in document order, by walking the page tree.
+
+    Object numbers are NOT page order -- a PDF writer emits objects in
+    whatever order suits it. Sorting by object number silently scrambles
+    which text belongs to which page, so the tree is the only safe source.
+    """
+    root = re.search(rb'/Root\s+(\d+)\s+\d+\s+R', data)
+    pages_ref = None
+    if root:
+        cat = objs.get(int(root.group(1)), b'')
+        m = re.search(rb'/Pages\s+(\d+)\s+\d+\s+R', cat)
+        if m:
+            pages_ref = int(m.group(1))
+    if pages_ref is None:  # no catalogue we can follow: find the tree root
+        for num, body in objs.items():
+            if re.search(rb'/Type\s*/Pages', body) and b'/Parent' not in body:
+                pages_ref = num
+                break
+    if pages_ref is None:
+        return []
+
+    order: list[int] = []
+    seen: set[int] = set()
+
+    def walk(num: int) -> None:
+        if num in seen or len(order) > 10000:
+            return
+        seen.add(num)
+        body = objs.get(num, b'')
+        if re.search(rb'/Type\s*/Page(?![s])', body):
+            order.append(num)
+            return
+        kids = re.search(rb'/Kids\s*\[(.*?)\]', body, re.S)
+        if kids:
+            for kid in re.findall(rb'(\d+)\s+\d+\s+R', kids.group(1)):
+                walk(int(kid))
+
+    walk(pages_ref)
+    return order
+
+
 def page_texts(path: str | Path) -> list[str]:
     """One normalised text string per page, in document order."""
     data = Path(path).read_bytes()
     objs = _objects(data)
 
-    pages = sorted(
-        (num, body) for num, body in objs.items()
-        if re.search(rb'/Type\s*/Page(?![s])', body)
-    )
+    order = _page_order(objs, data)
+    if order:
+        pages = [(num, objs[num]) for num in order if num in objs]
+    else:  # unreadable tree -- fall back, and accept the order may be off
+        pages = sorted(
+            (num, body) for num, body in objs.items()
+            if re.search(rb'/Type\s*/Page(?![s])', body)
+        )
 
     out: list[str] = []
     for _num, body in pages:

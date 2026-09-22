@@ -46,7 +46,11 @@ from collections import defaultdict
 from datetime import date
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 import requests
+
+import sign_reader
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 ENV_PATH = REPO_ROOT / "shop" / ".env"
@@ -253,7 +257,7 @@ def write_registry_from_library(library: dict) -> int:
     codes = sorted({
         entry["baseCode"]
         for entry in library["entries"]
-        if any(v["artwork"]["status"] == "ready" for v in entry["variants"])
+        if any(v["artwork"]["status"].startswith("ready") for v in entry["variants"])
     })
     REGISTRY_PATH.write_text(json.dumps({
         "updatedAt": library["updatedAt"],
@@ -273,7 +277,8 @@ def cmd_seed(args: argparse.Namespace) -> None:
     LIBRARY_PATH.write_text(json.dumps(library, indent=2) + "\n")
 
     variants = sum(len(e["variants"]) for e in library["entries"])
-    ready = sum(1 for e in library["entries"] for v in e["variants"] if v["artwork"]["status"] == "ready")
+    ready = sum(1 for e in library["entries"] for v in e["variants"]
+                if v["artwork"]["status"].startswith("ready"))
     personalised = sum(1 for e in library["entries"] if e["personalised"])
     registry_codes = write_registry_from_library(library)
 
@@ -288,20 +293,28 @@ def cmd_seed(args: argparse.Namespace) -> None:
 # match
 # --------------------------------------------------------------------------
 
+def _fuzz(s: str) -> str:
+    """Fold the characters people mistype in a job-folder name: O/0, I/L/1."""
+    return s.upper().replace("O", "0").replace("I", "1").replace("L", "1")
+
+
 def index_orders(orders: list[dict]) -> dict:
-    """Build lookup tables for the four ways a folder might name an order."""
+    """Build lookup tables for the ways a folder might name an order."""
     by_number, by_suffix, by_po, by_site = {}, defaultdict(list), defaultdict(list), defaultdict(list)
+    by_fuzzy = defaultdict(list)
     for order in orders:
         num = order["order_number"]
         by_number[num.upper()] = order
         by_suffix[num.split("-")[-1].upper()].append(order)
+        by_fuzzy[_fuzz(num.split("-")[-1])].append(order)
         po = (order.get("po_number") or "").strip()
         if po:
             by_po[po.upper()].append(order)
         site = (order.get("site_name") or "").strip().lower()
         if site:
             by_site[site].append(order)
-    return {"number": by_number, "suffix": by_suffix, "po": by_po, "site": by_site}
+    return {"number": by_number, "suffix": by_suffix, "po": by_po,
+            "site": by_site, "fuzzy": by_fuzzy}
 
 
 def match_folder_name(name: str, idx: dict) -> tuple[list[dict], str]:
@@ -325,7 +338,31 @@ def match_folder_name(name: str, idx: dict) -> tuple[list[dict], str]:
     if site in idx["site"]:
         return idx["site"][site], "site-name"
 
+    # Last resort: allow for O/0 and I/L/1 having been mistyped.
+    for token in ORDER_SUFFIX_RE.findall(upper):
+        fuzzy = _fuzz(token)
+        if fuzzy in idx["fuzzy"]:
+            return idx["fuzzy"][fuzzy], "order-suffix-fuzzy"
+
     return [], "unmatched"
+
+
+def near_misses(name: str, idx: dict, max_edits: int = 1) -> list[str]:
+    """Order numbers one typo away from a folder name, as a hint for a human.
+
+    Never applied automatically -- a single wrong character is exactly how a
+    folder ends up attributed to the wrong job.
+    """
+    import difflib
+    out = []
+    for token in ORDER_SUFFIX_RE.findall(name.upper()):
+        for suffix, orders in idx["suffix"].items():
+            if suffix == token or len(suffix) != len(token):
+                continue
+            edits = sum(1 for a, b in zip(suffix, token) if a != b)
+            if edits <= max_edits:
+                out.extend(o["order_number"] for o in orders)
+    return sorted(set(out))
 
 
 def extract_product_codes(filename: str, known: set[str]) -> list[str]:
@@ -339,15 +376,17 @@ def extract_product_codes(filename: str, known: set[str]) -> list[str]:
 
 
 def scan_folder(root: Path) -> list[tuple[Path, list[Path]]]:
-    """Return (folder, files) for the top-level subfolders, plus loose root files."""
-    groups = []
-    loose = [p for p in sorted(root.iterdir()) if p.is_file() and not p.name.startswith(".")]
-    if loose:
-        groups.append((root, loose))
-    for sub in sorted(p for p in root.iterdir() if p.is_dir() and not p.name.startswith(".")):
-        files = [p for p in sorted(sub.rglob("*")) if p.is_file() and not p.name.startswith(".")]
-        groups.append((sub, files))
-    return groups
+    """Return (folder, files) for every directory that directly holds files.
+
+    Job folders are not always one level down -- an exported or re-zipped
+    archive nests them -- so the unit of work is "a directory with artwork in
+    it", at whatever depth, and its own name is what identifies the order.
+    """
+    groups: dict[Path, list[Path]] = {}
+    for f in sorted(root.rglob("*")):
+        if f.is_file() and not f.name.startswith("."):
+            groups.setdefault(f.parent, []).append(f)
+    return sorted(groups.items())
 
 
 def cmd_match(args: argparse.Namespace) -> None:
@@ -383,6 +422,8 @@ def cmd_match(args: argparse.Namespace) -> None:
 
         if len(candidates) != 1:
             record["candidates"] = [o["order_number"] for o in candidates]
+            if not candidates:
+                record["nearMisses"] = near_misses(folder.name, idx)
             (report["ambiguous"] if candidates else report["unmatched"]).append(record)
             continue
 
@@ -393,24 +434,47 @@ def cmd_match(args: argparse.Namespace) -> None:
             (i.get("base_code") or i.get("code") or "").upper()
             for i in order.get("psp_order_items", []) or []
         })
+        # The artwork in this folder was made at the sizes this order asked
+        # for. Other sizes of the same sign are a different layout (portrait
+        # vs landscape), so they are not covered by this file.
+        variants_by_base: dict[str, list[str]] = {}
+        for i in order.get("psp_order_items", []) or []:
+            base = (i.get("base_code") or i.get("code") or "").upper()
+            code = re.sub(r"-cf\d+$", "", i.get("code") or base)
+            variants_by_base.setdefault(base, [])
+            if code not in variants_by_base[base]:
+                variants_by_base[base].append(code)
+        record["orderedVariants"] = variants_by_base
 
-        # Tie each file to a line item where the filename names a product code.
-        # A file naming a code that is *not* on this order is called out
-        # separately -- that usually means it is filed under the wrong job.
-        file_map, unattributed, wrong_order = {}, [], []
-        for f in artwork + previews:
-            found = extract_product_codes(f.name, known_codes)
-            on_order = [c for c in found if c in record["orderedCodes"]]
-            rel = str(f.relative_to(root))
-            if on_order:
-                file_map.setdefault(on_order[0], []).append(rel)
-            elif found:
-                wrong_order.append({"file": rel, "codes": found})
-            else:
-                unattributed.append(rel)
+        # Filenames here are sizes or just PRINT.pdf, so they identify nothing.
+        # Read each PDF instead and recognise the sign from its own wording.
+        order_codes = set(record["orderedCodes"])
+        file_map: dict[str, list[str]] = {}
+        pages, blank = [], 0
+        for f in artwork:
+            if f.suffix.lower() != ".pdf":
+                continue
+            # Record "<job folder>/<file>" rather than the full scan path, so
+            # the library reads the same however deeply the folder was nested.
+            rel = f"{folder.name}/{f.name}" if folder != root else f.name
+            try:
+                found = sign_reader.identify_pdf(f, order_codes)
+            except Exception as exc:                      # a PDF we cannot parse
+                pages.append({"file": rel, "page": None, "error": str(exc)[:120]})
+                continue
+            for hit in found:
+                hit["file"] = rel
+                pages.append(hit)
+                if hit["code"] is None:
+                    blank += 1
+                elif hit["tier"] in ("confirmed", "likely"):
+                    file_map.setdefault(hit["code"], []).append(rel)
+
+        record["pages"] = pages
         record["fileByCode"] = file_map
-        record["unattributedFiles"] = unattributed
-        record["codesNotOnThisOrder"] = wrong_order
+        record["unidentifiedPages"] = blank
+        record["needsReview"] = [p for p in pages if p.get("tier") == "review"]
+        record["codesWithoutFile"] = [c for c in record["orderedCodes"] if c not in file_map]
         record["codesWithoutFile"] = [c for c in record["orderedCodes"] if c not in file_map]
         report["matched"].append(record)
 
@@ -426,19 +490,22 @@ def cmd_match(args: argparse.Namespace) -> None:
     for rec in report["matched"]:
         print(f"\n  {rec['folder']}  ->  {rec['orderNumber']}  ({rec['matchedBy']}, {rec['siteName']})")
         for code, files in sorted(rec["fileByCode"].items()):
-            print(f"      {code:<12} {', '.join(files)}")
+            print(f"      {code:<12} {', '.join(sorted(set(files)))}")
         if rec["codesWithoutFile"]:
-            print(f"      no file for: {', '.join(rec['codesWithoutFile'])}")
-        for bad in rec["codesNotOnThisOrder"]:
-            print(f"      ** {bad['file']} names {', '.join(bad['codes'])} "
-                  f"-- not on this order, check filing")
-        if rec["unattributedFiles"]:
-            print(f"      no code in name: {', '.join(rec['unattributedFiles'])}")
+            print(f"      no artwork found for: {', '.join(rec['codesWithoutFile'])}")
+        for p in rec["needsReview"]:
+            print(f"      ? {p['file']} p{p['page']} looks like {p['code']} "
+                  f"(not on this order) -- \"{p['text'][:44]}\"")
+        if rec["unidentifiedPages"]:
+            print(f"      {rec['unidentifiedPages']} page(s) unidentified "
+                  f"(blank, image-only, or bespoke custom text)")
 
     for rec in report["ambiguous"]:
         print(f"\n  ? {rec['folder']}  ->  {', '.join(rec['candidates'])}")
     for rec in report["unmatched"]:
-        print(f"\n  ! {rec['folder']}  ->  no order matched")
+        near = rec.get("nearMisses") or []
+        hint = f"  (did you mean {', '.join(near)}?)" if near else ""
+        print(f"\n  ! {rec['folder']}  ->  no order matched{hint}")
 
     if args.apply:
         apply_matches(report)
@@ -453,11 +520,16 @@ def apply_matches(report: dict) -> None:
 
     updated = 0
     for rec in report["matched"]:
-        for code, files in rec["fileByCode"].items():
+        ordered_variants = rec.get("orderedVariants", {})
+        for code, files in rec["fileByCode"].items():  # confirmed + likely only
             entry = by_base.get(code)
             if not entry:
                 continue
+            # Only the sizes this order actually asked for are covered.
+            targets = set(ordered_variants.get(code, []))
             for variant in entry["variants"]:
+                if targets and variant["code"] not in targets:
+                    continue
                 if variant["artwork"]["status"] == "ready" and variant["artwork"]["file"]:
                     continue
                 variant["artwork"] = {
@@ -468,10 +540,60 @@ def apply_matches(report: dict) -> None:
                 }
                 updated += 1
 
+    scaled = propagate_by_aspect(library, report["generatedAt"])
+
     library["updatedAt"] = report["generatedAt"]
     LIBRARY_PATH.write_text(json.dumps(library, indent=2) + "\n")
     codes = write_registry_from_library(library)
-    print(f"\nApplied: {updated} variants marked ready; registry now {codes} codes")
+    print(f"\nApplied: {updated} variants marked ready, "
+          f"{scaled} more covered by scaling; registry now {codes} codes")
+
+
+def _aspect(size: str | None) -> float | None:
+    """Aspect ratio of a size string like '300x400mm', or None."""
+    if not size:
+        return None
+    m = re.search(r"(\d+)\s*[x\u00d7]\s*(\d+)", size, re.I)
+    if not m:
+        return None
+    w, h = int(m.group(1)), int(m.group(2))
+    return round(w / h, 3) if h else None
+
+
+def propagate_by_aspect(library: dict, today: str, tol: float = 0.02) -> int:
+    """Cover same-shape sizes from artwork we already hold.
+
+    A 300x400 and a 600x800 are both 3:4 -- one artwork scales to the other
+    with no redrawing. A 400x600 (2:3) does not, so it is left alone. These
+    are marked "ready-scaled" rather than "ready" so it stays obvious that the
+    file was drawn at another size.
+    """
+    count = 0
+    for entry in library["entries"]:
+        sources = [v for v in entry["variants"] if v["artwork"]["status"] == "ready"
+                   and v["artwork"].get("file")]
+        if not sources:
+            continue
+        for variant in entry["variants"]:
+            if variant["artwork"]["status"] != "none":
+                continue
+            target = _aspect(variant.get("size"))
+            if target is None:
+                continue
+            for src in sources:
+                ratio = _aspect(src.get("size"))
+                if ratio is None or abs(ratio - target) > tol:
+                    continue
+                variant["artwork"] = {
+                    "status": "ready-scaled",
+                    "file": src["artwork"]["file"],
+                    "sourceOrder": src["artwork"]["sourceOrder"],
+                    "scaledFrom": src["code"],
+                    "capturedAt": today,
+                }
+                count += 1
+                break
+    return count
 
 
 # --------------------------------------------------------------------------
@@ -487,12 +609,12 @@ def cmd_report(args: argparse.Namespace) -> None:
     if not args.order:
         total = sum(len(e["variants"]) for e in library["entries"])
         ready = sum(1 for e in library["entries"] for v in e["variants"]
-                    if v["artwork"]["status"] == "ready")
+                    if v["artwork"]["status"].startswith("ready"))
         print(f"Library: {len(library['entries'])} base codes, {total} variants, "
               f"{ready} ready ({ready * 100 // max(total, 1)}%)")
         print("\nMost-ordered codes still without artwork:")
         gaps = [e for e in library["entries"]
-                if not any(v["artwork"]["status"] == "ready" for v in e["variants"])]
+                if not any(v["artwork"]["status"].startswith("ready") for v in e["variants"])]
         for e in gaps[:20]:
             print(f"  {e['baseCode']:<12} {e['history']['ordersUsedIn']:>2} orders  "
                   f"{e['history']['totalQty']:>4} made   {e['name'][:48]}")
@@ -512,7 +634,7 @@ def cmd_report(args: argparse.Namespace) -> None:
         code = re.sub(r"-cf\d+$", "", item.get("code") or base)
         entry = by_base.get(base)
         variant = next((v for v in entry["variants"] if v["code"] == code), None) if entry else None
-        ready = bool(variant and variant["artwork"]["status"] == "ready")
+        ready = bool(variant and variant["artwork"]["status"].startswith("ready"))
         row = (code, item.get("size"), item.get("quantity"), item.get("name"),
                (variant or {}).get("artwork", {}).get("file"))
         if item.get("custom_data") is not None:
@@ -566,4 +688,10 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    # Allow `... | head` without a BrokenPipeError traceback.
+    try:
+        import signal
+        signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+    except (ImportError, AttributeError, ValueError):
+        pass
     main()

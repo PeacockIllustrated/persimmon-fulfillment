@@ -34,3 +34,7 @@ yarn-debug.log*
 
 # Local order data (no longer needed)
 shop/data/orders/
+
+# Python
+__pycache__/
+*.pyc

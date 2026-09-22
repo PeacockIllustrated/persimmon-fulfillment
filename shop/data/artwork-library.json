@@ -194,10 +194,11 @@
           "material": "4mm Correx",
           "qty": 12,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready-scaled",
+            "file": "FN12/600X400.pdf",
+            "sourceOrder": "PER-20260428-FN12",
+            "scaledFrom": "PCF115/M",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -794,10 +795,11 @@
           "material": "4mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready-scaled",
+            "file": "PER-H39Z/PRINT.pdf",
+            "sourceOrder": "PER-20260317-H39Z",
+            "scaledFrom": "PCF115/Y",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -806,10 +808,10 @@
           "material": "4mm Correx",
           "qty": 28,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "FN12/600X400.pdf",
+            "sourceOrder": "PER-20260428-FN12",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -818,10 +820,10 @@
           "material": "4mm Correx",
           "qty": 9,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-H39Z/PRINT.pdf",
+            "sourceOrder": "PER-20260317-H39Z",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -853,10 +855,11 @@
           "material": "4mm Correx",
           "qty": 70,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready-scaled",
+            "file": "YLSQ/PRINT.pdf",
+            "sourceOrder": "PER-20260914-YLSQ",
+            "scaledFrom": "PCF465/Y",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -865,10 +868,10 @@
           "material": "4mm Correx",
           "qty": 30,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260319-2t1Q/Print.pdf",
+            "sourceOrder": "PER-20260319-2T1Q",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -877,10 +880,10 @@
           "material": "4mm Correx",
           "qty": 15,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "YLSQ/PRINT.pdf",
+            "sourceOrder": "PER-20260914-YLSQ",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -910,10 +913,10 @@
           "material": "4mm Correx",
           "qty": 30,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "OU8L/PRINT.pdf",
+            "sourceOrder": "PER-20260720-OU8L",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -922,10 +925,10 @@
           "material": "4mm Correx",
           "qty": 55,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "WN02/PRINT.pdf",
+            "sourceOrder": "PER-20260721-WN02",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -934,10 +937,10 @@
           "material": "4mm Correx",
           "qty": 20,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-5QHS/600x400.pdf",
+            "sourceOrder": "PER-20260313-5QHS",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -965,10 +968,10 @@
           "material": "4mm Correx",
           "qty": 30,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "OU8L/PRINT.pdf",
+            "sourceOrder": "PER-20260720-OU8L",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -977,10 +980,10 @@
           "material": "4mm Correx",
           "qty": 10,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "UJYI/400X300.pdf",
+            "sourceOrder": "PER-20260514-UJYI",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -989,10 +992,10 @@
           "material": "4mm Correx",
           "qty": 16,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1211,10 +1214,10 @@
           "material": "4mm Correx",
           "qty": 26,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "U81L/Print.pdf",
+            "sourceOrder": "PER-20260601-U81L",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1252,10 +1255,10 @@
           "material": "4mm Correx",
           "qty": 23,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "NPQB/Print.pdf",
+            "sourceOrder": "PER-20260611-NPQB",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1264,10 +1267,11 @@
           "material": "4mm Correx",
           "qty": 30,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready-scaled",
+            "file": "NPQB/Print.pdf",
+            "sourceOrder": "PER-20260611-NPQB",
+            "scaledFrom": "PCF251/E",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1293,10 +1297,10 @@
           "material": "4mm Correx",
           "qty": 10,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-ZX4K/600x400.pdf",
+            "sourceOrder": "PER-20260410-ZX4K",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1305,10 +1309,10 @@
           "material": "4mm Correx",
           "qty": 40,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1346,10 +1350,10 @@
           "material": "4mm Correx",
           "qty": 20,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1416,10 +1420,10 @@
           "material": "4mm Correx",
           "qty": 5,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-ZX4K/600x400.pdf",
+            "sourceOrder": "PER-20260410-ZX4K",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1428,10 +1432,10 @@
           "material": "4mm Correx",
           "qty": 20,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-5QHS/600x400.pdf",
+            "sourceOrder": "PER-20260313-5QHS",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1457,10 +1461,10 @@
           "material": "4mm Correx",
           "qty": 14,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-N16F/PRINT.pdf",
+            "sourceOrder": "PER-20260401-N16F",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1469,10 +1473,10 @@
           "material": "4mm Correx",
           "qty": 10,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1498,10 +1502,10 @@
           "material": "4mm Correx",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1567,10 +1571,10 @@
           "material": "4mm Correx",
           "qty": 28,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "UJYI/600x800.pdf",
+            "sourceOrder": "PER-20260514-UJYI",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1607,10 +1611,10 @@
           "material": "4mm Correx",
           "qty": 10,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-1TKH/1200x900.pdf",
+            "sourceOrder": "PER-20260401-1TKH",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1635,10 +1639,10 @@
           "material": "4mm Correx",
           "qty": 16,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "WN02/PRINT.pdf",
+            "sourceOrder": "PER-20260721-WN02",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1663,10 +1667,11 @@
           "material": "4mm Correx",
           "qty": 4,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready-scaled",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "scaledFrom": "PCF961/Y",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1675,10 +1680,10 @@
           "material": "4mm Correx",
           "qty": 10,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1703,10 +1708,10 @@
           "material": "4mm Correx",
           "qty": 8,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "J4C2/Print.pdf",
+            "sourceOrder": "PER-20260508-J4C2",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1743,10 +1748,10 @@
           "material": "4mm Correx",
           "qty": 4,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "J4C2/Print.pdf",
+            "sourceOrder": "PER-20260508-J4C2",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1755,10 +1760,10 @@
           "material": "4mm Correx",
           "qty": 6,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "WN02/PRINT.pdf",
+            "sourceOrder": "PER-20260721-WN02",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1783,10 +1788,10 @@
           "material": "4mm Correx",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "OU8L/PRINT.pdf",
+            "sourceOrder": "PER-20260720-OU8L",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1892,9 +1897,9 @@
           "qty": 2,
           "artwork": {
             "status": "ready",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "file": "ZLQ1/PRINT.pdf",
+            "sourceOrder": "PER-20260622-ZLQ1",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1904,9 +1909,9 @@
           "qty": 2,
           "artwork": {
             "status": "ready",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -1931,10 +1936,10 @@
           "material": "4mm Correx",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-N16F/PRINT.pdf",
+            "sourceOrder": "PER-20260401-N16F",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -1943,10 +1948,10 @@
           "material": "4mm Correx",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2011,10 +2016,10 @@
           "material": "4mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "ANCO/PCF167W.pdf",
+            "sourceOrder": "PER-20260519-ANC0",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2039,10 +2044,10 @@
           "material": "Magnetic Dry Wipe Board",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-TRMB/PRINT.pdf",
+            "sourceOrder": "PER-20260413-TRMB",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -2051,10 +2056,10 @@
           "material": "Magnetic Dry Wipe Board",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-TRMB/PRINT.pdf",
+            "sourceOrder": "PER-20260413-TRMB",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2229,10 +2234,10 @@
           "material": "4mm Correx",
           "qty": 20,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "NPQB/Print.pdf",
+            "sourceOrder": "PER-20260611-NPQB",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2256,10 +2261,10 @@
           "material": "4mm Correx",
           "qty": 20,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2283,10 +2288,10 @@
           "material": "4mm Correx",
           "qty": 18,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "OU8L/PRINT.pdf",
+            "sourceOrder": "PER-20260720-OU8L",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2310,10 +2315,10 @@
           "material": "4mm Correx",
           "qty": 10,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-ZX4K/600x400.pdf",
+            "sourceOrder": "PER-20260410-ZX4K",
+            "capturedAt": "2026-09-22"
           }
         },
         {
@@ -2322,10 +2327,10 @@
           "material": "4mm Correx",
           "qty": 4,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-ZX4K/600x400.pdf",
+            "sourceOrder": "PER-20260410-ZX4K",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2349,10 +2354,10 @@
           "material": "4mm Correx",
           "qty": 11,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "J4C2/Print.pdf",
+            "sourceOrder": "PER-20260508-J4C2",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2376,10 +2381,10 @@
           "material": "4mm Correx",
           "qty": 10,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-N16F/PRINT.pdf",
+            "sourceOrder": "PER-20260401-N16F",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2430,10 +2435,10 @@
           "material": "4mm Correx",
           "qty": 10,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2457,10 +2462,10 @@
           "material": "4mm Correx",
           "qty": 10,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2511,10 +2516,10 @@
           "material": "4mm Correx",
           "qty": 10,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2565,10 +2570,10 @@
           "material": "Reversible Scaffold Banner",
           "qty": 10,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "LC5Z/PRINT.pdf",
+            "sourceOrder": "PER-20260811-LC5Z",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2592,10 +2597,10 @@
           "material": "SCAF-FOLD",
           "qty": 10,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "OU8L/PRINT.pdf",
+            "sourceOrder": "PER-20260720-OU8L",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2619,10 +2624,10 @@
           "material": "4mm Correx",
           "qty": 8,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260319-2t1Q/Print.pdf",
+            "sourceOrder": "PER-20260319-2T1Q",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2646,10 +2651,10 @@
           "material": "4mm Correx",
           "qty": 8,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "J4C2/Print.pdf",
+            "sourceOrder": "PER-20260508-J4C2",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2793,10 +2798,10 @@
           "material": "4mm Correx",
           "qty": 6,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-N16F/PRINT.pdf",
+            "sourceOrder": "PER-20260401-N16F",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2820,10 +2825,10 @@
           "material": "4mm Correx",
           "qty": 6,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "J4C2/Print.pdf",
+            "sourceOrder": "PER-20260508-J4C2",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2874,10 +2879,10 @@
           "material": "4mm Correx",
           "qty": 5,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-ZX4K/600x400.pdf",
+            "sourceOrder": "PER-20260410-ZX4K",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2955,10 +2960,10 @@
           "material": "4mm Correx",
           "qty": 4,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "J4C2/Print.pdf",
+            "sourceOrder": "PER-20260508-J4C2",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -2982,10 +2987,10 @@
           "material": "4mm Correx",
           "qty": 4,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "J4C2/Print.pdf",
+            "sourceOrder": "PER-20260508-J4C2",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3009,10 +3014,10 @@
           "material": "4mm Correx",
           "qty": 4,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-N16F/PRINT.pdf",
+            "sourceOrder": "PER-20260401-N16F",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3090,10 +3095,10 @@
           "material": "4mm Correx",
           "qty": 4,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "UJYI/300x200.pdf",
+            "sourceOrder": "PER-20260514-UJYI",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3144,10 +3149,10 @@
           "material": "4mm Correx",
           "qty": 3,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-N16F/PRINT.pdf",
+            "sourceOrder": "PER-20260401-N16F",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3198,10 +3203,10 @@
           "material": "4mm Correx",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "NPQB/Print.pdf",
+            "sourceOrder": "PER-20260611-NPQB",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3225,10 +3230,10 @@
           "material": "4mm Correx",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "ZLQ1/PRINT.pdf",
+            "sourceOrder": "PER-20260622-ZLQ1",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3252,10 +3257,10 @@
           "material": "4mm Correx",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "U81L/Print.pdf",
+            "sourceOrder": "PER-20260601-U81L",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3399,10 +3404,10 @@
           "material": "4mm Correx",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "ZLQ1/PRINT.pdf",
+            "sourceOrder": "PER-20260622-ZLQ1",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3426,10 +3431,10 @@
           "material": "4mm Correx",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-2ZL2/1200x900.pdf",
+            "sourceOrder": "PER-20260414-2ZL2",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3454,9 +3459,9 @@
           "qty": 2,
           "artwork": {
             "status": "ready",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "file": "ZLQ1/PRINT.pdf",
+            "sourceOrder": "PER-20260622-ZLQ1",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3481,9 +3486,9 @@
           "qty": 2,
           "artwork": {
             "status": "ready",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "file": "ZLQ1/PRINT.pdf",
+            "sourceOrder": "PER-20260622-ZLQ1",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3508,9 +3513,9 @@
           "qty": 2,
           "artwork": {
             "status": "ready",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "file": "ZLQ1/PRINT.pdf",
+            "sourceOrder": "PER-20260622-ZLQ1",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3534,10 +3539,10 @@
           "material": "4mm Correx",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "NPQB/Print.pdf",
+            "sourceOrder": "PER-20260611-NPQB",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3561,10 +3566,10 @@
           "material": "4mm Correx",
           "qty": 2,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-N16F/PRINT.pdf",
+            "sourceOrder": "PER-20260401-N16F",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3750,10 +3755,10 @@
           "material": "4mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-N16F/PRINT.pdf",
+            "sourceOrder": "PER-20260401-N16F",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3804,10 +3809,10 @@
           "material": "4mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "ANCO/PCF167W.pdf",
+            "sourceOrder": "PER-20260519-ANC0",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3831,10 +3836,10 @@
           "material": "4mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "ANCO/PCF167W.pdf",
+            "sourceOrder": "PER-20260519-ANC0",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3858,10 +3863,10 @@
           "material": "4mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3885,10 +3890,10 @@
           "material": "4mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-ZX4K/Print.pdf",
+            "sourceOrder": "PER-20260410-ZX4K",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3912,10 +3917,10 @@
           "material": "4mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-ZX4K/Print.pdf",
+            "sourceOrder": "PER-20260410-ZX4K",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3939,10 +3944,10 @@
           "material": "4mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260313-YAGA/SiteSIgnage.pdf",
+            "sourceOrder": "PER-20260313-YAGA",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -3993,10 +3998,10 @@
           "material": "4mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "ANCO/PCF167W.pdf",
+            "sourceOrder": "PER-20260519-ANC0",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -4020,10 +4025,10 @@
           "material": "4mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-N16F/PRINT.pdf",
+            "sourceOrder": "PER-20260401-N16F",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -4047,10 +4052,10 @@
           "material": "4mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-N16F/PRINT.pdf",
+            "sourceOrder": "PER-20260401-N16F",
+            "capturedAt": "2026-09-22"
           }
         }
       ],
@@ -4074,10 +4079,10 @@
           "material": "10mm Correx",
           "qty": 1,
           "artwork": {
-            "status": "none",
-            "file": null,
-            "sourceOrder": null,
-            "capturedAt": null
+            "status": "ready",
+            "file": "PER-20260317-ITJ0/Print.pdf",
+            "sourceOrder": "PER-20260317-ITJ0",
+            "capturedAt": "2026-09-22"
           }
         }
       ],

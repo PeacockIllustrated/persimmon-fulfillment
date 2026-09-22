@@ -174,24 +174,255 @@ def green_on_white(w, h, text):
 
 
 def compound_board(w, h, site, manager, phone):
-    """PCFA107 -- main compound board carrying this order's merged fields."""
-    body = h - w * LOGO_BAND - 8
-    def row(label, value, big=False):
-        return f"""<div style="display:flex;flex-direction:column;align-items:center;
-          padding:{body*0.02}mm 0;">
-          <div style="font-family:SignCond;color:#fff;font-size:{body*0.055}mm;
-               letter-spacing:.08em;opacity:.85;line-height:1.2;">{label}</div>
-          <div style="font-family:SignCond;color:#fff;font-size:{body*(0.145 if big else 0.110)}mm;
-               line-height:1.08;text-align:center;">{value}</div></div>"""
+    """PCFA107 -- Landscape Main Compound Board, Persimmon branded.
+
+    Rebuilt from the Charles Church board we hold artwork for: same panels,
+    same wording, same two fill-in fields. The source is 2440x1220 (2:1); this
+    order's is narrower, so the two columns carry a little more depth.
+
+    Every block is sized to its own column width and the column is then scaled
+    to the height available, the same two-pass fit the site organisation board
+    uses. Fixed sizes wrap and push the last row off the board.
+    """
+    margin = w * 0.030
+    avail_h = h - w*LOGO_BAND - 8 - margin
+    col_w = (w - 2*margin) / 2 - w*0.012
+    gap = avail_h * 0.020
+    pad_y, pad_x = avail_h * 0.022, col_w * 0.040
+
+    def size_for(lines, width, cap):
+        return fit_size(lines, width, 1e9, char_w=0.52, cap=cap)
+
+    ICON = col_w * 0.145
+
+    left_spec = [
+        ("title", [site], 0.115),
+        ("panel", ["WE APOLOGISE FOR ANY INCONVENIENCE",
+                   "CAUSED DURING DEVELOPMENT WORKS"], 0.052, GREEN),
+        ("icons", [(_mandatory(HARD_HAT, ICON), ["SAFETY HELMETS", "MUST BE WORN"]),
+                   (_mandatory(HI_VIZ, ICON), ["HIGH VISIBILITY CLOTHING", "MUST BE WORN"]),
+                   (_mandatory(BOOT, ICON), ["PROTECTIVE FOOTWEAR", "MUST BE WORN"])],
+         0.048, BLUE),
+    ]
+    right_spec = [
+        ("icons", [(_prohibition(CHILDREN, ICON),
+                    ["PARENTS, BUILDING SITES ARE DANGEROUS",
+                     "PLEASE KEEP YOUR CHILDREN AWAY"]),
+                   (_prohibition(PEDESTRIAN, ICON),
+                    ["ANY PERSON CAUGHT PILFERING OR CAUSING",
+                     "DAMAGE WILL BE LIABLE FOR PROSECUTION"])],
+         0.044, RED),
+        ("firstaid", ["FIRST AID EQUIPMENT KEPT", "IN THE SITE OFFICE"], 0.048, GREEN),
+        ("panel", ["ALL DRIVERS &amp; VISITORS PLEASE",
+                   "REPORT TO THE SITE OFFICE"], 0.052, BLUE),
+        ("field", ("SITE MANAGER", manager), 0.052, GREEN),
+        ("field", ("EMERGENCY CONTACT", phone), 0.052, GREEN),
+    ]
+
+    def render(spec):
+        out, est = [], gap * (len(spec) - 1)
+        for item in spec:
+            kind, payload, frac = item[0], item[1], item[2]
+            bg = item[3] if len(item) > 3 else None
+            if kind == "title":
+                sz = size_for(payload, col_w, avail_h*frac)
+                est += sz * 1.15
+                out.append(f'<div style="font-family:SignCond;color:{BLACK};'
+                           f'font-size:{sz}mm;line-height:1.05;white-space:nowrap;">'
+                           f'{payload[0]}</div>')
+            elif kind == "panel":
+                sz = size_for(payload, col_w - 2*pad_x, avail_h*frac)
+                est += len(payload)*sz*1.12 + 2*pad_y
+                out.append(f'<div style="background:{bg};border-radius:{w*0.012}mm;'
+                           f'padding:{pad_y}mm {pad_x}mm;font-family:SignCond;color:#fff;'
+                           f'font-size:{sz}mm;line-height:1.12;text-align:center;'
+                           f'white-space:nowrap;box-sizing:border-box;">'
+                           f'{"<br>".join(payload)}</div>')
+            elif kind == "icons":
+                rows, inner = [], col_w - 2*pad_x - ICON - pad_x
+                for svg, lines in payload:
+                    sz = size_for(lines, inner, avail_h*frac)
+                    est += max(len(lines)*sz*1.12, ICON) + pad_y
+                    # disc on white, text on the colour: a blue disc inside a
+                    # blue panel disappears.
+                    rows.append(f'<div style="display:flex;align-items:center;'
+                                f'gap:{pad_x*0.8}mm;">{svg}'
+                                f'<div style="background:{bg};border-radius:{w*0.010}mm;'
+                                f'flex:1;padding:{pad_y*0.55}mm {pad_x*0.6}mm;'
+                                f'font-family:SignCond;color:#fff;font-size:{sz}mm;'
+                                f'line-height:1.12;text-align:center;white-space:nowrap;'
+                                f'box-sizing:border-box;">{"<br>".join(lines)}</div></div>')
+                est += pad_y
+                out.append(f'<div style="display:flex;flex-direction:column;gap:{gap*0.55}mm;'
+                           f'background:#fff;border:{avail_h*0.009}mm solid {bg};'
+                           f'border-radius:{w*0.013}mm;padding:{pad_y*0.6}mm;'
+                           f'box-sizing:border-box;">{"".join(rows)}</div>')
+            elif kind == "firstaid":
+                sz = size_for(payload, col_w*0.68 - 2*pad_x, avail_h*frac)
+                est += len(payload)*sz*1.12 + 2*pad_y
+                out.append(f'<div style="display:flex;gap:{gap*0.6}mm;">'
+                           f'<div style="background:{bg};border-radius:{w*0.012}mm;'
+                           f'flex:0 0 26%;display:flex;align-items:center;justify-content:center;'
+                           f'gap:{pad_x*0.6}mm;padding:{pad_y*0.7}mm;box-sizing:border-box;">'
+                           f'<svg viewBox="0 0 100 100" style="width:{ICON*0.8}mm;'
+                           f'height:{ICON*0.8}mm;flex:0 0 auto;">'
+                           f'<rect x="38" y="14" width="24" height="72" fill="#fff"/>'
+                           f'<rect x="14" y="38" width="72" height="24" fill="#fff"/></svg>'
+                           f'<div style="font-family:SignCond;color:#fff;font-size:{sz}mm;'
+                           f'line-height:1.05;">FIRST<br>AID</div></div>'
+                           f'<div style="flex:1;background:{bg};border-radius:{w*0.012}mm;'
+                           f'display:flex;align-items:center;justify-content:center;'
+                           f'padding:{pad_y}mm {pad_x}mm;font-family:SignCond;color:#fff;'
+                           f'font-size:{sz}mm;line-height:1.12;text-align:center;'
+                           f'white-space:nowrap;box-sizing:border-box;">'
+                           f'{"<br>".join(payload)}</div></div>')
+            elif kind == "field":
+                label, value = payload
+                sz = size_for([label], col_w*0.38 - pad_x, avail_h*frac)
+                vs = size_for([value], col_w*0.58 - pad_x, avail_h*frac*1.25)
+                est += max(sz, vs)*1.30 + 2*pad_y
+                out.append(f'<div style="display:flex;gap:{pad_x}mm;background:{bg};'
+                           f'border-radius:{w*0.012}mm;padding:{pad_y*0.8}mm {pad_x}mm;'
+                           f'box-sizing:border-box;">'
+                           f'<div style="font-family:SignCond;color:#fff;font-size:{sz}mm;'
+                           f'display:flex;align-items:center;flex:0 0 40%;'
+                           f'white-space:nowrap;">{label}</div>'
+                           f'<div style="background:#fff;border-radius:{w*0.006}mm;flex:1;'
+                           f'display:flex;align-items:center;justify-content:center;'
+                           f'font-family:SignCond;color:{BLACK};font-size:{vs}mm;'
+                           f'padding:{pad_y*0.4}mm 0;white-space:nowrap;">{value}</div></div>')
+        return "".join(out), est
+
+    left_html, left_h = render(left_spec)
+    right_html, right_h = render(right_spec)
+    zoom = min(1.0, avail_h * 0.94 / max(left_h, right_h, 1))
+
     return shell(w, h, f"""
-<div class="panel" style="flex:1;background:{BLUE};display:flex;flex-direction:column;
-     align-items:stretch;justify-content:center;padding:{body*0.05}mm {w*0.05}mm;
-     box-sizing:border-box;overflow:hidden;">
-  <div style="font-family:SignCond;color:#fff;font-size:{body*0.085}mm;text-align:center;
-       letter-spacing:.06em;opacity:.9;line-height:1.2;">WELCOME TO</div>
-  {row("SITE", site, True)}
-  <div style="height:{body*0.008}mm;background:rgba(255,255,255,.45);
-       margin:{body*0.025}mm 0;flex:0 0 auto;"></div>
-  {row("SITE MANAGER", manager)}
-  {row("IN AN EMERGENCY CALL", phone)}
+<div style="flex:1;display:flex;gap:{w*0.024}mm;margin:0 {margin}mm {margin}mm;
+     overflow:hidden;zoom:{zoom:.4f};">
+  <div style="flex:1;display:flex;flex-direction:column;gap:{gap}mm;">{left_html}</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:{gap}mm;">{right_html}</div>
 </div>""")
+
+def _mandatory(inner, size):
+    """Blue disc, white symbol — 'must be worn' / 'must do' class."""
+    return (f'<svg viewBox="0 0 100 100" style="width:{size}mm;height:{size}mm;flex:0 0 auto;">'
+            f'<circle cx="50" cy="50" r="48" fill="{BLUE}"/>{inner}</svg>')
+
+
+def _prohibition(inner, size):
+    """White disc, red ring and bar — 'do not' class."""
+    return (f'<svg viewBox="0 0 100 100" style="width:{size}mm;height:{size}mm;flex:0 0 auto;">'
+            f'<circle cx="50" cy="50" r="48" fill="#fff"/>{inner}'
+            f'<circle cx="50" cy="50" r="41" fill="none" stroke="{RED}" stroke-width="11"/>'
+            f'<rect x="44" y="-2" width="12" height="104" fill="{RED}"'
+            f' transform="rotate(45 50 50)"/></svg>')
+
+
+HARD_HAT = (  # head in profile wearing a helmet, as ISO 7010 M014
+    '<path d="M28 56a22 22 0 0 1 44 0z" fill="#fff"/>'
+    '<rect x="20" y="56" width="60" height="8" rx="4" fill="#fff"/>'
+    '<path d="M34 66h28l-4 16H38z" fill="#fff"/>')
+HI_VIZ = (  # vest with shoulders, V-neck and two reflective bands
+    '<path d="M38 26h24l14 12v42H24V38z" fill="#fff"/>'
+    '<path d="M44 26h12l-6 12z" fill="'+BLUE+'"/>'
+    '<rect x="47" y="30" width="6" height="50" fill="'+BLUE+'"/>'
+    '<rect x="28" y="54" width="44" height="6" fill="'+BLUE+'"/>')
+BOOT = (  # safety boot in profile
+    '<path d="M32 22h16v28l18 6a10 10 0 0 1 8 10v12H32z" fill="#fff"/>'
+    '<rect x="30" y="74" width="46" height="6" rx="3" fill="#fff"/>')
+BANG = ('<rect x="44" y="20" width="12" height="38" rx="5" fill="#fff"/>'
+        '<circle cx="50" cy="72" r="7" fill="#fff"/>')
+LITTER = ('<circle cx="42" cy="26" r="7" fill="#fff"/>'
+          '<path d="M36 36h12l6 22h-9l-4-12v30h-8V36z" fill="#fff"/>'
+          '<path d="M60 44h18l-3 32H63z" fill="#fff"/>')
+PEDESTRIAN = ('<circle cx="50" cy="24" r="8" fill="#231F20"/>'
+              '<path d="M44 34h10l10 22-7 4-6-12v12l8 22h-8l-8-20-6 20h-8l8-30z" fill="#231F20"/>')
+CHILDREN = ('<circle cx="36" cy="26" r="7" fill="#231F20"/>'
+            '<path d="M30 35h12l8 18-6 4-4-9v12l6 20h-7l-5-16-5 16h-7l6-24z" fill="#231F20"/>'
+            '<circle cx="66" cy="30" r="6" fill="#231F20"/>'
+            '<path d="M61 38h10l6 15-5 3-3-7v10l5 17h-6l-4-13-4 13h-6l5-20z" fill="#231F20"/>')
+NO_PARK = ('<circle cx="50" cy="50" r="34" fill="'+BLUE+'"/>'
+           '<path d="M40 30h16a12 12 0 0 1 0 24h-8v16h-8z" fill="#fff"/>')
+
+
+def site_organisation(w, h):
+    """PCF151 -- Site Organisation board, Persimmon branded.
+
+    Layout and wording follow the Charles Church board we hold artwork for.
+    Only the branding changes: the board is the product, the logo is the
+    housebuilder. "SKIES PROVIDED" in the original is a typo for SKIPS and is
+    corrected here.
+
+    Rows are laid out in two passes -- size each row to its own width, then
+    scale the lot to the height available. Assuming line counts instead let
+    the text wrap and pushed half the board off the bottom.
+    """
+    margin = w * 0.045
+    avail_h = h - w*LOGO_BAND - 8 - margin
+    avail_w = w - 2*margin
+
+    # (background, lines, relative weight, icon, text colour)
+    spec = [
+        (None,   ["SITE ORGANISATION"],                       1.05, None, BLACK),
+        (RED,    ["WE CARE"],                                 2.20, None, "#fff"),
+        (RED,    ["TOP QUALITY IS WHAT CUSTOMERS",
+                  "DESERVE AND WE PROVIDE IT."],              0.85, None, "#fff"),
+        (RED,    ["THINK QUALITY.",
+                  "GET IT RIGHT FIRST TIME"],                 0.85, None, "#fff"),
+        (RED,    ["TAKE PRIDE IN YOUR WORK"],                 1.15, None, "#fff"),
+        (BLUE,   ["PROTECT AND RE-COVER ALL",
+                  "UNFIXED MATERIALS"],                       0.85, BANG, "#fff"),
+        (BLUE,   ["PLEASE PLACE YOUR RUBBISH AND",
+                  "PACKAGING IN THE SKIPS PROVIDED"],         0.85, LITTER, "#fff"),
+        (YELLOW, ["No Parking is permitted",
+                  "on site roads"],                           0.85, NO_PARK, BLACK),
+        (GREEN,  ["WE PROMOTE SITE SAFETY",
+                  "AND TEAMWORK ON THIS SITE"],               0.95, None, "#fff"),
+    ]
+
+    gap = avail_h * 0.012
+    pad_y, pad_x = avail_h * 0.016, avail_w * 0.035
+    icon_frac = 0.95                       # icon height against the row's text block
+
+    # pass 1: width-limited size for each row
+    sizes = []
+    for bg, lines, weight, icon, _fg in spec:
+        text_w = avail_w - 2*pad_x - (avail_w * 0.16 if icon else 0)
+        sizes.append(fit_size(lines, text_w, 1e9, char_w=0.52, cap=weight * avail_h * 0.10))
+
+    # pass 2: shrink everything until the column fits the height
+    def column_height(ss):
+        total = gap * (len(spec) - 1)
+        for (bg, lines, _w, _i, _f), size in zip(spec, ss):
+            total += len(lines) * size * 1.10 + (2*pad_y if bg else 0)
+        return total
+
+    # 0.95 leaves headroom for the browser's line box being a shade taller
+    # than line-height alone predicts; without it the column clips at both ends.
+    # 0.88 leaves headroom: the browser's line box runs taller than
+    # line-height alone predicts, and padding rounds up per row. Erring small
+    # costs a little white space; erring large clips the last row off the board.
+    scale = min(1.0, avail_h * 0.88 / column_height(sizes))
+    sizes = [x * scale for x in sizes]
+
+    rows = []
+    for (bg, lines, _wt, icon, fg), size in zip(spec, sizes):
+        body = (f'<div style="font-family:SignCond;color:{fg};font-size:{size}mm;'
+                f'line-height:1.10;text-align:center;flex:1;white-space:nowrap;">'
+                f'{"<br>".join(lines)}</div>')
+        if bg is None:
+            rows.append(body)
+            continue
+        ic = ""
+        if icon is not None:
+            px = size * len(lines) * 1.10 * icon_frac
+            ic = (f'<div style="flex:0 0 auto;margin-right:{pad_x*0.7}mm;">'
+                  f'{(_prohibition if icon is NO_PARK else _mandatory)(icon, px)}</div>')
+        rows.append(f'<div style="display:flex;align-items:center;background:{bg};'
+                    f'border-radius:{w*0.020}mm;padding:{pad_y}mm {pad_x}mm;'
+                    f'box-sizing:border-box;">{ic}{body}</div>')
+
+    return shell(w, h, f"""
+<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-start;
+     gap:{gap}mm;margin:0 {margin}mm {margin}mm;overflow:hidden;">{"".join(rows)}</div>""")

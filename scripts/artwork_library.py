@@ -57,6 +57,7 @@ ENV_PATH = REPO_ROOT / "shop" / ".env"
 LIBRARY_PATH = REPO_ROOT / "shop" / "data" / "artwork-library.json"
 REGISTRY_PATH = REPO_ROOT / "shop" / "data" / "artwork-registry.json"
 CATALOG_PATH = REPO_ROOT / "shop" / "data" / "catalog.json"
+OVERRIDES_PATH = REPO_ROOT / "shop" / "data" / "folder-overrides.json"
 
 # Extensions we consider to be production artwork rather than a preview or note.
 ARTWORK_EXTS = {".ai", ".eps", ".pdf", ".svg", ".cdr", ".dxf", ".plt"}
@@ -141,10 +142,16 @@ def build_library(orders: list[dict], existing: dict | None) -> dict:
             for variant in entry.get("variants", []):
                 prior[(entry["baseCode"], variant["code"])] = variant.get("artwork", {})
 
-    # Legacy flat registry: a bare list of base codes known to have artwork.
+    # Legacy flat registry: a bare list of base codes known to have artwork,
+    # from before the library existed. Only ever read a HAND-MAINTAINED
+    # registry. Once we generate it, it is derived data: it has no size
+    # granularity, so reading it back would mark every size of a code ready
+    # off one file and silently inflate coverage on the next rebuild.
     legacy_codes: set[str] = set()
     if REGISTRY_PATH.exists():
-        legacy_codes = set(json.loads(REGISTRY_PATH.read_text()).get("codes", []))
+        registry = json.loads(REGISTRY_PATH.read_text())
+        if "GENERATED" not in registry.get("description", ""):
+            legacy_codes = set(registry.get("codes", []))
 
     by_base: dict[str, dict] = {}
     for order in orders:
@@ -189,6 +196,32 @@ def build_library(orders: list[dict], existing: dict | None) -> dict:
             created = (order.get("created_at") or "")[:10]
             if created and (hist["lastOrdered"] is None or created > hist["lastOrdered"]):
                 hist["lastOrdered"] = created
+
+    # Anything already in the library that the order history does not
+    # reproduce must be carried forward. The library is the source of truth;
+    # history only ever adds to it. Without this, re-seeding quietly drops
+    # every code and size that has artwork but no order behind it.
+    if existing:
+        for entry in existing.get("entries", []):
+            base = entry["baseCode"]
+            kept = by_base.setdefault(base, {
+                "baseCode": base,
+                "name": entry.get("name", base),
+                "personalised": entry.get("personalised", False),
+                "variants": {},
+                "history": {"orderNumbers": [], "totalQty": 0, "lastOrdered": None},
+            })
+            for variant in entry.get("variants", []):
+                kept["variants"].setdefault(variant["code"], {
+                    "code": variant["code"],
+                    "size": variant.get("size"),
+                    "material": variant.get("material"),
+                    "qty": variant.get("qty", 0),
+                    "artwork": variant.get("artwork", {
+                        "status": "none", "file": None,
+                        "sourceOrder": None, "capturedAt": None,
+                    }),
+                })
 
     # Codes that already had artwork but have never been ordered through the
     # portal still belong in the library -- seeding purely from order history
@@ -317,9 +350,23 @@ def index_orders(orders: list[dict]) -> dict:
             "site": by_site, "fuzzy": by_fuzzy}
 
 
-def match_folder_name(name: str, idx: dict) -> tuple[list[dict], str]:
+def load_overrides() -> dict[str, str]:
+    """Hand-recorded folder -> order corrections, keyed case-insensitively."""
+    if not OVERRIDES_PATH.exists():
+        return {}
+    data = json.loads(OVERRIDES_PATH.read_text()).get("overrides", {})
+    return {k.upper(): v.upper() for k, v in data.items()}
+
+
+def match_folder_name(name: str, idx: dict, overrides: dict[str, str] | None = None) -> tuple[list[dict], str]:
     """Resolve one folder name to candidate orders, with how we got there."""
     upper = name.upper()
+
+    # A human has already settled this one; never second-guess it.
+    if overrides and upper in overrides:
+        order = idx["number"].get(overrides[upper])
+        if order:
+            return [order], "override"
 
     m = ORDER_NUMBER_RE.search(upper)
     if m and m.group(0) in idx["number"]:
@@ -406,8 +453,9 @@ def cmd_match(args: argparse.Namespace) -> None:
     report = {"generatedAt": date.today().isoformat(), "folder": str(root),
               "matched": [], "ambiguous": [], "unmatched": []}
 
+    overrides = load_overrides()
     for folder, files in scan_folder(root):
-        candidates, how = match_folder_name(folder.name, idx)
+        candidates, how = match_folder_name(folder.name, idx, overrides)
         artwork = [f for f in files if f.suffix.lower() in ARTWORK_EXTS]
         previews = [f for f in files if f.suffix.lower() in PREVIEW_EXTS]
 
@@ -470,12 +518,34 @@ def cmd_match(args: argparse.Namespace) -> None:
                 elif hit["tier"] in ("confirmed", "likely"):
                     file_map.setdefault(hit["code"], []).append(rel)
 
+        # A personalised sign carries bespoke text, so it can never match a
+        # catalogue name and would otherwise drop out entirely. Its layout is
+        # still worth keeping: record the folder's artwork against it as a
+        # template, flagged so nobody mistakes it for a finished file.
+        # CUSTOM and CUSTOM-ITEM are billing placeholders for one-off work,
+        # not sign designs -- there is no layout to reuse, so never template them.
+        personalised = {
+            (i.get("base_code") or i.get("code") or "").upper()
+            for i in order.get("psp_order_items", []) or []
+            if i.get("custom_data") is not None
+        } - {"CUSTOM", "CUSTOM-ITEM"}
+        pdfs = sorted({p["file"] for p in pages if p.get("file")})
+        record["templateByCode"] = {
+            code: pdfs for code in sorted(personalised - set(file_map)) if pdfs
+        }
+
         record["pages"] = pages
         record["fileByCode"] = file_map
         record["unidentifiedPages"] = blank
         record["needsReview"] = [p for p in pages if p.get("tier") == "review"]
-        record["codesWithoutFile"] = [c for c in record["orderedCodes"] if c not in file_map]
-        record["codesWithoutFile"] = [c for c in record["orderedCodes"] if c not in file_map]
+        record["codesWithoutFile"] = [
+            c for c in record["orderedCodes"]
+            if c not in file_map and c not in record["templateByCode"]
+        ]
+        record["codesWithoutFile"] = [
+            c for c in record["orderedCodes"]
+            if c not in file_map and c not in record["templateByCode"]
+        ]
         report["matched"].append(record)
 
     out = Path(args.out) if args.out else REPO_ROOT / "scripts" / "artwork-match-report.json"
@@ -491,6 +561,8 @@ def cmd_match(args: argparse.Namespace) -> None:
         print(f"\n  {rec['folder']}  ->  {rec['orderNumber']}  ({rec['matchedBy']}, {rec['siteName']})")
         for code, files in sorted(rec["fileByCode"].items()):
             print(f"      {code:<12} {', '.join(sorted(set(files)))}")
+        for code, files in sorted(rec["templateByCode"].items()):
+            print(f"      {code:<12} {', '.join(files)}  (template, bespoke text)")
         if rec["codesWithoutFile"]:
             print(f"      no artwork found for: {', '.join(rec['codesWithoutFile'])}")
         for p in rec["needsReview"]:
@@ -542,11 +614,34 @@ def apply_matches(report: dict) -> None:
 
     scaled = propagate_by_aspect(library, report["generatedAt"])
 
+    templates = 0
+    for rec in report["matched"]:
+        ordered_variants = rec.get("orderedVariants", {})
+        for code, files in rec.get("templateByCode", {}).items():
+            entry = by_base.get(code)
+            if not entry:
+                continue
+            targets = set(ordered_variants.get(code, []))
+            for variant in entry["variants"]:
+                if targets and variant["code"] not in targets:
+                    continue
+                if variant["artwork"]["status"] != "none":
+                    continue
+                variant["artwork"] = {
+                    "status": "template",
+                    "file": files[0],
+                    "sourceOrder": rec["orderNumber"],
+                    "capturedAt": report["generatedAt"],
+                    "note": "layout only -- text is per order",
+                }
+                templates += 1
+
+
     library["updatedAt"] = report["generatedAt"]
     LIBRARY_PATH.write_text(json.dumps(library, indent=2) + "\n")
     codes = write_registry_from_library(library)
-    print(f"\nApplied: {updated} variants marked ready, "
-          f"{scaled} more covered by scaling; registry now {codes} codes")
+    print(f"\nApplied: {updated} variants marked ready, {scaled} covered by "
+          f"scaling, {templates} recorded as templates; registry now {codes} codes")
 
 
 def _aspect(size: str | None) -> float | None:

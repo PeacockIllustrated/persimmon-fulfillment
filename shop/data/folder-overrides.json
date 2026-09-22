@@ -1,0 +1,6 @@
+{
+  "description": "Manual folder -> order corrections for job folders whose name cannot be resolved automatically (typos, internal references, dates). Checked before any automatic matching. Add an entry when `match` reports a folder as unmatched and you know where it belongs.",
+  "overrides": {
+    "K1RA": "PER-20260511-K1R4"
+  }
+}

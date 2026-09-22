@@ -53,6 +53,13 @@ interface Order {
   total: number;
 }
 
+interface FulfilmentState {
+  status: string;
+  pages: number;
+  approved: number;
+  rejected: number;
+}
+
 interface Suggestion {
   id: string;
   name: string;
@@ -69,6 +76,10 @@ export default function AdminPage() {
   const [lightbox, setLightbox] = useState<{ src: string; code: string } | null>(null);
   const [tab, setTab] = useState<"orders" | "suggestions">("orders");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  // Artwork state comes from its own admin-only endpoint rather than from
+  // /api/orders, which is reachable with shop auth as well: nothing about
+  // fulfilment belongs in a payload Persimmon's own buyers receive.
+  const [fulfilment, setFulfilment] = useState<Record<string, FulfilmentState>>({});
   const [sugFilter, setSugFilter] = useState("all");
   const [sendingToNest, setSendingToNest] = useState<string | null>(null);
   const [nestError, setNestError] = useState<string | null>(null);
@@ -90,6 +101,11 @@ export default function AdminPage() {
     fetch("/api/suggestions")
       .then((res) => res.json())
       .then((data) => setSuggestions(data.suggestions || []))
+      .catch(() => {});
+
+    fetch("/api/fulfilment")
+      .then((res) => (res.ok ? res.json() : { fulfilment: {} }))
+      .then((data) => setFulfilment(data.fulfilment || {}))
       .catch(() => {});
   }, []);
 
@@ -658,6 +674,27 @@ export default function AdminPage() {
                       </svg>
                       Order List
                     </a>
+                    {(() => {
+                      const art = fulfilment[order.orderNumber];
+                      if (!art || art.pages === 0) return null;
+                      const done = art.approved === art.pages && art.rejected === 0;
+                      const tone = art.rejected > 0
+                        ? "text-red-700 border-red-200 hover:bg-red-50"
+                        : done
+                        ? "text-emerald-700 border-emerald-200 hover:bg-emerald-50"
+                        : "text-amber-800 border-amber-200 hover:bg-amber-50";
+                      return (
+                        <Link
+                          href={`/admin/artwork/${order.orderNumber}`}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border rounded-lg transition ${tone}`}
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          Artwork {art.approved}/{art.pages}
+                        </Link>
+                      );
+                    })()}
                     {order.poDocumentName ? (
                       <a
                         href={`/api/orders/${order.orderNumber}/download-po`}

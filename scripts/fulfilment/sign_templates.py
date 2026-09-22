@@ -414,14 +414,19 @@ def site_organisation(w, h):
         if bg is None:
             rows.append(body)
             continue
-        ic = ""
-        if icon is not None:
-            px = size * len(lines) * 1.10 * icon_frac
-            ic = (f'<div style="flex:0 0 auto;margin-right:{pad_x*0.7}mm;">'
-                  f'{(_prohibition if icon is NO_PARK else _mandatory)(icon, px)}</div>')
-        rows.append(f'<div style="display:flex;align-items:center;background:{bg};'
-                    f'border-radius:{w*0.020}mm;padding:{pad_y}mm {pad_x}mm;'
-                    f'box-sizing:border-box;">{ic}{body}</div>')
+        panel = (f'<div style="background:{bg};border-radius:{w*0.020}mm;flex:1;'
+                 f'display:flex;align-items:center;padding:{pad_y}mm {pad_x}mm;'
+                 f'box-sizing:border-box;">{body}</div>')
+        if icon is None:
+            rows.append(panel)
+            continue
+        # The disc sits on white beside the panel, never inside it: a blue
+        # mandatory disc on a blue row is invisible, which is exactly how the
+        # first two rows here shipped.
+        px = size * len(lines) * 1.10 * icon_frac
+        draw = _prohibition if icon is NO_PARK else _mandatory
+        rows.append(f'<div style="display:flex;align-items:center;gap:{pad_x*0.7}mm;">'
+                    f'{draw(icon, px)}{panel}</div>')
 
     return shell(w, h, f"""
 <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-start;

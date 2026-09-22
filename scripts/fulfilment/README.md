@@ -58,14 +58,26 @@ Needs `pypdf` and, for rendering, node with `playwright`, `pdfjs-dist` and
 python3 scripts/fulfilment/build_pack.py PER-20260914-J5NO
 ```
 
+## Page fitting
+
+A library page is the sheet **as it was printed**, which is not always one sign
+at the ordered size. `page_fit.py` handles the two cases that come up:
+
+- **n-up sheet** — `PCF29/F` was printed two-up on a 400x600 sheet. Crop to one cell.
+- **wrong size** — `PCF961/F` is covered by the 600x800 artwork of the same
+  shape. Scale it down rather than ship a sign twice the size ordered.
+
+Geometry alone cannot tell these apart: an 800x600 page for a 400x300 sign is
+both "2x2 up" and "twice the size". The library records whether an entry was
+matched directly or covered by scaling, and that decides. Anything that fits
+neither is passed through and flagged `MISMATCH`.
+
 ## Known gaps
 
-- A library page is the sheet **as it was printed**, not the sign trimmed to the
-  size this order wants. A 300x400 pull can arrive as a 400x600 two-up sheet, and
-  a scaled entry points at the artwork of a different size. Both need rescaling
-  and trimming before plate.
 - `PCF03` had no artwork and no close relative, so its layout is a judgement
-  call and its hours are placeholders.
-- `PCFA107` is drawn as a welcome/compound board carrying the merged fields. It
-  is not a reproduction of the real multi-panel board, which we hold no artwork
-  for.
+  call. The hours are confirmed: 08:00-17:30 weekdays, 08:00-13:00 Saturday.
+- `PCF151` and `PCFA107` are rebuilt from the Charles Church artwork in the
+  1UVU job, panel for panel and word for word, with Persimmon branding. The
+  boards are the product; the logo is the housebuilder.
+- Safety pictograms are drawn, not lifted. They read correctly but they are not
+  Persimmon's own symbols -- worth a look before plate.

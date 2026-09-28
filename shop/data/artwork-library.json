@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-22",
+  "updatedAt": "2026-09-28",
   "description": "Ready-made artwork library. One entry per base code, listing every size/material variant actually ordered through the portal, how often it has been ordered, and whether production artwork exists for it. 'personalised' entries carry order-specific text and are reusable as templates, not as finished files.",
   "source": "psp_orders + psp_order_items",
   "entries": [
@@ -4579,6 +4579,48 @@
         "lastOrdered": null,
         "ordersUsedIn": 0
       }
+    },
+    {
+      "baseCode": "PA528",
+      "name": "Paper / Cardboard",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA528/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": "351 Fairways/PA528-M.pdf",
+            "page": 1,
+            "sourceOrder": null,
+            "capturedAt": "2026-09-28",
+            "note": "lifted from Persimmon Backup/351 Fairways/Print.pdf p2 (One Sign job, Feb 2026); wording and layout match the catalogue, photo differs from the catalogue thumbnail"
+          }
+        }
+      ]
+    },
+    {
+      "baseCode": "PA539",
+      "name": "Canteen Waste",
+      "personalised": false,
+      "variants": [
+        {
+          "code": "PA539/M",
+          "size": "400x600mm",
+          "material": "4mm Correx",
+          "qty": 0,
+          "artwork": {
+            "status": "ready",
+            "file": "351 Fairways/PA539-M.pdf",
+            "page": 1,
+            "sourceOrder": null,
+            "capturedAt": "2026-09-28",
+            "note": "lifted from Persimmon Backup/351 Fairways/Print.pdf p9 (One Sign job, Feb 2026); wording and layout match the catalogue, photo differs from the catalogue thumbnail"
+          }
+        }
+      ]
     }
   ]
 }

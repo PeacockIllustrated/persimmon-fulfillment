@@ -783,7 +783,10 @@ def run_order(order: dict, index: dict[str, dict], args, nd: Path | None) -> dic
         report_plans(plans)
         return manifest(order, plans, 0, [])
 
-    out_dir = Path(args.out).expanduser() / number
+    # Absolute, because these paths are handed to node, which runs with its
+    # working directory beside the scripts: a relative --out rendered pages
+    # into scripts/fulfilment/out while python looked for them under the cwd.
+    out_dir = Path(args.out).expanduser().resolve() / number
     out_dir.mkdir(parents=True, exist_ok=True)
     work = out_dir / "_work"
     work.mkdir(exist_ok=True)

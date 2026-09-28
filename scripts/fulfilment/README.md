@@ -246,6 +246,16 @@ write_back.py PER-20260914-J5NO --artwork-root ~/"Persimmon App Jobs" --apply
 `--publish` needs `SITE_URL` and `ADMIN_AUTH_TOKEN`, from the environment or
 `shop/.env`.
 
+The pack PDF does not pass through the shop. Vercel caps a function's request
+and response bodies at 4.5MB, and one lifted page with a photograph in it is
+that on its own — OT9A's two waste signs are 10MB between them. So `--publish`
+asks the shop for a signed upload URL, sends the PDF straight to the private
+`artwork-packs` Storage bucket, and then asks the shop to check it arrived and
+record it. Downloading goes the same way round: the admin route redirects to a
+five-minute signed URL. Posting a new manifest clears the previous build's PDF,
+so a failed upload shows as "no pack stored" rather than an old PDF sitting
+behind new pages.
+
 ### Admin only
 
 Everything here is behind admin auth, and nothing a Persimmon buyer touches

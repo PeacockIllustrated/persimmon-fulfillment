@@ -737,18 +737,28 @@ def publish(order: dict, plans: list[Plan], report: dict, pack_pdf: Path) -> Non
         raise SystemExit(f"publish failed ({resp.status_code}): {resp.text[:300]}")
 
     if pack_pdf.exists():
-        # Raw PDF, not base64 in JSON: a nine-page pack is megabytes and
-        # base64 on the wire adds a third for nothing.
-        resp = requests.put(
-            f"{base}/api/fulfilment/{number}/artwork",
-            params={"filename": pack_pdf.name},
-            data=pack_pdf.read_bytes(),
-            headers={"Content-Type": "application/pdf"},
-            cookies=cookies,
-            timeout=300,
-        )
+        # Straight to Storage by signed URL, never through the shop: Vercel
+        # caps a function body at 4.5MB, and one library page with a photo in
+        # it is that on its own. The shop hands out the URL, then checks what
+        # arrived before making it the order's pack.
+        data = pack_pdf.read_bytes()
+        artwork = f"{base}/api/fulfilment/{number}/artwork"
+
+        resp = requests.post(artwork, json={"filename": pack_pdf.name, "bytes": len(data)},
+                             cookies=cookies, timeout=60)
+        if not resp.ok:
+            raise SystemExit(f"pack upload refused ({resp.status_code}): {resp.text[:300]}")
+        slot = resp.json()
+
+        resp = requests.put(slot["signedUrl"], data=data,
+                            headers={"Content-Type": "application/pdf"}, timeout=600)
         if not resp.ok:
             raise SystemExit(f"pack upload failed ({resp.status_code}): {resp.text[:300]}")
+
+        resp = requests.patch(artwork, json={"path": slot["path"], "filename": pack_pdf.name},
+                              cookies=cookies, timeout=120)
+        if not resp.ok:
+            raise SystemExit(f"pack upload not recorded ({resp.status_code}): {resp.text[:300]}")
 
     print(f"     published to {base}/admin/artwork/{number}")
 

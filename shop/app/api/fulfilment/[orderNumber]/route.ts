@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { isAdminAuthed } from "@/lib/auth";
+import { removeStoredPack } from "@/lib/artwork-packs";
 
 /**
  * The proof for one order: its pages, their provenance and where each one has
@@ -79,6 +80,15 @@ export async function POST(
     return NextResponse.json({ error: "No such order" }, { status: 404 });
   }
 
+  const { data: previous } = await supabase
+    .from("psp_artwork_packs")
+    .select("pack_storage_path")
+    .eq("order_number", orderNumber)
+    .maybeSingle();
+
+  // The previous build's PDF goes with its pages. The PDF is uploaded by a
+  // second request after this one; if that fails, "no pack stored" is the
+  // truth, where keeping the old PDF would sit it behind pages it doesn't have.
   const { error: packError } = await supabase.from("psp_artwork_packs").upsert(
     {
       order_number: orderNumber,
@@ -87,6 +97,10 @@ export async function POST(
       pages_packed: Number(manifest.pagesPacked ?? pages.length),
       needs_attention: manifest.needsAttention ?? [],
       manifest,
+      pack_document: null,
+      pack_storage_path: null,
+      pack_filename: null,
+      pack_size_bytes: null,
     },
     { onConflict: "order_number" }
   );
@@ -95,6 +109,8 @@ export async function POST(
     console.error("Artwork pack upsert failed:", packError);
     return NextResponse.json({ error: "Failed to save pack" }, { status: 500 });
   }
+
+  await removeStoredPack(previous?.pack_storage_path);
 
   // Replace, don't merge: see the note at the top of this file.
   await supabase.from("psp_artwork_pages").delete().eq("order_number", orderNumber);

@@ -201,3 +201,24 @@ create policy "service_psp_artwork_packs" on psp_artwork_packs
   for all using (true) with check (true);
 create policy "service_psp_artwork_pages" on psp_artwork_pages
   for all using (true) with check (true);
+
+-- ============================================================
+-- Packs too big for a Vercel function (added 2026-09-28)
+-- ============================================================
+--
+-- Vercel caps a function's request and response bodies at 4.5MB, so a pack
+-- carrying library photographs cannot be uploaded to or downloaded from the
+-- artwork route as a body. Those go to a private Storage bucket by signed URL
+-- instead, and the row records where. At most one of pack_document and
+-- pack_storage_path is set: whichever upload came last.
+--
+-- The bucket is private and has no policies: only the service role, which the
+-- shop's API routes use, can reach it. A human downloads through the admin
+-- route, which hands out a five-minute signed URL.
+
+alter table psp_artwork_packs
+  add column if not exists pack_storage_path text;
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('artwork-packs', 'artwork-packs', false, 52428800, array['application/pdf'])
+on conflict (id) do nothing;

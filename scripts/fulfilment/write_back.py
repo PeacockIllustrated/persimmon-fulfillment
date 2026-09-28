@@ -36,6 +36,7 @@ import json
 import sys
 from datetime import date
 from pathlib import Path
+from urllib.parse import quote
 
 from pypdf import PdfReader, PdfWriter
 
@@ -50,6 +51,8 @@ from artwork_library import (  # noqa: E402
 )
 
 REUSE_AS = {"GENERATED": "ready", "MERGED": "template"}
+
+PACK_BUCKET = "artwork-packs"  # shop/lib/artwork-packs.ts
 
 
 def supabase_get(env: dict[str, str], table: str, params: dict) -> list[dict]:
@@ -85,13 +88,34 @@ def supabase_patch(env: dict[str, str], table: str, params: dict, body: dict) ->
 
 
 def load_pack(env: dict[str, str], order_number: str) -> PdfReader | None:
+    """The approved pack, from wherever the last upload put it.
+
+    Small packs are base64 in the row; large ones are in the artwork-packs
+    Storage bucket, because Vercel will not pass them through the shop.
+    """
     rows = supabase_get(env, "psp_artwork_packs", {
-        "select": "pack_document",
+        "select": "pack_document,pack_storage_path",
         "order_number": f"eq.{order_number}",
     })
-    if not rows or not rows[0].get("pack_document"):
+    if not rows:
         return None
-    return PdfReader(io.BytesIO(base64.b64decode(rows[0]["pack_document"])))
+    row = rows[0]
+    if row.get("pack_storage_path"):
+        import requests
+        resp = requests.get(
+            f"{env['SUPABASE_URL']}/storage/v1/object/{PACK_BUCKET}/"
+            f"{quote(row['pack_storage_path'])}",
+            headers={
+                "apikey": env["SUPABASE_SERVICE_ROLE_KEY"],
+                "Authorization": f"Bearer {env['SUPABASE_SERVICE_ROLE_KEY']}",
+            },
+            timeout=300,
+        )
+        resp.raise_for_status()
+        return PdfReader(io.BytesIO(resp.content))
+    if not row.get("pack_document"):
+        return None
+    return PdfReader(io.BytesIO(base64.b64decode(row["pack_document"])))
 
 
 def find_variant(library: dict, code: str) -> tuple[dict | None, dict | None]:

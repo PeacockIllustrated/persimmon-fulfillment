@@ -35,6 +35,20 @@ EXCLUDED_CODES = {
     'PCF984', 'PCF985', 'PCF986', 'PCF987', 'PCFCOV-19-ENT',  # Covid-19 signs — discontinued
 }
 
+# Custom fields the price list doesn't encode but the product needs before it
+# can be made. Applied after detect_custom_fields and take precedence over it.
+CUSTOM_FIELD_OVERRIDES = {
+    # Site Setup Pack: the main compound board carries the site name, site
+    # manager and emergency contact, comes in landscape or portrait, and the
+    # Traffic & Environmental Management Plan board carries the site name.
+    'PA115': [
+        {'label': 'Board Orientation', 'key': 'board_orientation', 'options': ['Landscape', 'Portrait']},
+        {'label': 'Site Name', 'key': 'site_name'},
+        {'label': "Site Manager's Name", 'key': 'site_managers_name'},
+        {'label': 'Emergency Contact Number', 'key': 'emergency_contact'},
+    ],
+}
+
 # Category definitions: maps PDF page ranges to categories
 # Built from PDF content analysis
 CATEGORY_DEFINITIONS = [
@@ -424,6 +438,11 @@ def build_catalog():
             group['customFields'] = cf
             group['name'] = clean_name(group['name'])
             custom_field_count += 1
+    for base_code, cf in CUSTOM_FIELD_OVERRIDES.items():
+        if base_code in product_groups:
+            if 'customFields' not in product_groups[base_code]:
+                custom_field_count += 1
+            product_groups[base_code]['customFields'] = cf
     print(f"Products with custom fields: {custom_field_count}")
 
     # Assign images

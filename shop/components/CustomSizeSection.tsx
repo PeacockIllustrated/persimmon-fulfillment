@@ -3,6 +3,7 @@
 
 import { useState, useMemo } from "react";
 import { useBasket } from "./BasketContext";
+import CustomFieldInputs from "./CustomFieldInputs";
 import type { Product, Category } from "@/lib/catalog";
 import {
   calculateCustomSizePricing,
@@ -178,27 +179,13 @@ export default function CustomSizeSection({ product, category }: Props) {
           )}
 
           {customFields.length > 0 && (
-            <div className="space-y-2">
-              {customFields.map((field) => (
-                <div key={field.key}>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">
-                    {field.label} <span className="text-red-400">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={fieldValues[field.key]}
-                    onChange={(e) =>
-                      setFieldValues((prev) => ({
-                        ...prev,
-                        [field.key]: e.target.value,
-                      }))
-                    }
-                    placeholder={`Enter ${field.label.toLowerCase()}`}
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-persimmon-green/15 focus:border-persimmon-green outline-none transition bg-white"
-                  />
-                </div>
-              ))}
-            </div>
+            <CustomFieldInputs
+              fields={customFields}
+              values={fieldValues}
+              onChange={(key, value) =>
+                setFieldValues((prev) => ({ ...prev, [key]: value }))
+              }
+            />
           )}
 
           {validWidth && validHeight && results.length === 0 && (

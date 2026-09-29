@@ -13,6 +13,8 @@ export interface Variant {
 export interface CustomField {
   label: string;
   key: string;
+  /** When set, the field is a dropdown limited to these values. */
+  options?: string[];
 }
 
 export interface Product {

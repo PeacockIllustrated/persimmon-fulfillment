@@ -37,16 +37,25 @@ EXCLUDED_CODES = {
 
 # Custom fields the price list doesn't encode but the product needs before it
 # can be made. Applied after detect_custom_fields and take precedence over it.
+# Main compound board: comes in landscape or portrait and carries the site
+# name, site manager and emergency contact.
+MAIN_COMPOUND_BOARD_FIELDS = [
+    {'label': 'Board Orientation', 'key': 'board_orientation', 'options': ['Landscape', 'Portrait']},
+    {'label': 'Site Name', 'key': 'site_name'},
+    {'label': "Site Manager's Name", 'key': 'site_managers_name'},
+    {'label': 'Emergency Contact Number', 'key': 'emergency_contact'},
+]
+
 CUSTOM_FIELD_OVERRIDES = {
-    # Site Setup Pack: the main compound board carries the site name, site
-    # manager and emergency contact, comes in landscape or portrait, and the
-    # Traffic & Environmental Management Plan board carries the site name.
-    'PA115': [
-        {'label': 'Board Orientation', 'key': 'board_orientation', 'options': ['Landscape', 'Portrait']},
-        {'label': 'Site Name', 'key': 'site_name'},
-        {'label': "Site Manager's Name", 'key': 'site_managers_name'},
-        {'label': 'Emergency Contact Number', 'key': 'emergency_contact'},
-    ],
+    # Site Setup Pack: main compound board, plus the Traffic & Environmental
+    # Management Plan board, which carries the same site name.
+    'PA115': MAIN_COMPOUND_BOARD_FIELDS,
+    # Compound Sign Pack: main compound board. The price list asks for the
+    # three details but its "Portrait/Landscape" choice isn't parsed as a field.
+    'PCF200': MAIN_COMPOUND_BOARD_FIELDS,
+    # Setup Pack: main compound board, plus the Traffic & Environmental
+    # Management Plan board, which carries the same site name.
+    'PCFSP': MAIN_COMPOUND_BOARD_FIELDS,
 }
 
 # Category definitions: maps PDF page ranges to categories

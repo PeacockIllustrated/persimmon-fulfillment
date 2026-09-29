@@ -53,6 +53,9 @@ CUSTOM_FIELD_OVERRIDES = {
     # Compound Sign Pack: main compound board. The price list asks for the
     # three details but its "Portrait/Landscape" choice isn't parsed as a field.
     'PCF200': MAIN_COMPOUND_BOARD_FIELDS,
+    # Setup Pack: main compound board, plus the Traffic & Environmental
+    # Management Plan board, which carries the same site name.
+    'PCFSP': MAIN_COMPOUND_BOARD_FIELDS,
 }
 
 # Category definitions: maps PDF page ranges to categories

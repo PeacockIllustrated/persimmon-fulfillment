@@ -643,15 +643,23 @@
           "name": "Setup Pack\nMain Compound Board: Portrait/Landscape\nTraffic & Environmental Management Plan",
           "customFields": [
             {
+              "label": "Board Orientation",
+              "key": "board_orientation",
+              "options": [
+                "Landscape",
+                "Portrait"
+              ]
+            },
+            {
               "label": "Site Name",
               "key": "site_name"
             },
             {
-              "label": "Site Managers Name",
+              "label": "Site Manager's Name",
               "key": "site_managers_name"
             },
             {
-              "label": "Emergency Contact",
+              "label": "Emergency Contact Number",
               "key": "emergency_contact"
             }
           ],

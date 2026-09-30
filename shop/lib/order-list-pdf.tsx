@@ -458,7 +458,7 @@ function PackContentsBlock({ item, groups }: { item: OrderItem; groups: PackGrou
   return (
     <View style={s.packBox}>
       <Text style={s.packTitle}>
-        Pack contents {"\u2014"} {item.code} {"\u00D7"} {packs} ({lineCount} lines, {signCount} items)
+        Pack contents {"\u2014"} {item.base_code || item.code} {"\u00D7"} {packs} ({lineCount} lines, {signCount} items)
       </Text>
       {groups.map((group) => {
         const renderLine = (line: PackLine) => (

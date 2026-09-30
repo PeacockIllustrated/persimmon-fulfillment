@@ -659,6 +659,10 @@
               "key": "site_managers_name"
             },
             {
+              "label": "Site Manager's Phone Number",
+              "key": "site_managers_phone"
+            },
+            {
               "label": "Emergency Contact Number",
               "key": "emergency_contact"
             }

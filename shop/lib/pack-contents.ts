@@ -73,7 +73,7 @@ const PACK_CONTENTS: Record<string, PackLine[]> = {
     { name: "Keep This Facility Clean - It Is For Your Benefit", size: "300x400mm", material: C4, qty: 2 },
     { name: "AED - Automated External Defibrillator", size: "300x400mm", material: C4, qty: 1 },
     { name: "Eye Wash", size: "300x400mm", material: C4, qty: 1 },
-    { name: "High Risk Activities/Hazards Board", size: "1220x800mm", material: "10mm Correx + Sliders", qty: 1, note: "Site Manager name & phone number" },
+    { name: "High Risk Activities/Hazards Board", size: "1220x800mm", material: "10mm Correx + Sliders", qty: 1, note: "Site Manager name & phone number as specified on this order" },
     { name: "Meet the Person Responsible for Your Health and Safety Today", size: "1220x610mm", material: "5mm Foamex + Mirror", qty: 1 },
 
     // Traffic Management

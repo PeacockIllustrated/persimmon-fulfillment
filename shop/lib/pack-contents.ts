@@ -1,7 +1,8 @@
 /**
  * Line-by-line contents of sign packs, for the production order list.
  * Quantities are per pack; the order list multiplies them by packs ordered.
- * Source: Site Signage Catalogue (January 2026), pages 4-5.
+ * Source: Site Signage Catalogue (January 2026), pages 4-5. The catalogue
+ * labels those pages PCFSP, but they describe the pack sold as PA115.
  */
 
 export interface PackLine {
@@ -16,7 +17,7 @@ const C4 = "4mm Correx";
 
 const PACK_CONTENTS: Record<string, PackLine[]> = {
   // Site Setup Pack
-  PCFSP: [
+  PA115: [
     // Site Entrance / Build Area
     { name: "Main Compound Board", size: "1220x2440mm", material: "10mm Correx", qty: 1, note: "Site details & orientation as specified on this order" },
     { name: "Caution - Site Entrance", size: "400x600mm", material: C4, qty: 2 },

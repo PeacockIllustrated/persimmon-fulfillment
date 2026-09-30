@@ -12,6 +12,7 @@ import {
 } from "@react-pdf/renderer";
 import type { OrderItem, OrderData } from "./email";
 import { SIGN_TYPE_COLORS } from "./email";
+import { getPackContents, type PackGroup, type PackLine } from "./pack-contents";
 
 /* ------------------------------------------------------------------ */
 /*  Colours                                                            */
@@ -39,7 +40,8 @@ const s = StyleSheet.create({
     fontFamily: "Helvetica",
     fontSize: 10,
     paddingTop: 0,
-    paddingBottom: 40,
+    // Clears the fixed continuation notice and footer
+    paddingBottom: 80,
     paddingHorizontal: 0,
     color: C.darkText,
   },
@@ -197,6 +199,52 @@ const s = StyleSheet.create({
   customSignDetail: { fontSize: 9, color: C.grey, marginTop: 1 },
   customSignText: { fontSize: 9, color: C.orangeText, marginTop: 1 },
   customSignNotes: { fontSize: 8, color: "#999999", marginTop: 1 },
+
+  /* ---------- Pack contents ---------- */
+  packBox: {
+    marginLeft: 44,
+    marginTop: 2,
+    marginBottom: 6,
+    borderLeftWidth: 2,
+    borderLeftColor: C.green,
+    paddingLeft: 8,
+  },
+  packTitle: {
+    fontSize: 9,
+    fontFamily: "Helvetica-Bold",
+    color: C.navy,
+    paddingVertical: 4,
+  },
+  packGroupHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: C.lightGrey,
+    paddingVertical: 3,
+    paddingHorizontal: 4,
+    marginTop: 4,
+  },
+  packGroupTitle: { fontSize: 8, fontFamily: "Helvetica-Bold", color: C.darkText },
+  packGroupCount: { fontSize: 8, color: C.grey },
+  packRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 3,
+    paddingHorizontal: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: C.divider,
+  },
+  packName: { flex: 1, fontSize: 8, color: C.darkText, paddingRight: 6 },
+  packNote: { fontSize: 7, color: C.orangeText },
+  packQty: { width: 36, fontSize: 9, fontFamily: "Helvetica-Bold", textAlign: "center" },
+  packCheckBox: {
+    width: 11,
+    height: 11,
+    borderWidth: 1.2,
+    borderColor: "#cccccc",
+    borderRadius: 2,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
 
   /* ---------- Summary ---------- */
   summaryBox: {
@@ -402,6 +450,46 @@ function StandardItemRow({ item, images, index, hasArtwork }: { item: OrderItem;
   );
 }
 
+function PackContentsBlock({ item, groups }: { item: OrderItem; groups: PackGroup[] }) {
+  const packs = item.quantity;
+  const lineCount = groups.reduce((sum, g) => sum + g.lines.length, 0);
+  const signCount = groups.reduce((sum, g) => sum + g.totalQty, 0) * packs;
+
+  return (
+    <View style={s.packBox}>
+      <Text style={s.packTitle}>
+        Pack contents {"\u2014"} {item.code} {"\u00D7"} {packs} ({lineCount} lines, {signCount} items)
+      </Text>
+      {groups.map((group) => {
+        const renderLine = (line: PackLine) => (
+          <View key={line.name} style={s.packRow} wrap={false}>
+            <Text style={s.packName}>
+              {line.name}
+              {line.note ? <Text style={s.packNote}>{"  "}({line.note})</Text> : null}
+            </Text>
+            <Text style={s.packQty}>{line.qty * packs}</Text>
+            <View style={s.colCheck}><View style={s.packCheckBox} /></View>
+          </View>
+        );
+        const [first, ...rest] = group.lines;
+        return (
+          <View key={`${group.size}|${group.material}`}>
+            {/* Header travels with its first line so it is never stranded at a page end */}
+            <View wrap={false}>
+              <View style={s.packGroupHeader}>
+                <Text style={s.packGroupTitle}>{group.size} {"\u00B7"} {group.material}</Text>
+                <Text style={s.packGroupCount}>{group.totalQty * packs}</Text>
+              </View>
+              {renderLine(first)}
+            </View>
+            {rest.map(renderLine)}
+          </View>
+        );
+      })}
+    </View>
+  );
+}
+
 function CustomQuoteRow({ item, index }: { item: OrderItem; index: number }) {
   const cd = item.custom_data!;
 
@@ -460,7 +548,12 @@ function CustomSignRow({ item, index }: { item: OrderItem; index: number }) {
 function OrderListDocument({ order, images, artworkCodes }: { order: OrderData; images: ImageMap; artworkCodes: Set<string> }) {
   const orderDate = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
   const { standard, custom } = groupItemsBySize(order.items);
-  const totalItems = order.items.reduce((sum, i) => sum + i.quantity, 0);
+  // Packs count as their contents, not as one sign
+  const totalItems = order.items.reduce((sum, i) => {
+    const packGroups = getPackContents((i.base_code || i.code.replace(/\/.*$/, "")).replace(/\//g, "_"));
+    const perUnit = packGroups ? packGroups.reduce((n, g) => n + g.totalQty, 0) : 1;
+    return sum + i.quantity * perUnit;
+  }, 0);
 
   return (
     <Document>
@@ -532,7 +625,13 @@ function OrderListDocument({ order, images, artworkCodes }: { order: OrderData; 
                   return <CustomQuoteRow key={i} item={item} index={i} />;
                 }
                 const baseCode = (item.base_code || item.code.replace(/\/.*$/, "")).replace(/\//g, "_");
-                return <StandardItemRow key={i} item={item} images={images} index={i} hasArtwork={artworkCodes.has(baseCode)} />;
+                const packGroups = getPackContents(baseCode);
+                return (
+                  <View key={i}>
+                    <StandardItemRow item={item} images={images} index={i} hasArtwork={artworkCodes.has(baseCode)} />
+                    {packGroups ? <PackContentsBlock item={item} groups={packGroups} /> : null}
+                  </View>
+                );
               })}
             </View>
           ))}

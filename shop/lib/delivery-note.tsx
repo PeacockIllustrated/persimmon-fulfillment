@@ -12,6 +12,7 @@ import {
 } from "@react-pdf/renderer";
 import type { OrderItem, OrderData } from "./email";
 import { SIGN_TYPE_COLORS } from "./email";
+import { getPackContents, type PackGroup, type PackLine } from "./pack-contents";
 
 /* ------------------------------------------------------------------ */
 /*  Colours (matching the order confirmation email)                    */
@@ -280,6 +281,51 @@ const s = StyleSheet.create({
   },
 
   /* ---------- Footer ---------- */
+  /* ---------- Pack contents ---------- */
+  packBox: {
+    marginLeft: 48,
+    marginTop: 2,
+    marginBottom: 6,
+    borderLeftWidth: 2,
+    borderLeftColor: C.green,
+    paddingLeft: 8,
+  },
+  packTitle: {
+    fontSize: 9,
+    fontFamily: "Helvetica-Bold",
+    color: C.navy,
+    paddingVertical: 4,
+  },
+  packGroupHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: C.lightGrey,
+    paddingVertical: 3,
+    paddingHorizontal: 4,
+    marginTop: 4,
+  },
+  packGroupTitle: { fontSize: 8, fontFamily: "Helvetica-Bold", color: C.darkText },
+  packGroupCount: { fontSize: 8, color: C.grey },
+  packRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 3,
+    paddingHorizontal: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: C.divider,
+  },
+  packName: { flex: 1, fontSize: 8, color: C.darkText, paddingRight: 6 },
+  packNote: { fontSize: 7, color: C.orangeText },
+  packQty: { width: 36, fontSize: 9, fontFamily: "Helvetica-Bold", textAlign: "center" },
+  packCheckCol: { width: 22, alignItems: "center" },
+  packCheckBox: {
+    width: 11,
+    height: 11,
+    borderWidth: 1.2,
+    borderColor: "#cccccc",
+    borderRadius: 2,
+  },
+
   footer: {
     position: "absolute",
     bottom: 16,
@@ -528,6 +574,46 @@ function CustomSignRow({
 /* ------------------------------------------------------------------ */
 /*  Main Document                                                      */
 /* ------------------------------------------------------------------ */
+function PackContentsBlock({ item, groups }: { item: OrderItem; groups: PackGroup[] }) {
+  const packs = item.quantity;
+  const lineCount = groups.reduce((sum, g) => sum + g.lines.length, 0);
+  const signCount = groups.reduce((sum, g) => sum + g.totalQty, 0) * packs;
+
+  return (
+    <View style={s.packBox}>
+      <Text style={s.packTitle}>
+        Pack contents {"\u2014"} {item.base_code || item.code} {"\u00D7"} {packs} ({lineCount} lines, {signCount} items)
+      </Text>
+      {groups.map((group) => {
+        const renderLine = (line: PackLine) => (
+          <View key={line.name} style={s.packRow} wrap={false}>
+            <Text style={s.packName}>
+              {line.name}
+              {line.note ? <Text style={s.packNote}>{"  "}({line.note})</Text> : null}
+            </Text>
+            <Text style={s.packQty}>{line.qty * packs}</Text>
+            <View style={s.packCheckCol}><View style={s.packCheckBox} /></View>
+          </View>
+        );
+        const [first, ...rest] = group.lines;
+        return (
+          <View key={`${group.size}|${group.material}`}>
+            {/* Header travels with its first line so it is never stranded at a page end */}
+            <View wrap={false}>
+              <View style={s.packGroupHeader}>
+                <Text style={s.packGroupTitle}>{group.size} {"\u00B7"} {group.material}</Text>
+                <Text style={s.packGroupCount}>{group.totalQty * packs}</Text>
+              </View>
+              {renderLine(first)}
+            </View>
+            {rest.map(renderLine)}
+          </View>
+        );
+      })}
+    </View>
+  );
+}
+
 function DeliveryNoteDocument({
   order,
   images,
@@ -603,12 +689,15 @@ function DeliveryNoteDocument({
             ) : item.custom_data?.type === "custom_quote" ? (
               <CustomQuoteRow key={i} item={item} index={i} />
             ) : (
-              <StandardItemRow
-                key={i}
-                item={item}
-                images={images}
-                index={i}
-              />
+              <View key={i}>
+                <StandardItemRow item={item} images={images} index={i} />
+                {(() => {
+                  const packGroups = getPackContents(
+                    (item.base_code || item.code.replace(/\/.*$/, "")).replace(/\//g, "_")
+                  );
+                  return packGroups ? <PackContentsBlock item={item} groups={packGroups} /> : null;
+                })()}
+              </View>
             )
           )}
 

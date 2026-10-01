@@ -220,8 +220,13 @@ def working_hours(w, h, lines, heading="SITE WORKING HOURS"):
 </div>""")
 
 
-def green_on_white(w, h, text):
-    """PCF114 -- green keyline, green text, centred, with white breathing room.
+def text_on_white(w, h, text, ink=GREEN):
+    """The keyline-and-text family: PCF114 green, PCF118 red, PCF119 blue.
+
+    One construction, three inks. The catalogue names say as much -- "Green on
+    White", "Red on White", "Blue on White" -- and the artwork differs in
+    nothing else, so a second and third template would be the same file with
+    one hex changed.
 
     The reference keeps a clear white margin inside the keyline. Sizing the
     type off the sign rather than off that inner box is what pushed the last
@@ -239,12 +244,176 @@ def green_on_white(w, h, text):
     size = fit_size(text, inner_w, inner_h, line_height=1.12, char_w=0.60)
     return shell(w, h, f"""
 <div class="panel" style="flex:1;margin:0 {margin}mm {margin}mm;
-     border:{frame}mm solid {GREEN};display:flex;align-items:center;
+     border:{frame}mm solid {ink};display:flex;align-items:center;
      justify-content:center;padding:{padding}mm;box-sizing:border-box;
      overflow:hidden;">
-  <div style="font-family:SignReg;color:{GREEN};font-size:{size}mm;line-height:1.12;
+  <div style="font-family:SignReg;color:{ink};font-size:{size}mm;line-height:1.12;
        text-align:center;">{"<br>".join(text)}</div>
 </div>""")
+
+
+def green_on_white(w, h, text):
+    """PCF114, the green member of the family. Kept so existing callers work."""
+    return text_on_white(w, h, text, GREEN)
+
+
+# The hazardous-waste range carries its own ink. Every label in it -- PA518,
+# PA520, PA521, PA526 and the rest of the PA5xx family -- measures #094749, a
+# deep teal that is in no stated house palette but is used consistently enough
+# across the range to be a decision somebody made rather than drift. A reorder
+# has to match the labels already on the store, so the range keeps its own
+# colour and the house palette is not imposed on it.
+WASTE_TEAL = "#094749"
+
+
+def waste_label(w, h, item):
+    """PA520/PA521/PA526 -- the hazardous-waste strip labels.
+
+    A teal wedge runs the full height at the left, cut by one straight
+    diagonal that falls away to the right; "HAZARDOUS WASTE" sits white on it
+    over two lines, the logo sits on the white at the far right, and the item
+    goes in a keylined box across the lower two thirds, overlapping the wedge.
+
+    Only the item name changes across the range, so this is one template and
+    three fills rather than three near-identical files.
+    """
+    pad = w * 0.030
+    # The diagonal, measured off the catalogue artwork: it leaves the top edge
+    # at just over half the width and lands near the left corner at the foot.
+    top_x, bot_x = w * 0.53, w * 0.126
+    head = fit_size(["HAZARDOUS", "WASTE"], w * 0.30, h * 0.20, char_w=REG_CAPS)
+
+    box_l, box_w = w * 0.055, w * 0.890
+    box_t, box_h = h * 0.410, h * 0.470
+    inner_w, inner_h = box_w * 0.88, box_h * 0.62
+    name = wrap_best(item, inner_w, inner_h, char_w=REG_CAPS)
+    size = fit_size(name, inner_w, inner_h, char_w=REG_CAPS)
+
+    return f"""<!doctype html><html><head><meta charset="utf-8"><style>
+{font_css()}
+@page {{ size:{w}mm {h}mm; margin:0; }}
+html,body {{ margin:0; padding:0; width:{w}mm; height:{h}mm; overflow:hidden;
+  background:#fff; -webkit-print-color-adjust:exact; print-color-adjust:exact; }}
+</style></head><body>
+<div style="position:absolute;top:0;left:0;width:{w}mm;height:{h}mm;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:{WASTE_TEAL};
+       clip-path:polygon(0 0, {top_x / w * 100:.2f}% 0,
+                         {bot_x / w * 100:.2f}% 100%, 0 100%);"></div>
+  <div style="position:absolute;left:{pad}mm;top:{h * 0.10}mm;
+       font-family:SignReg;font-weight:700;color:#fff;font-size:{head}mm;
+       line-height:1.14;">HAZARDOUS<br>WASTE</div>
+  <div style="position:absolute;right:{pad}mm;top:{h * 0.09}mm;
+       width:{w * 0.30}mm;height:{h * 0.14}mm;{LOGO_BG};
+       background-size:contain;background-repeat:no-repeat;
+       background-position:right center;"></div>
+  <div style="position:absolute;left:{box_l}mm;top:{box_t}mm;
+       width:{box_w}mm;height:{box_h}mm;box-sizing:border-box;background:#fff;
+       border:{h * 0.010}mm solid {BLACK};border-radius:{h * 0.030}mm;
+       display:flex;align-items:center;justify-content:center;">
+    <div style="font-family:SignReg;font-weight:700;color:{BLACK};
+         font-size:{size}mm;line-height:1.10;text-align:center;">
+      {"<br>".join(name)}</div>
+  </div>
+</div></body></html>"""
+
+
+def warning_notice(w, h, iso_code, lead, lines, panel=YELLOW):
+    """PA540 -- a heavy black keyline, an ISO warning symbol left, a panel right.
+
+    The symbol keeps the standard's own amber. House yellow is a brand colour
+    and this is a prescribed pictogram, so snapping it to the palette would
+    repeat the mistake the palette pass found elsewhere in the catalogue:
+    brand ink laid over artwork that is not ours to restyle. The panel beside
+    it is ours, and that is where house yellow belongs.
+    """
+    margin = w * 0.022
+    frame = h * 0.020
+    band = w * LOGO_BAND
+    inner_h = h - band - 8 - margin - 2 * frame       # 8mm is shell's padding
+    sym = min(inner_h * 0.88, w * 0.36)
+    inset = inner_h * 0.06
+    col_w = body_w(w) - 2 * margin - 2 * frame - sym - inset
+    text_w, text_h = col_w * 0.86, (inner_h - 2 * inset) * 0.78
+
+    body = wrap_best(lines, text_w, text_h * 0.52, char_w=REG_CAPS) \
+        if isinstance(lines, str) else list(lines)
+    size = fit_size(body, text_w, text_h * 0.52, char_w=REG_CAPS)
+    lead_size = fit_size([lead], text_w, text_h * 0.34, line_height=1.0,
+                         char_w=REG_CAPS)
+
+    return shell(w, h, f"""
+<div style="flex:1;margin:0 {margin}mm {margin}mm;background:#fff;
+     border:{frame}mm solid {BLACK};border-radius:{h * 0.030}mm;
+     display:flex;align-items:stretch;box-sizing:border-box;overflow:hidden;">
+  <div style="flex:0 0 {sym + inset}mm;display:flex;align-items:center;
+       justify-content:center;">{iso(iso_code, sym)}</div>
+  <div style="flex:1;margin:{inset}mm {inset}mm {inset}mm 0;background:{panel};
+       border-radius:{h * 0.018}mm;display:flex;flex-direction:column;
+       align-items:center;justify-content:center;overflow:hidden;">
+    <div style="font-family:SignReg;font-weight:700;color:{BLACK};
+         font-size:{lead_size}mm;line-height:1.0;white-space:nowrap;">{lead}</div>
+    <div style="font-family:SignReg;color:{BLACK};font-size:{size}mm;
+         line-height:1.16;text-align:center;margin-top:{inner_h * 0.04}mm;">
+      {"<br>".join(body)}</div>
+  </div>
+</div>""")
+
+
+def tap_and_glass_svg(size_mm, ink="#fff"):
+    """PCF322's tap-and-tumbler mark, redrawn.
+
+    ISO 7010 has no drinking-water symbol -- the pictogram on the catalogue
+    sign is the older BS/informal tap-over-glass, so this is a redraw of that
+    artwork rather than a standard symbol lifted from the pack.
+    """
+    return (f'<svg viewBox="0 0 100 100" style="width:{size_mm}mm;'
+            f'height:{size_mm}mm;flex:0 0 auto;" fill="none" stroke="{ink}" '
+            f'stroke-width="6" stroke-linecap="round" stroke-linejoin="round">'
+            f'<path d="M100 22 H46 a4 4 0 0 0-4 4 V46" fill="{ink}" '
+            f'stroke="none"/>'
+            f'<path d="M100 16 H46 a10 10 0 0 0-10 10 V46 h12 V28 h52 Z" '
+            f'fill="{ink}" stroke="none"/>'
+            f'<rect x="60" y="4" width="26" height="9" rx="4" fill="{ink}" '
+            f'stroke="none"/>'
+            f'<rect x="69" y="10" width="8" height="8" fill="{ink}" '
+            f'stroke="none"/>'
+            f'<path d="M42 50 V60"/>'
+            f'<path d="M26 64 H70 L64 96 H32 Z"/>'
+            f'<path d="M30 76 q6 -5 11 0 t11 0 t11 0"/>'
+            f'</svg>')
+
+
+def panel_with_symbol(w, h, lines, colour, symbol, side="right"):
+    """PCF322 and PCF462 -- one coloured panel, text one side, symbol the other.
+
+    Both signs are the same construction with the symbol mirrored: PCF462 puts
+    the eyewash pictogram on the left and PCF322 puts the tap on the right.
+    ``panel_sign`` stacks its symbol above the text, which is a different
+    shape, so this is its side-by-side counterpart rather than another flag on
+    it.
+    """
+    body_h = h - w * LOGO_BAND - 8
+    pad_x, pad_y = w * 0.045, body_h * 0.10
+    inner_w = body_w(w) - 2 * pad_x
+    inner_h = body_h - 2 * pad_y
+
+    sym_w = inner_w * 0.30
+    gap = inner_w * 0.04
+    text_w = inner_w - sym_w - gap
+    size = fit_size(lines, text_w, inner_h, line_height=1.14, char_w=COND_CAPS)
+
+    text = (f'<div style="flex:1;display:flex;align-items:center;'
+            f'justify-content:center;min-width:0;">'
+            f'<div style="font-family:SignCond;color:#fff;font-size:{size}mm;'
+            f'line-height:1.14;text-align:center;">{"<br>".join(lines)}</div></div>')
+    mark = (f'<div style="flex:0 0 {sym_w}mm;display:flex;align-items:center;'
+            f'justify-content:center;">{symbol}</div>')
+    row = (mark + text) if side == "left" else (text + mark)
+
+    return shell(w, h, f"""
+<div class="panel" style="flex:1;background:{colour};display:flex;
+     align-items:stretch;gap:{gap}mm;padding:{pad_y}mm {pad_x}mm;
+     box-sizing:border-box;overflow:hidden;">{row}</div>""")
 
 
 def compound_board(w, h, site, manager, phone):
@@ -395,14 +564,30 @@ ISO_DIR = ASSETS / "iso7010"
 _iso_cache: dict[str, str] = {}
 
 
-def iso(code, size_mm):
-    """An ISO 7010 symbol at a given size, in our palette."""
-    if code not in _iso_cache:
+def iso(code, size_mm, on=None):
+    """An ISO 7010 symbol at a given size, in our palette.
+
+    The pack draws every symbol as a card: a coloured ground with the
+    pictogram knocked out of it in white. That is right for a sign that sets
+    the symbol against white, and wrong for one like PCF462, where the symbol
+    prints straight onto the sign's own green and the card edge would show as
+    a rectangle a shade off the panel. ``on`` repaints both grounds in the
+    panel colour so only the pictogram itself stays white -- the symbol's
+    geometry is untouched, which is the part the standard prescribes.
+    """
+    key = (code, on)
+    if key not in _iso_cache:
         svg = (ISO_DIR / f"{code}.svg").read_text(errors="replace")
         for pack_colour, ours in ISO_RECOLOUR.items():
             svg = re.sub(pack_colour, ours, svg, flags=re.I)
-        _iso_cache[code] = base64.b64encode(svg.encode()).decode()
-    return (f'<img src="data:image/svg+xml;base64,{_iso_cache[code]}" alt="{code}" '
+        if on:
+            # Rects only. The pictogram is drawn in <path>, so a rule scoped
+            # to <rect> cannot reach it however the two share a white.
+            svg = re.sub(r'(<rect[^>]*?fill:)#[0-9A-Fa-f]{6}', r'\1' + on, svg)
+            svg = re.sub(r'(<rect[^>]*?)fill="#[0-9A-Fa-f]{6}"',
+                         r'\1fill="' + on + '"', svg)
+        _iso_cache[key] = base64.b64encode(svg.encode()).decode()
+    return (f'<img src="data:image/svg+xml;base64,{_iso_cache[key]}" alt="{code}" '
             f'style="width:{size_mm}mm;height:{size_mm}mm;flex:0 0 auto;'
             f'object-fit:contain;">')
 

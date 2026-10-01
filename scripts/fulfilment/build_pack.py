@@ -107,14 +107,29 @@ GENERATORS = {
         w, h, T.wrap_best(_field(m, "custom_text"), T.body_w(w) * 0.90,
                           (h - w * T.LOGO_BAND - 8) * 0.84,
                           char_w=T.COND_CAPS), T.BLUE),
-    "PCF114":  lambda w, h, m: T.green_on_white(w, h, _field(m, "custom_text")),
+    "PCF114":  lambda w, h, m: T.text_on_white(w, h, _field(m, "custom_text"), T.GREEN),
+    "PCF118":  lambda w, h, m: T.text_on_white(w, h, _field(m, "custom_text"), T.RED),
+    "PCF119":  lambda w, h, m: T.text_on_white(w, h, _field(m, "custom_text"), T.BLUE),
     "PCF139":  lambda w, h, m: T.panel_sign(
         w, h, ["KEEP THIS", "AREA CLEAN"], T.BLUE, lead="PLEASE"),
     "PCF144":  lambda w, h, m: T.pedestrians_ahead(w, h),
     "PCF151":  lambda w, h, m: T.site_organisation(w, h),
     "PCF171":  lambda w, h, m: T.name_plate(
         w, h, "Contracts Manager", _field(m, "name", "site_managers_name")),
+    "PCF322":  lambda w, h, m: T.panel_with_symbol(
+        w, h, ["DRINKING", "WATER &", "HOT WATER", "FACILITIES"], T.GREEN,
+        T.tap_and_glass_svg((h - w * T.LOGO_BAND) * 0.62), side="right"),
     "PCF350":  lambda w, h, m: T.parking_left(w, h),
+    "PCF462":  lambda w, h, m: T.panel_with_symbol(
+        w, h, ["EYE", "WASH"], T.GREEN,
+        # Knocked out onto the panel: the pack's green card would sit a shade
+        # off the sign's own green and read as a rectangle round the symbol.
+        T.iso("E011", (h - w * T.LOGO_BAND) * 0.62, on=T.GREEN), side="left"),
+    "PA520":   lambda w, h, m: T.waste_label(w, h, "PAINT TINS"),
+    "PA521":   lambda w, h, m: T.waste_label(w, h, "MASTIC TUBES"),
+    "PA526":   lambda w, h, m: T.waste_label(w, h, "HAZARDOUS SOILS"),
+    "PA540":   lambda w, h, m: T.warning_notice(
+        w, h, "W001", "DANGER", ["REFUELLING", "AREA"]),
     "PCFCCS19": lambda w, h, m: T.you_said_we_did(w, h),
     "PCFA107": lambda w, h, m: T.compound_board(
         w, h,
